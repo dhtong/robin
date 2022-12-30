@@ -20,6 +20,10 @@ class Slack::EventsController < ApplicationController
 
   private
 
+  def get_home
+    external_accounts = 
+  end
+
   def publish_hello
     @slack_client.views_publish(user_id: event[:user], view: {type: 'home', blocks: [{type: 'section', text: {type: 'mrkdwn', text: "hello #{DateTime.now}"} }]})
   end

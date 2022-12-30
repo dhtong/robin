@@ -73,8 +73,6 @@ GEM
     crass (1.0.6)
     date (3.3.3)
     debug (1.7.1)
-      irb (>= 1.5.0)
-      reline (>= 0.3.1)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -95,9 +93,6 @@ GEM
     hashie (5.0.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    io-console (0.6.0)
-    irb (1.6.2)
-      reline (>= 0.3.0)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -109,6 +104,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.1)
     minitest (5.16.3)
     msgpack (1.6.0)
     multipart-post (2.2.3)
@@ -122,7 +118,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.13.10-arm64-darwin)
+    nokogiri (1.13.10)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     pg (1.4.5)
     puma (5.6.5)
@@ -158,8 +155,6 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
-    reline (0.3.2)
-      io-console (~> 0.5)
     ruby2_keywords (0.0.5)
     slack-ruby-client (2.0.0)
       faraday (>= 2.0)
@@ -176,6 +171,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     zeitwerk (2.6.6)
+    zenduty (1.0.0)
 
 PLATFORMS
   arm64-darwin-22
@@ -184,14 +180,16 @@ DEPENDENCIES
   bootsnap
   debug
   dotenv-rails
+  faraday (~> 2.7)
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.4)
   slack-ruby-client (~> 2.0)
   tzinfo-data
+  zenduty (~> 1.0)
 
 RUBY VERSION
-   ruby 3.0.0p0
+   ruby 3.2.0p0
 
 BUNDLED WITH
-   2.2.3
+   2.4.1
