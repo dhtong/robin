@@ -1,8 +1,7 @@
 class Slack::EventsController < ApplicationController
   def create
     if params[:challenge].present?
-      render json: {challenge: params[:challenge]}
-      return
+      return render json: {challenge: params[:challenge]}
     end
 
     @slack_client = Slack::Web::Client.new
@@ -21,11 +20,19 @@ class Slack::EventsController < ApplicationController
   private
 
   def get_home
-    # external_accounts = 
-  end
-
-  def publish_hello
-    @slack_client.views_publish(user_id: event[:user], view: {type: 'home', blocks: [{type: 'section', text: {type: 'mrkdwn', text: "hello #{DateTime.now}"} }]})
+    external_accounts = customer.external_accounts
+    if external_accounts.blank?
+      @slack_client.views_publish(
+        user_id: event[:user],
+        view: {type: 'home', blocks: [{type: 'section', text: {type: 'mrkdwn', text: "Please link accounts"} }]}
+      )
+    else
+      @slack_client.views_publish(
+        user_id: event[:user],
+        view: {type: 'home', blocks: [{type: 'section', text: {type: 'mrkdwn', text: "Here are the accounts"} }]}
+      )
+    end
+    
   end
 
   def send_message
@@ -38,5 +45,9 @@ class Slack::EventsController < ApplicationController
 
   def channel
     event[:channel]
+  end
+
+  def customer
+    @customer ||= Customer.find_by(slack_team_id: params[:team_id])
   end
 end
