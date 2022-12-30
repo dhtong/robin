@@ -52,3 +52,5 @@ gem "slack-ruby-client", "~> 2.0"
 gem "zenduty", "~> 1.0"
 
 gem "faraday", "~> 2.7"
+
+gem "httparty", "~> 0.20.0" # needed by zenduty but they somehow didn't specify it...
