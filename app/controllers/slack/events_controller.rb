@@ -21,7 +21,7 @@ class Slack::EventsController < ApplicationController
   private
 
   def get_home
-    external_accounts = 
+    # external_accounts = 
   end
 
   def publish_hello
