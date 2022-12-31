@@ -19,8 +19,8 @@ class Slack::EventsController < ApplicationController
   private
 
   def get_home
-
     external_accounts = customer.external_accounts
+    p customer
     blocks = []
     if external_accounts.any?
       blocks << {type: 'section', text: {type: 'mrkdwn', text: "Here are the accounts"} }
@@ -48,13 +48,7 @@ class Slack::EventsController < ApplicationController
   end
 
   def customer
-    @customer ||= Customer.find_by(slack_team_id: params[:team_id])
-    p @customer
-    if @customer.nil?
-      @customer = Customer.create(slack_team_id: params[:team_id])
-      p "customer created"
-    end
-    @customer
+    @customer ||= Customer.find_or_create_by(slack_team_id: params[:team_id])
   end
 
   def integration_dropdown
