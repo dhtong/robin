@@ -4,7 +4,7 @@ class Slack::InteractionsController < ApplicationController
     trigger_id = payload["trigger_id"]
     @slack_client = Slack::Web::Client.new
     # if payload["action_id"] == 
-    @slack_client.view_open(trigger_id: trigger_id, view: view)
+    @slack_client.views_open(trigger_id: trigger_id, view: view)
     head :ok
   end
 
