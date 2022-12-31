@@ -29,6 +29,7 @@ class Slack::EventsController < ApplicationController
 
     blocks << integration_dropdown
 
+    p "pushing blocks ----- " + blocks
     @slack_client.views_publish(
       user_id: event[:user],
       view: {type: 'home', blocks: blocks}
