@@ -8,7 +8,6 @@ class Slack::EventsController < ApplicationController
 
     case params[:event][:type]
     when 'app_home_opened'
-      p params
       get_home
     when 'app_mention'
       send_message
@@ -20,6 +19,7 @@ class Slack::EventsController < ApplicationController
   private
 
   def get_home
+
     external_accounts = customer.external_accounts
     blocks = []
     if external_accounts.any?
@@ -29,7 +29,6 @@ class Slack::EventsController < ApplicationController
 
     blocks << integration_dropdown
 
-    p "pushing blocks ----- " + blocks
     @slack_client.views_publish(
       user_id: event[:user],
       view: {type: 'home', blocks: blocks}
@@ -50,6 +49,12 @@ class Slack::EventsController < ApplicationController
 
   def customer
     @customer ||= Customer.find_by(slack_team_id: params[:team_id])
+    p @customer
+    if @customer.nil?
+      @customer = Customer.create(slack_team_id: params[:team_id])
+      p "customer created"
+    end
+    @customer
   end
 
   def integration_dropdown
