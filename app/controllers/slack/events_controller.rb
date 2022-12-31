@@ -11,8 +11,6 @@ class Slack::EventsController < ApplicationController
       get_home
     when 'app_mention'
       send_message
-    when 'testing'
-      p Customer.all
     end
     
     head :ok
@@ -54,6 +52,41 @@ class Slack::EventsController < ApplicationController
   end
 
   def integration_dropdown
+    {
+			"type": "actions",
+			"elements": [
+				{
+					"type": "static_select",
+					"placeholder": {
+						"type": "plain_text",
+						"text": "Select a tool",
+						"emoji": true
+					},
+					"options": [
+						{
+							"text": {
+								"type": "plain_text",
+								"text": "Pagerduty",
+								"emoji": true
+							},
+							"value": "pagerduty"
+						},
+						{
+							"text": {
+								"type": "plain_text",
+								"text": "Zenduty",
+								"emoji": true
+							},
+							"value": "zenduty"
+						}
+					],
+					"action_id": "select_integration"
+				}
+			]
+		}
+  end
+
+  def integration_dropdown_o
     {
       "type": "section",
       "text": {
