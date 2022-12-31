@@ -27,7 +27,7 @@ class Slack::EventsController < ApplicationController
       # todo show accounts
     end
 
-    blocks << integration_dropdown
+    blocks << select_integration
 
     @slack_client.views_publish(
       user_id: event[:user],
@@ -51,42 +51,7 @@ class Slack::EventsController < ApplicationController
     @customer ||= Customer.find_or_create_by(slack_team_id: params[:team_id])
   end
 
-  def integration_dropdown
-    {
-			"type": "actions",
-			"elements": [
-				{
-					"type": "static_select",
-					"placeholder": {
-						"type": "plain_text",
-						"text": "Select a tool",
-						"emoji": true
-					},
-					"options": [
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Pagerduty",
-								"emoji": true
-							},
-							"value": "pagerduty"
-						},
-						{
-							"text": {
-								"type": "plain_text",
-								"text": "Zenduty",
-								"emoji": true
-							},
-							"value": "zenduty"
-						}
-					],
-					"action_id": "select_integration"
-				}
-			]
-		}
-  end
-
-  def integration_dropdown_o
+  def select_integration
     {
       "type": "section",
       "text": {
@@ -94,7 +59,7 @@ class Slack::EventsController < ApplicationController
         "text": "Pick a tool to integrate with"
       },
       "accessory": {
-        "action_id": "integration",
+        "action_id": "select_integration",
         "type": "static_select",
         "placeholder": {
           "type": "plain_text",
