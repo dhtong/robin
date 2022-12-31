@@ -1,0 +1,121 @@
+{
+  "type": "block_actions",
+  "user": {
+      "id": "U04G7NZTHKQ",
+      "username": "dan",
+      "name": "dan",
+      "team_id": "T04FZQN3B9D"
+  },
+  "api_app_id": "A04GEBFQV0S",
+  "token": "4nbgdBVKWiLlfLTVw2V0qu4d",
+  "container": {
+      "type": "view",
+      "view_id": "V04GP8H3KLK"
+  },
+  "trigger_id": "4581639136530.4543838113319.7c81555ba0a7ef40a84c2534ae96487b",
+  "team": {
+      "id": "T04FZQN3B9D",
+      "domain": "supportbotsworkspace"
+  },
+  "enterprise": null,
+  "is_enterprise_install": false,
+  "view": {
+      "id": "V04GP8H3KLK",
+      "team_id": "T04FZQN3B9D",
+      "type": "home",
+      "blocks": [
+          {
+              "type": "section",
+              "block_id": "fhEc",
+              "text": {
+                  "type": "mrkdwn",
+                  "text": "Pick a tool to integrate with",
+                  "verbatim": false
+              },
+              "accessory": {
+                  "type": "static_select",
+                  "action_id": "select_integration",
+                  "placeholder": {
+                      "type": "plain_text",
+                      "text": "Select a tool",
+                      "emoji": true
+                  },
+                  "options": [
+                      {
+                          "text": {
+                              "type": "plain_text",
+                              "text": "Pagerduty",
+                              "emoji": true
+                          },
+                          "value": "pagerduty"
+                      },
+                      {
+                          "text": {
+                              "type": "plain_text",
+                              "text": "Zenduty",
+                              "emoji": true
+                          },
+                          "value": "zenduty"
+                      }
+                  ]
+              }
+          }
+      ],
+      "private_metadata": "",
+      "callback_id": "",
+      "state": {
+          "values": {
+              "fhEc": {
+                  "select_integration": {
+                      "type": "static_select",
+                      "selected_option": {
+                          "text": {
+                              "type": "plain_text",
+                              "text": "Zenduty",
+                              "emoji": true
+                          },
+                          "value": "zenduty"
+                      }
+                  }
+              }
+          }
+      },
+      "hash": "1672510849.pIeTbhXY",
+      "title": {
+          "type": "plain_text",
+          "text": "View Title",
+          "emoji": true
+      },
+      "clear_on_close": false,
+      "notify_on_close": false,
+      "close": null,
+      "submit": null,
+      "previous_view_id": null,
+      "root_view_id": "V04GP8H3KLK",
+      "app_id": "A04GEBFQV0S",
+      "external_id": "",
+      "app_installed_team_id": "T04FZQN3B9D",
+      "bot_id": "B04GE8GDAP5"
+  },
+  "actions": [
+      {
+          "type": "static_select",
+          "action_id": "select_integration",
+          "block_id": "fhEc",
+          "selected_option": {
+              "text": {
+                  "type": "plain_text",
+                  "text": "Zenduty",
+                  "emoji": true
+              },
+              "value": "zenduty"
+          },
+          "placeholder": {
+              "type": "plain_text",
+              "text": "Select a tool",
+              "emoji": true
+          },
+          "action_ts": "1672510857.289394"
+      }
+  ]
+}

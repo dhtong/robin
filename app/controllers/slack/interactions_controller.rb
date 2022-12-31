@@ -1,9 +1,16 @@
 class Slack::InteractionsController < ApplicationController
   def create
     payload = JSON.parse(params[:payload])
+    # only handle the first action and throw away the rest
+
+    p "========================"
+    p payload
+    p "++++++++++++++++++++++++"
+
     trigger_id = payload["trigger_id"]
+
+
     @slack_client = Slack::Web::Client.new
-    # if payload["action_id"] == 
     @slack_client.views_open(trigger_id: trigger_id, view: view)
     head :ok
   end
