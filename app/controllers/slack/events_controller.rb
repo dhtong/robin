@@ -11,6 +11,8 @@ class Slack::EventsController < ApplicationController
       get_home
     when 'app_mention'
       send_message
+    when 'testing'
+      p Customer.all
     end
     
     head :ok
