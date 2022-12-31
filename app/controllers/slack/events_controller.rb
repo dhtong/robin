@@ -9,7 +9,7 @@ class Slack::EventsController < ApplicationController
     case params[:event][:type]
     when 'app_home_opened'
       p params
-      publish_hello
+      get_home
     when 'app_mention'
       send_message
     end
