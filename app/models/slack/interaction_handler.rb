@@ -29,6 +29,8 @@ module Slack
       case vendor_selected
       when "zenduty"
         @client.views_open(trigger_id: @trigger_id, view: zenduty_token_input_view)
+      when "pagerduty"
+        # TODO add pd oath
       end
     end
   
