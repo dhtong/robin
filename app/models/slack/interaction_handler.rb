@@ -20,7 +20,6 @@ module Slack
     private
   
     def handle_zenduty_token_submission(state_value)
-      binding.b
       zenduty_token = state_value["action_zenduty_token"]["value"]
       ExternalAccount.create(customer: @customer, platform: "zenduty", token: zenduty_token)
     end
