@@ -48,6 +48,12 @@ group :development do
   # gem "spring"
 end
 
+group :test do
+  gem "database_cleaner-active_record"
+  gem "factory_bot_rails", "~> 6.2"
+  gem "faker"
+end
+
 gem "slack-ruby-client", "~> 2.0"
 
 gem "zenduty", "~> 1.0"
@@ -55,3 +61,4 @@ gem "zenduty", "~> 1.0"
 gem "faraday", "~> 2.7"
 
 gem "httparty", "~> 0.20.0" # needed by zenduty but they somehow didn't specify it...
+

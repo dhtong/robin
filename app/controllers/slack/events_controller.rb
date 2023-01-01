@@ -54,12 +54,13 @@ class Slack::EventsController < ApplicationController
   def select_integration
     {
       "type": "section",
+      "block_id": "block_integration_selection",
       "text": {
         "type": "mrkdwn",
         "text": "Pick a tool to integrate with"
       },
       "accessory": {
-        "action_id": "select_integration",
+        "action_id": "action_integration_selection",
         "type": "static_select",
         "placeholder": {
           "type": "plain_text",
