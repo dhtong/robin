@@ -11,13 +11,14 @@ module Slack
       external_accounts = @customer.external_accounts
 
       blocks = []
+      blocks << select_integration
+
       if external_accounts.any?
         blocks << {type: 'section', text: {type: 'mrkdwn', text: "Here are the accounts"} }
+        blocks.push(*display_existing_integrations(external_accounts))
         # todo show accounts and edit accounts
         blocks << {type: 'section', text: {type: 'mrkdwn', text: "Config schedules"} }
       end
-
-      blocks << select_integration
 
       @client.views_publish(
         user_id: @caller_id,
