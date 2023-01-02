@@ -40,7 +40,17 @@ module Slack
             "value": "add_integration"
           }
         }, 
-        {"type": "divider"}
+        {"type": "divider"},
+        {
+          "type": "context",
+          "elements": [
+            {
+              "type": "image",
+              "image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
+              "alt_text": "placeholder"
+            }
+          ]
+        }
       ]
       external_accounts.each do |account|
         blocks << view_integration(account.platform)
@@ -64,7 +74,17 @@ module Slack
             "value": "new_channel_config"
           }
         }, 
-        {"type": "divider"}
+        {"type": "divider"},
+        {
+          "type": "context",
+          "elements": [
+            {
+              "type": "image",
+              "image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
+              "alt_text": "placeholder"
+            }
+          ]
+        }
       ]
       external_accounts.each do |account|
         # blocks << view_channel(account.platform)
