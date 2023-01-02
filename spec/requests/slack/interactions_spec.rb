@@ -61,5 +61,23 @@ RSpec.describe "Interaction", type: :request do
       post "/slack/interactions", params: {"payload": payload}
       expect(response).to have_http_status(:ok)
     end
+
+    context 'select zenduty' do
+      let(:payload) { file_fixture("schedule_source_select.json").read }
+      let!(:external_account) { create(:external_account, customer: customer, platform: "zenduty") }
+      let!(:other_external_account) { create(:external_account, customer: customer, platform: "pagerduty") }
+      let(:get_teams_resp) { [{unique_id: "47975507-d54d-42d5-8d31-622653bd2360", name: "Operations Team"}] }
+
+      it "show zenduty schedules" do
+        allow_any_instance_of(Zenduty::Client).to receive(:get_teams).and_return get_teams_resp
+        
+        expect_any_instance_of(Slack::Web::Client).to receive(:post).with(
+          'views.update',
+          anything
+        )
+        post "/slack/interactions", params: {"payload": payload}
+        expect(response).to have_http_status(:ok)
+      end
+    end
   end
 end

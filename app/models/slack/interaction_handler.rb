@@ -36,13 +36,22 @@ module Slack
       action = @payload["actions"].last
       case action["action_id"]
       when "new_channel_config-action"
-        presenter = Presenters::SlackZendutyChannelConfig.new(@customer.external_accounts)
+        presenter = Presenters::BaseChannelConfig.new(@customer.external_accounts)
         @slack_client.views_open(trigger_id: @trigger_id, view: presenter.present)
       when "add_integration-action"
         @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
       when "integration_selection-action"
         handle_integration_selection(action)
+      when "schedule_source_selection-action"
+        handle_schedule_source_selection
       end
+    end
+
+    def handle_schedule_source_selection
+      external_accounts = @customer.external_accounts
+      selected_account = external_accounts.find { |a| a.platform == @payload["actions"][0]["selected_option"]["value"] }
+      presenter = Presenters::SlackZendutyChannelConfig.new(external_accounts, selected_account.client.get_teams)
+      @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present_team)
     end
 
     def handle_integration_edit(state_value)

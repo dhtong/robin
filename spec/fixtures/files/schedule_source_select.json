@@ -1,0 +1,143 @@
+{
+    "type": "block_actions",
+    "user": {
+        "id": "U04G7NZTHKQ",
+        "username": "dan",
+        "name": "dan",
+        "team_id": "T04FZQN3B9D"
+    },
+    "api_app_id": "A04GEBFQV0S",
+    "token": "4nbgdBVKWiLlfLTVw2V0qu4d",
+    "container": {
+        "type": "view",
+        "view_id": "V04HA1LKHC4"
+    },
+    "trigger_id": "4585598921266.4543838113319.9d5ba74f09298c36afac0ba8cdec24a8",
+    "team": {
+        "id": "T04FZQN3B9D",
+        "domain": "supportbotsworkspace"
+    },
+    "enterprise": null,
+    "is_enterprise_install": false,
+    "view": {
+        "id": "V04HA1LKHC4",
+        "team_id": "T04FZQN3B9D",
+        "type": "modal",
+        "blocks": [
+            {
+                "type": "input",
+                "block_id": "conversations_select-block",
+                "label": {
+                    "type": "plain_text",
+                    "text": "Channel",
+                    "emoji": true
+                },
+                "optional": false,
+                "dispatch_action": false,
+                "element": {
+                    "type": "conversations_select",
+                    "action_id": "conversations_select-action",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Select channel",
+                        "emoji": true
+                    }
+                }
+            },
+            {
+                "type": "section",
+                "block_id": "schedule_source_selection-block",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Pick a service to get schedule from",
+                    "verbatim": false
+                },
+                "accessory": {
+                    "type": "static_select",
+                    "action_id": "schedule_source_selection-action",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Service",
+                        "emoji": true
+                    },
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Zenduty",
+                                "emoji": true
+                            },
+                            "value": "zenduty"
+                        }
+                    ]
+                }
+            }
+        ],
+        "private_metadata": "",
+        "callback_id": "new_channel_config",
+        "state": {
+            "values": {
+                "conversations_select-block": {
+                    "conversations_select-action": {
+                        "type": "conversations_select",
+                        "selected_conversation": "C04GT0GUEBT"
+                    }
+                },
+                "schedule_source_selection-block": {
+                    "schedule_source_selection-action": {
+                        "type": "static_select",
+                        "selected_option": {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Zenduty",
+                                "emoji": true
+                            },
+                            "value": "zenduty"
+                        }
+                    }
+                }
+            }
+        },
+        "hash": "1672697014.DluWRsW0",
+        "title": {
+            "type": "plain_text",
+            "text": "Channel config",
+            "emoji": true
+        },
+        "clear_on_close": false,
+        "notify_on_close": false,
+        "close": null,
+        "submit": {
+            "type": "plain_text",
+            "text": "Submit",
+            "emoji": true
+        },
+        "previous_view_id": null,
+        "root_view_id": "V04HA1LKHC4",
+        "app_id": "A04GEBFQV0S",
+        "external_id": "",
+        "app_installed_team_id": "T04FZQN3B9D",
+        "bot_id": "B04GE8GDAP5"
+    },
+    "actions": [
+        {
+            "type": "static_select",
+            "action_id": "schedule_source_selection-action",
+            "block_id": "schedule_source_selection-block",
+            "selected_option": {
+                "text": {
+                    "type": "plain_text",
+                    "text": "Zenduty",
+                    "emoji": true
+                },
+                "value": "zenduty"
+            },
+            "placeholder": {
+                "type": "plain_text",
+                "text": "Service",
+                "emoji": true
+            },
+            "action_ts": "1672697040.366897"
+        }
+    ]
+}

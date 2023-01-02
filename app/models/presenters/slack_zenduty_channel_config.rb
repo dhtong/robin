@@ -1,75 +1,46 @@
 module Presenters
-  class SlackZendutyChannelConfig
-    CALLBACK_ID = "new_channel_config"
-
-    def initialize(external_accounts)
-      @external_accounts = external_accounts
+  class SlackZendutyChannelConfig < BaseChannelConfig
+    def initialize(external_accounts, teams)
+      super(external_accounts)
+      @teams = teams
     end
 
-    def present
-      {
-        "type": "modal",
-        "callback_id": CALLBACK_ID,
-        "title": {
-          "type": "plain_text",
-          "text": "Channel config",
-        },
-        "submit": {
-          "type": "plain_text",
-          "text": "Submit",
-        },
-        "blocks": [
-          {
-            "block_id": "conversations_select-block",
-            "type": "input",
-            "element": {
-              "type": "conversations_select",
-              "placeholder": {
-                "type": "plain_text",
-                "text": "Select channel",
-                "emoji": true
-              },
-              "action_id": "conversations_select-action"
-            },
-            "label": {
-              "type": "plain_text",
-              "text": "Channel",
-              "emoji": true
-            }
-          },
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "Pick a service to get schedule from"
-            },
-            "block_id": "schedule_source_selection-block",
-            "accessory": {
-              "type": "static_select",
-              "placeholder": {
-                "type": "plain_text",
-                "text": "Service",
-                "emoji": true
-              },
-              "options": source_options,
-              "action_id": "schedule_source_selection-action"
-            }
-          }
-        ]
-      }
+    def present_team
+      res = present
+      res[:blocks] << team_select
+      res
     end
 
     private
 
-    def source_options
-      @external_accounts.map do |account|
+    def team_select
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "Pick a team"
+        },
+        "block_id": "schedule_source_selection_team-block",
+        "accessory": {
+          "type": "static_select",
+          "placeholder": {
+            "type": "plain_text",
+            "text": "Service",
+          },
+          "options": team_options,
+          "action_id": "schedule_source_selection_team-action"
+        }
+      }
+    end
+
+    def team_options
+      @teams.map do |team|
         {
           "text": {
             "type": "plain_text",
-            "text": account.platform.capitalize,
-            "emoji": true
+            "text": team["name"],
           },
-          "value": account.platform
+          "value": team["unique_id"]
         }
       end
     end
