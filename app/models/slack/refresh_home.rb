@@ -24,6 +24,17 @@ module Slack
 
     private
 
+    EMPTY_SPACE = {
+      "type": "context",
+      "elements": [
+        {
+          "type": "image",
+          "image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
+          "alt_text": "placeholder"
+        }
+      ]
+    }
+
     def display_integrations(external_accounts)
       blocks = [
         {
@@ -40,21 +51,13 @@ module Slack
             "value": "add_integration"
           }
         }, 
-        {"type": "divider"},
-        {
-          "type": "context",
-          "elements": [
-            {
-              "type": "image",
-              "image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
-              "alt_text": "placeholder"
-            }
-          ]
-        }
+        {"type": "divider"}
       ]
       external_accounts.each do |account|
         blocks << view_integration(account.platform)
       end
+
+      blocks << EMPTY_SPACE
       blocks
     end
 
@@ -116,114 +119,5 @@ module Slack
         }
       }
     end
-
-    # def view_channel(id, text)
-    #   {
-    #     "type": "section",
-    #     "block_id": id + "channel-block",
-    #     "text": {
-    #       "type": "mrkdwn",
-    #       "text": text
-    #     },
-    #     "accessory": {
-    #       "type": "overflow",
-    #       "action_id": id + "channel-action",
-    #       "options": [
-    #         {
-    #           "text": {
-    #             "type": "plain_text",
-    #             "text": "Delete",
-    #             "emoji": true
-    #           },
-    #           "value": "delete"
-    #         }
-    #       ]
-    #     }
-    #   }
-    # end
-
-    # def top_actions
-    #   {
-    #     "type": "header",
-    #     "text": {
-    #       "type": "plain_text",
-    #       "text": "Here's what you can do with SupportBots:"
-    #     }
-    #   },
-    #   {
-    #     "block_id": "main_action-block",
-    #     "type": "actions",
-    #     "elements": [
-    #       {
-    #         "action_id": "integrate-action",
-    #         "type": "button",
-    #         "text": {
-    #           "type": "plain_text",
-    #           "text": "Integrate",
-    #           "emoji": true
-    #         },
-    #         "style": "primary",
-    #         "value": "integrate"
-    #       },
-    #       # {
-    #       #   "type": "button",
-    #       #   "text": {
-    #       #     "type": "plain_text",
-    #       #     "text": "Help",
-    #       #     "emoji": true
-    #       #   },
-    #       #   "value": "help"
-    #       # }
-    #     ]
-    #   },
-    #   {
-    #     "type": "context",
-    #     "elements": [
-    #       {
-    #         "type": "image",
-    #         "image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
-    #         "alt_text": "placeholder"
-    #       }
-    #     ]
-    #   }
-    # end
-
-    # def select_integration
-    #   {
-    #     "type": "section",
-    #     "block_id": "integration_selection-block",
-    #     "text": {
-    #       "type": "mrkdwn",
-    #       "text": "Pick a tool to integrate with"
-    #     },
-    #     "accessory": {
-    #       "action_id": "integration_selection-action",
-    #       "type": "static_select",
-    #       "placeholder": {
-    #         "type": "plain_text",
-    #         "text": "Select a tool",
-    #         "emoji": true
-    #       },
-    #       "options": [
-    #         {
-    #           "text": {
-    #             "type": "plain_text",
-    #             "text": "Pagerduty",
-    #             "emoji": true
-    #           },
-    #           "value": "pagerduty"
-    #         },
-    #         {
-    #           "text": {
-    #             "type": "plain_text",
-    #             "text": "Zenduty",
-    #             "emoji": true
-    #           },
-    #           "value": "zenduty"
-    #         },
-    #       ],
-    #     }
-    #   }
-    # end
   end
 end

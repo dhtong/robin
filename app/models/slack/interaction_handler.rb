@@ -98,7 +98,7 @@ module Slack
 
     def new_integration_selection
       existing_options = @customer.external_accounts.pluck(:platform).to_set
-      available_options = INTEGRATION_OPTIONS.select { |o| existing_options.exclude?(o["value"]) }
+      available_options = INTEGRATION_OPTIONS.select { |o| existing_options.exclude?(o[:value]) }
       if available_options.empty?
         return {
           "type": "modal",
@@ -116,7 +116,7 @@ module Slack
               "type": "section",
               "text": {
                 "type": "mrkdwn",
-                "text": "No more available integrations.\nPlease edit existing or file a new integration feature request!"
+                "text": "No more integrations available.\nPlease edit existing ones or file a new integration feature request!"
               }
             }
           ]
