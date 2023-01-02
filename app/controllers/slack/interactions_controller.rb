@@ -1,6 +1,6 @@
 class Slack::InteractionsController < ApplicationController
   def create
-    handler = Slack::InteractionHandler.new(customer, Slack::Web::Client.new, payload["trigger_id"])
+    handler = Slack::InteractionHandler.new(customer, Slack::Web::Client.new, payload["trigger_id"], payload["user"]["id"])
     handler.execute(payload["view"]["state"])
     head :ok
   end

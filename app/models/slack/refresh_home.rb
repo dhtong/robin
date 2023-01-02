@@ -13,7 +13,8 @@ module Slack
       blocks = []
       if external_accounts.any?
         blocks << {type: 'section', text: {type: 'mrkdwn', text: "Here are the accounts"} }
-        # todo show accounts
+        # todo show accounts and edit accounts
+        blocks << {type: 'section', text: {type: 'mrkdwn', text: "Config schedules"} }
       end
 
       blocks << select_integration
@@ -25,6 +26,37 @@ module Slack
     end
 
     private
+
+    def display_existing_integrations(external_accounts)
+      external_accounts.map do |account|
+        view_integration(account.platform)
+      end
+    end
+
+    def view_integration(platform_name)
+      {
+        "type": "section",
+        "block_id": "block_integration_edit_" + platform_name,
+        "text": {
+          "type": "mrkdwn",
+          "text": "This is a section block with an overflow menu."
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "action_integration_edit_" + platform_name,
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Link schedule to channel",
+                "emoji": true
+              },
+              "value": "link-schedule"
+            }
+          ]
+        }
+      }
+    end
 
     def select_integration
       {

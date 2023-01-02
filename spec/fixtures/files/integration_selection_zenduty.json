@@ -12,7 +12,7 @@
       "type": "view",
       "view_id": "V04GP8H3KLK"
   },
-  "trigger_id": "4581639136530.4543838113319.7c81555ba0a7ef40a84c2534ae96487b",
+  "trigger_id": "4570069286439.4543838113319.2da5e576b5fab91a9402b6bc738fac19",
   "team": {
       "id": "T04FZQN3B9D",
       "domain": "supportbotsworkspace"
@@ -26,7 +26,7 @@
       "blocks": [
           {
               "type": "section",
-              "block_id": "fhEc",
+              "block_id": "block_integration_selection",
               "text": {
                   "type": "mrkdwn",
                   "text": "Pick a tool to integrate with",
@@ -34,7 +34,7 @@
               },
               "accessory": {
                   "type": "static_select",
-                  "action_id": "select_integration",
+                  "action_id": "action_integration_selection",
                   "placeholder": {
                       "type": "plain_text",
                       "text": "Select a tool",
@@ -65,8 +65,8 @@
       "callback_id": "",
       "state": {
           "values": {
-              "fhEc": {
-                  "select_integration": {
+              "block_integration_selection": {
+                  "action_integration_selection": {
                       "type": "static_select",
                       "selected_option": {
                           "text": {
@@ -80,7 +80,7 @@
               }
           }
       },
-      "hash": "1672510849.pIeTbhXY",
+      "hash": "1672668816.4W6BlKML",
       "title": {
           "type": "plain_text",
           "text": "View Title",
@@ -100,8 +100,8 @@
   "actions": [
       {
           "type": "static_select",
-          "action_id": "select_integration",
-          "block_id": "fhEc",
+          "action_id": "action_integration_selection",
+          "block_id": "block_integration_selection",
           "selected_option": {
               "text": {
                   "type": "plain_text",
@@ -115,7 +115,7 @@
               "text": "Select a tool",
               "emoji": true
           },
-          "action_ts": "1672510857.289394"
+          "action_ts": "1672668818.889759"
       }
   ]
 }
