@@ -42,11 +42,24 @@ RSpec.describe "Interaction", type: :request do
       it "call slack without options" do
         expect_any_instance_of(Slack::Web::Client).to receive(:post).with(
           'views.open',
-          hash_including({view: /No more available integrations/})
+          hash_including({view: /No more integrations available/})
         )
         post "/slack/interactions", params: {"payload": payload}
         expect(response).to have_http_status(:ok)
       end
+    end
+  end
+
+  describe "new channel config" do
+    let(:payload) { file_fixture("new_channel_config.json").read }
+
+    it "call slack to open view" do
+      expect_any_instance_of(Slack::Web::Client).to receive(:post).with(
+        'views.open',
+        anything
+      )
+      post "/slack/interactions", params: {"payload": payload}
+      expect(response).to have_http_status(:ok)
     end
   end
 end

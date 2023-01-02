@@ -1,0 +1,155 @@
+{
+    "type": "block_actions",
+    "user": {
+        "id": "U04G7NZTHKQ",
+        "username": "dan",
+        "name": "dan",
+        "team_id": "T04FZQN3B9D"
+    },
+    "api_app_id": "A04GEBFQV0S",
+    "token": "4nbgdBVKWiLlfLTVw2V0qu4d",
+    "container": {
+        "type": "view",
+        "view_id": "V04GP8H3KLK"
+    },
+    "trigger_id": "4585386683442.4543838113319.b5de5a7c856b9dd91f5eefeecef4a043",
+    "team": {
+        "id": "T04FZQN3B9D",
+        "domain": "supportbotsworkspace"
+    },
+    "enterprise": null,
+    "is_enterprise_install": false,
+    "view": {
+        "id": "V04GP8H3KLK",
+        "team_id": "T04FZQN3B9D",
+        "type": "home",
+        "blocks": [
+            {
+                "type": "section",
+                "block_id": "y3eq",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*Integrations*",
+                    "verbatim": false
+                },
+                "accessory": {
+                    "type": "button",
+                    "action_id": "add_integration-action",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Add",
+                        "emoji": true
+                    },
+                    "value": "add_integration"
+                }
+            },
+            {
+                "type": "divider",
+                "block_id": "yjH2v"
+            },
+            {
+                "type": "section",
+                "block_id": "zenduty_integration-block",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "zenduty",
+                    "verbatim": false
+                },
+                "accessory": {
+                    "type": "overflow",
+                    "action_id": "zenduty_integration-action",
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Delete",
+                                "emoji": true
+                            },
+                            "value": "delete"
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "context",
+                "block_id": "tpc3H",
+                "elements": [
+                    {
+                        "type": "image",
+                        "image_url": "https:\\/\\/api.slack.com\\/img\\/blocks\\/bkb_template_images\\/placeholder.png",
+                        "alt_text": "placeholder"
+                    }
+                ]
+            },
+            {
+                "type": "section",
+                "block_id": "ZbcSG",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*Oncall channels*",
+                    "verbatim": false
+                },
+                "accessory": {
+                    "type": "button",
+                    "action_id": "new_channel_config-action",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "New",
+                        "emoji": true
+                    },
+                    "value": "new_channel_config"
+                }
+            },
+            {
+                "type": "divider",
+                "block_id": "litTY"
+            },
+            {
+                "type": "context",
+                "block_id": "G8n",
+                "elements": [
+                    {
+                        "type": "image",
+                        "image_url": "https:\\/\\/api.slack.com\\/img\\/blocks\\/bkb_template_images\\/placeholder.png",
+                        "alt_text": "placeholder"
+                    }
+                ]
+            }
+        ],
+        "private_metadata": "",
+        "callback_id": "",
+        "state": {
+            "values": {}
+        },
+        "hash": "1672689056.c4NBXLx3",
+        "title": {
+            "type": "plain_text",
+            "text": "View Title",
+            "emoji": true
+        },
+        "clear_on_close": false,
+        "notify_on_close": false,
+        "close": null,
+        "submit": null,
+        "previous_view_id": null,
+        "root_view_id": "V04GP8H3KLK",
+        "app_id": "A04GEBFQV0S",
+        "external_id": "",
+        "app_installed_team_id": "T04FZQN3B9D",
+        "bot_id": "B04GE8GDAP5"
+    },
+    "actions": [
+        {
+            "action_id": "new_channel_config-action",
+            "block_id": "ZbcSG",
+            "text": {
+                "type": "plain_text",
+                "text": "New",
+                "emoji": true
+            },
+            "value": "new_channel_config",
+            "type": "button",
+            "action_ts": "1672689206.692729"
+        }
+    ]
+}

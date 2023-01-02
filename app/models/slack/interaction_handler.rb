@@ -26,6 +26,8 @@ module Slack
       case @payload["view"]["callback_id"]
       when "new_integration"
         handle_zenduty_token_submission
+      when "new_channel_config"
+        handle_new_channel_config_submission
       end
     end
 
@@ -34,7 +36,7 @@ module Slack
       action = @payload["actions"].last
       case action["action_id"]
       when "new_channel_config-action"
-        # TODO
+        @client.views_open(trigger_id: @trigger_id, view: new_channel_config)
       when "add_integration-action"
         @client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
       when "integration_selection-action"
@@ -63,6 +65,46 @@ module Slack
       when "pagerduty"
         # TODO add pd oath
       end
+    end
+
+    def handle_new_channel_config_submission
+      # @client.views_update(view_id: @payload["view"]["id"], view: zenduty_token_input_view)
+      ValidationError.new("conversations_select-block", "Invalid token")
+    end
+
+    def new_channel_config
+      {
+        "type": "modal",
+        "callback_id": "new_channel_config",
+        "title": {
+          "type": "plain_text",
+          "text": "Channel config",
+        },
+        "submit": {
+          "type": "plain_text",
+          "text": "Submit",
+        },
+        "blocks": [
+          {
+            "block_id": "conversations_select-block",
+            "type": "input",
+            "element": {
+              "type": "conversations_select",
+              "placeholder": {
+                "type": "plain_text",
+                "text": "Select channel",
+                "emoji": true
+              },
+              "action_id": "conversations_select-action"
+            },
+            "label": {
+              "type": "plain_text",
+              "text": "Channel",
+              "emoji": true
+            }
+          }
+        ]
+      }
     end
   
     def zenduty_token_input_view
