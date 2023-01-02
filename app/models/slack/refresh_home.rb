@@ -14,10 +14,8 @@ module Slack
       blocks << select_integration
 
       if external_accounts.any?
-        blocks << {type: 'section', text: {type: 'mrkdwn', text: "Here are the accounts"} }
         blocks.push(*display_existing_integrations(external_accounts))
         # todo show accounts and edit accounts
-        blocks << {type: 'section', text: {type: 'mrkdwn', text: "Config schedules"} }
       end
 
       @client.views_publish(
@@ -29,9 +27,14 @@ module Slack
     private
 
     def display_existing_integrations(external_accounts)
-      external_accounts.map do |account|
-        view_integration(account.platform)
+      blocks = [
+        {type: 'section', text: {type: 'mrkdwn', text: "*Your tools*"}}, 
+        {type: 'divider'}
+      ]
+      external_accounts.each do |account|
+        blocks << view_integration(account.platform)
       end
+      blocks
     end
 
     def view_integration(platform_name)
@@ -40,7 +43,7 @@ module Slack
         "block_id": "block_integration_edit_" + platform_name,
         "text": {
           "type": "mrkdwn",
-          "text": "This is a section block with an overflow menu."
+          "text": platform_name
         },
         "accessory": {
           "type": "overflow",
