@@ -42,7 +42,7 @@ module Slack
         vendor_selected = state_value["action_integration_selection"]["selected_option"]["value"]
         case vendor_selected
         when "zenduty"
-          @client.views_open(trigger_id: @trigger_id, view: zenduty_token_input_view)
+          @client.views_open(trigger_id: @trigger_id, view: naive_view)
         when "pagerduty"
           # TODO add pd oath
         end
@@ -81,6 +81,35 @@ module Slack
           }
         ],
         "type": "modal"
+      }
+    end
+
+    def naive_view
+      {
+        "type": "modal",
+        "callback_id": "modal-identifier",
+        "title": {
+          "type": "plain_text",
+          "text": "Just a modal"
+        },
+        "blocks": [
+          {
+            "type": "section",
+            "block_id": "section-identifier",
+            "text": {
+              "type": "mrkdwn",
+              "text": "*Welcome* to ~my~ Block Kit _modal_!"
+            },
+            "accessory": {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Just a button"
+              },
+              "action_id": "button-identifier"
+            }
+          }
+        ]
       }
     end
   end
