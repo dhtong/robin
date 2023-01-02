@@ -83,35 +83,46 @@ module Slack
       }
       view[:blocks] << token_block
       view
-
-      # {
-      #   "title": {
-      #     "type": "plain_text",
-      #     "text": "Zenduty integration"
-      #   },
-      #   "blocks": [
-      #     {
-      #       "block_id": "zenduty_token-block",
-      #       "type": "input",
-      #       "element": {
-      #         "type": "plain_text_input",
-      #         "action_id": "zenduty_token-action"
-      #       },
-      #       "label": {
-      #         "type": "plain_text",
-      #         "text": "Access token",
-      #         "emoji": true
-      #       }
-      #     }
-      #   ],
-      #   "type": "modal",
-      #   "callback_id": "modal_zenduty_token"
-      # }
     end
 
-    # TODO make options dynamic.
-    # remove the option once an integration is already set up.
+    INTEGRATION_OPTIONS = [
+      {
+        "text": {
+          "type": "plain_text",
+          "text": "Zenduty",
+          "emoji": true
+        },
+        "value": "zenduty"
+      }
+    ]
+
     def new_integration_selection
+      existing_options = @customer.external_accounts.pluck(:platform).to_set
+      available_options = INTEGRATION_OPTIONS.select { |o| existing_options.exclude?(o["value"]) }
+      if available_options.empty?
+        return {
+          "type": "modal",
+          "callback_id": "new_integration",
+          "title": {
+            "type": "plain_text",
+            "text": "Integrations",
+          },
+          "close": {
+            "type": "plain_text",
+            "text": "Close",
+          },
+          "blocks": [
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "No more available integrations.\nPlease edit existing or file a new integration feature request!"
+              }
+            }
+          ]
+        }
+      end
+
       {
         "type": "modal",
         "callback_id": "new_integration",
@@ -140,16 +151,7 @@ module Slack
                 "text": "Service",
                 "emoji": true
               },
-              "options": [
-                {
-                  "text": {
-                    "type": "plain_text",
-                    "text": "Zenduty",
-                    "emoji": true
-                  },
-                  "value": "zenduty"
-                }
-              ],
+              "options": available_options,
               "action_id": "integration_selection-action"
             }
           }
