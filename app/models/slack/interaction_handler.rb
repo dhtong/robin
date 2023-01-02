@@ -15,7 +15,7 @@ module Slack
           @refresh_home_cmd.execute
         when "integration_selection-block"
           handle_integration_selection(value)
-        when /^block_integration_edit_/
+        when /^integration_edit_.*-block$/
           handle_integration_edit(value)
         end
       end

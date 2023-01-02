@@ -40,14 +40,14 @@ module Slack
     def view_integration(platform_name)
       {
         "type": "section",
-        "block_id": "block_integration_edit_" + platform_name,
+        "block_id": "integration_edit_" + platform_name + "-block",
         "text": {
           "type": "mrkdwn",
           "text": platform_name
         },
         "accessory": {
           "type": "overflow",
-          "action_id": "action_integration_edit_" + platform_name,
+          "action_id": "integration_edit_" + platform_name + "-action",
           "options": [
             {
               "text": {
