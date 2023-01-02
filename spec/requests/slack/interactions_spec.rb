@@ -18,7 +18,7 @@ RSpec.describe "Interaction", type: :request do
     let(:payload) { file_fixture("integration_selection_zenduty.json").read }
 
     it "call slack" do
-      expect_any_instance_of(Slack::Web::Client).to receive(:post).with('views.open', any_args)
+      expect_any_instance_of(Slack::Web::Client).to receive(:post).with('views.update', any_args)
       post "/slack/interactions", params: {"payload": payload}
       expect(response).to have_http_status(:ok)
     end

@@ -1,0 +1,145 @@
+{
+  "type": "block_actions",
+  "user": {
+      "id": "U04G7NZTHKQ",
+      "username": "dan",
+      "name": "dan",
+      "team_id": "T04FZQN3B9D"
+  },
+  "api_app_id": "A04GEBFQV0S",
+  "token": "4nbgdBVKWiLlfLTVw2V0qu4d",
+  "container": {
+      "type": "view",
+      "view_id": "V04GP8H3KLK"
+  },
+  "trigger_id": "4570315997367.4543838113319.70dd11cd9ee2659ae8617e072d1e14cf",
+  "team": {
+      "id": "T04FZQN3B9D",
+      "domain": "supportbotsworkspace"
+  },
+  "enterprise": null,
+  "is_enterprise_install": false,
+  "view": {
+      "id": "V04GP8H3KLK",
+      "team_id": "T04FZQN3B9D",
+      "type": "home",
+      "blocks": [
+          {
+              "type": "section",
+              "block_id": "integration_selection-block",
+              "text": {
+                  "type": "mrkdwn",
+                  "text": "Pick a tool to integrate with",
+                  "verbatim": false
+              },
+              "accessory": {
+                  "type": "static_select",
+                  "action_id": "integration_selection-action",
+                  "placeholder": {
+                      "type": "plain_text",
+                      "text": "Select a tool",
+                      "emoji": true
+                  },
+                  "options": [
+                      {
+                          "text": {
+                              "type": "plain_text",
+                              "text": "Pagerduty",
+                              "emoji": true
+                          },
+                          "value": "pagerduty"
+                      },
+                      {
+                          "text": {
+                              "type": "plain_text",
+                              "text": "Zenduty",
+                              "emoji": true
+                          },
+                          "value": "zenduty"
+                      }
+                  ]
+              }
+          },
+          {
+              "type": "section",
+              "block_id": "5k6",
+              "text": {
+                  "type": "mrkdwn",
+                  "text": "*Your tools*",
+                  "verbatim": false
+              }
+          },
+          {
+              "type": "divider",
+              "block_id": "b6lZ"
+          },
+          {
+              "type": "section",
+              "block_id": "integration_edit_zenduty-block",
+              "text": {
+                  "type": "mrkdwn",
+                  "text": "zenduty",
+                  "verbatim": false
+              },
+              "accessory": {
+                  "type": "overflow",
+                  "action_id": "integration_edit_zenduty-action",
+                  "options": [
+                      {
+                          "text": {
+                              "type": "plain_text",
+                              "text": "Link schedule to channel",
+                              "emoji": true
+                          },
+                          "value": "link_schedule"
+                      }
+                  ]
+              }
+          }
+      ],
+      "private_metadata": "",
+      "callback_id": "",
+      "state": {
+          "values": {
+              "integration_selection-block": {
+                  "integration_selection-action": {
+                      "type": "static_select",
+                      "selected_option": null
+                  }
+              }
+          }
+      },
+      "hash": "1672674254.7WYgsRqc",
+      "title": {
+          "type": "plain_text",
+          "text": "View Title",
+          "emoji": true
+      },
+      "clear_on_close": false,
+      "notify_on_close": false,
+      "close": null,
+      "submit": null,
+      "previous_view_id": null,
+      "root_view_id": "V04GP8H3KLK",
+      "app_id": "A04GEBFQV0S",
+      "external_id": "",
+      "app_installed_team_id": "T04FZQN3B9D",
+      "bot_id": "B04GE8GDAP5"
+  },
+  "actions": [
+      {
+          "type": "overflow",
+          "action_id": "integration_edit_zenduty-action",
+          "block_id": "integration_edit_zenduty-block",
+          "selected_option": {
+              "text": {
+                  "type": "plain_text",
+                  "text": "Link schedule to channel",
+                  "emoji": true
+              },
+              "value": "link_schedule"
+          },
+          "action_ts": "1672674271.659784"
+      }
+  ]
+}

@@ -45,7 +45,7 @@
             }
         ],
         "private_metadata": "",
-        "callback_id": "",
+        "callback_id": "new_integration",
         "state": {
             "values": {
                 "zenduty_token-block": {
