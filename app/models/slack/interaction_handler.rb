@@ -36,7 +36,8 @@ module Slack
       action = @payload["actions"].last
       case action["action_id"]
       when "new_channel_config-action"
-        @slack_client.views_open(trigger_id: @trigger_id, view: new_channel_config)
+        presenter = Presenters::SlackZendutyChannelConfig.new(@customer.external_accounts)
+        @slack_client.views_open(trigger_id: @trigger_id, view: presenter.present)
       when "add_integration-action"
         @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
       when "integration_selection-action"
