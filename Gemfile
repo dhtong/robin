@@ -62,3 +62,6 @@ gem "faraday", "~> 2.7"
 
 gem "httparty", "~> 0.20.0" # needed by zenduty but they somehow didn't specify it...
 
+gem "sentry-ruby"
+gem "sentry-rails"
+
