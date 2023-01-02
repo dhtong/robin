@@ -1,13 +1,13 @@
 module Slack
   class InteractionHandler
-    def initialize(customer, client, payload)
+    def initialize(customer, slack_client, payload)
       @customer = customer
-      @client = client
+      @slack_client = slack_client
       @payload = payload
 
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
-      @refresh_home_cmd = Slack::RefreshHome.new(customer, client, @caller_id)
+      @refresh_home_cmd = Slack::RefreshHome.new(customer, slack_client, @caller_id)
     end
   
     def execute
@@ -36,9 +36,9 @@ module Slack
       action = @payload["actions"].last
       case action["action_id"]
       when "new_channel_config-action"
-        @client.views_open(trigger_id: @trigger_id, view: new_channel_config)
+        @slack_client.views_open(trigger_id: @trigger_id, view: new_channel_config)
       when "add_integration-action"
-        @client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
+        @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
       when "integration_selection-action"
         handle_integration_selection(action)
       end
@@ -61,14 +61,14 @@ module Slack
     def handle_integration_selection(action)
       case action["selected_option"]["value"]
       when "zenduty"
-        @client.views_update(view_id: @payload["view"]["id"], view: zenduty_token_input_view)
+        @slack_client.views_update(view_id: @payload["view"]["id"], view: zenduty_token_input_view)
       when "pagerduty"
         # TODO add pd oath
       end
     end
 
     def handle_new_channel_config_submission
-      # @client.views_update(view_id: @payload["view"]["id"], view: zenduty_token_input_view)
+      # @slack_client.views_update(view_id: @payload["view"]["id"], view: zenduty_token_input_view)
       ValidationError.new("conversations_select-block", "Invalid token")
     end
 
