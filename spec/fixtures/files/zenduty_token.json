@@ -48,8 +48,8 @@
         "callback_id": "",
         "state": {
             "values": {
-                "block_zenduty_token": {
-                    "action_zenduty_token": {
+                "zenduty_token-block": {
+                    "zenduty_token-action": {
                         "type": "plain_text_input",
                         "value": "4444"
                     }

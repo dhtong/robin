@@ -26,7 +26,7 @@
       "blocks": [
           {
               "type": "section",
-              "block_id": "block_integration_selection",
+              "block_id": "integration_selection-block",
               "text": {
                   "type": "mrkdwn",
                   "text": "Pick a tool to integrate with",
@@ -34,7 +34,7 @@
               },
               "accessory": {
                   "type": "static_select",
-                  "action_id": "action_integration_selection",
+                  "action_id": "integration_selection-action",
                   "placeholder": {
                       "type": "plain_text",
                       "text": "Select a tool",
@@ -65,8 +65,8 @@
       "callback_id": "",
       "state": {
           "values": {
-              "block_integration_selection": {
-                  "action_integration_selection": {
+              "integration_selection-block": {
+                  "integration_selection-action": {
                       "type": "static_select",
                       "selected_option": {
                           "text": {
@@ -100,8 +100,8 @@
   "actions": [
       {
           "type": "static_select",
-          "action_id": "action_integration_selection",
-          "block_id": "block_integration_selection",
+          "action_id": "integration_selection-action",
+          "block_id": "integration_selection-block",
           "selected_option": {
               "text": {
                   "type": "plain_text",

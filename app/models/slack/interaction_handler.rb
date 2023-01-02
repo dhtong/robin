@@ -10,10 +10,10 @@ module Slack
     def execute(interaction_state, interaction_type: nil)
       interaction_state["values"].each do |block_id, value|
         case block_id
-        when "block_zenduty_token"
+        when "zenduty_token-block"
           handle_zenduty_token_submission(value)
           @refresh_home_cmd.execute
-        when "block_integration_selection"
+        when "integration_selection-block"
           handle_integration_selection(value)
         when /^block_integration_edit_/
           handle_integration_edit(value)
@@ -26,23 +26,23 @@ module Slack
     def handle_integration_edit(state_value)
       state_value.each do |action_id, action_value|
         case action_id
-        when "action_integration_edit_zenduty"
+        when "integration_edit_zenduty-action"
           p action_value
         end
       end
     end
   
     def handle_zenduty_token_submission(state_value)
-      zenduty_token = state_value["action_zenduty_token"]["value"]
+      zenduty_token = state_value["zenduty_token-action"]["value"]
       ExternalAccount.create(customer: @customer, platform: "zenduty", token: zenduty_token)
     end
   
     def handle_integration_selection(state_value)
       begin
-        vendor_selected = state_value["action_integration_selection"]["selected_option"]["value"]
+        vendor_selected = state_value["integration_selection-action"]["selected_option"]["value"]
         case vendor_selected
         when "zenduty"
-          @client.views_open(trigger_id: @trigger_id, view: naive_view)
+          @client.views_open(trigger_id: @trigger_id, view: zenduty_token_input_view)
         when "pagerduty"
           # TODO add pd oath
         end
@@ -56,7 +56,7 @@ module Slack
       {
         "title": {
           "type": "plain_text",
-          "text": "Zenduty"
+          "text": "Zenduty integration"
         },
         "submit": {
           "type": "plain_text",
@@ -64,52 +64,21 @@ module Slack
         },
         "blocks": [
           {
-            "block_id": "block_zenduty_token",
+            "block_id": "zenduty_token-block",
             "type": "input",
             "element": {
               "type": "plain_text_input",
-              "action_id": "action_zenduty_token",
-              "placeholder": {
-                "type": "plain_text",
-                "text": ""
-              }
+              "action_id": "zenduty_token-action"
             },
             "label": {
               "type": "plain_text",
-              "text": "Title"
+              "text": "Access token",
+              "emoji": true
             }
           }
         ],
-        "type": "modal"
-      }
-    end
-
-    def naive_view
-      {
         "type": "modal",
-        "callback_id": "modal-identifier",
-        "title": {
-          "type": "plain_text",
-          "text": "Just a modal"
-        },
-        "blocks": [
-          {
-            "type": "section",
-            "block_id": "section-identifier",
-            "text": {
-              "type": "mrkdwn",
-              "text": "*Welcome* to ~my~ Block Kit _modal_!"
-            },
-            "accessory": {
-              "type": "button",
-              "text": {
-                "type": "plain_text",
-                "text": "Just a button"
-              },
-              "action_id": "button-identifier"
-            }
-          }
-        ]
+        "callback_id": "modal_zenduty_token"
       }
     end
   end

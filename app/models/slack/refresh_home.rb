@@ -51,7 +51,7 @@ module Slack
                 "text": "Link schedule to channel",
                 "emoji": true
               },
-              "value": "link-schedule"
+              "value": "link_schedule"
             }
           ]
         }
@@ -61,13 +61,13 @@ module Slack
     def select_integration
       {
         "type": "section",
-        "block_id": "block_integration_selection",
+        "block_id": "integration_selection-block",
         "text": {
           "type": "mrkdwn",
           "text": "Pick a tool to integrate with"
         },
         "accessory": {
-          "action_id": "action_integration_selection",
+          "action_id": "integration_selection-action",
           "type": "static_select",
           "placeholder": {
             "type": "plain_text",
