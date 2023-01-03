@@ -2,6 +2,10 @@ require "rails_helper"
 
 RSpec.describe "Interaction", type: :request do
   let!(:customer) { create(:customer, slack_team_id: JSON.parse(payload)["team"]["id"]) }
+  let(:get_teams_resp) { double(success?: true) }
+  before do
+    allow_any_instance_of(Zenduty::Client).to receive(:get_teams).and_return(get_teams_resp)
+  end
 
   context "submit zenduty token" do
     let(:payload) { file_fixture("zenduty_token.json").read }
@@ -10,6 +14,18 @@ RSpec.describe "Interaction", type: :request do
       expect {
         post "/slack/interactions", params: {"payload": payload}
       }.to change { ExternalAccount.count }.by 1
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  context "submit invalid zenduty token" do
+    let(:payload) { file_fixture("zenduty_token.json").read }
+    let(:get_teams_resp) { double(success?: false, :[] => {}) }
+
+    it "submit zenduty token" do
+      expect {
+        post "/slack/interactions", params: {"payload": payload}
+      }.not_to change { ExternalAccount.count }
       expect(response).to have_http_status(:ok)
     end
   end

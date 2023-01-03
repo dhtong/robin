@@ -82,8 +82,11 @@ module Slack
     end
   
     def handle_zenduty_token_submission
-      zenduty_token = @payload["view"]["state"]["values"]["zenduty_token-block"]["zenduty_token-action"]["value"]
-      ExternalAccount.create(customer: @customer, platform: "zenduty", token: zenduty_token)
+      zenduty_token = @payload["view"]["state"]["values"][ZENDUTY_TOKEN_BLOCK_ID]["zenduty_token-action"]["value"]
+      account = ExternalAccount.new(customer: @customer, platform: "zenduty", token: zenduty_token)
+      res = account.client.get_teams
+      return ValidationError.new(ZENDUTY_TOKEN_BLOCK_ID, res["error"]) unless res.success?
+      account.save
     end
   
     def handle_integration_selection(action)
@@ -134,12 +137,14 @@ module Slack
         ]
       }
     end
+
+    ZENDUTY_TOKEN_BLOCK_ID = "zenduty_token-block"
   
     def zenduty_token_input_view
       view = new_integration_selection
       view[:submit] = {"type": "plain_text", "text": "Submit", "emoji": true}
       token_block = {
-        "block_id": "zenduty_token-block",
+        "block_id": ZENDUTY_TOKEN_BLOCK_ID,
         "type": "input",
         "element": {
           "type": "plain_text_input",
