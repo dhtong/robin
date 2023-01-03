@@ -101,7 +101,6 @@ module Presenters
 
     def schedule_block(schedules)
       {
-        "dispatch_action": true,
         "type": "input",
         "block_id": "schedule_source_selection_team_schedule-block",
         "label": {
@@ -122,21 +121,20 @@ module Presenters
 
     def team_block(teams)
       {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "Pick a team"
+        },
         "block_id": TEAM_BLOCK_ID,
-        "dispatch_action": true,
-        "type": "input",
-        "element": {
+        "accessory": {
           "type": "static_select",
           "placeholder": {
             "type": "plain_text",
-            "text": "team",
+            "text": "team"
           },
           "options": team_options(teams),
           "action_id": "schedule_source_selection_team-action"
-        },
-        "label": {
-          "type": "plain_text",
-          "text": "Pick a team"
         }
       }
     end

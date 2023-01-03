@@ -121,13 +121,13 @@ module Slack
             "block_id": "conversations_select-block",
             "type": "input",
             "element": {
-              "type": "conversations_select",
+              "type": "channels_select",
               "placeholder": {
                 "type": "plain_text",
                 "text": "Select channel",
                 "emoji": true
               },
-              "action_id": "conversations_select-action"
+              "action_id": "channels_select-action"
             },
             "label": {
               "type": "plain_text",
