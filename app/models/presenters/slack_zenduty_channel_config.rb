@@ -29,6 +29,7 @@ module Presenters
         "text": "Channel",
       }
     }
+    TEAM_BLOCK_ID = "schedule_source_selection_team-block"
 
     class << self
       def from_blocks(blocks)
@@ -125,7 +126,7 @@ module Presenters
           "type": "mrkdwn",
           "text": "Pick a team"
         },
-        "block_id": "schedule_source_selection_team-block",
+        "block_id": TEAM_BLOCK_ID,
         "accessory": {
           "type": "static_select",
           "placeholder": {

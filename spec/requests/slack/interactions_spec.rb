@@ -79,7 +79,7 @@ RSpec.describe "Interaction", type: :request do
         expect(response).to have_http_status(:ok)
       end
 
-      context "" do
+      context "select team" do
         let(:get_schedule_resp) { [{name: "schedule 1", unique_id: "92ad792e-a1ec-46f7-8634-c0b738c0cf6e"}] }
         let(:payload) { file_fixture("schedule_source_select_team.json").read }
   
@@ -93,6 +93,25 @@ RSpec.describe "Interaction", type: :request do
           )
           post "/slack/interactions", params: {"payload": payload}
           expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context "select team without schedule" do
+        let(:get_schedule_resp) { [] }
+        let(:payload) { file_fixture("schedule_source_select_team.json").read }
+  
+        it "submission" do
+          allow_any_instance_of(Zenduty::Client).to receive(:get_teams).and_return get_teams_resp
+          allow_any_instance_of(Zenduty::Client).to receive(:get_schedules).and_return get_schedule_resp
+
+          expect_any_instance_of(Slack::Web::Client).not_to receive(:post).with(
+            'views.update',
+            anything
+          )
+          post "/slack/interactions", params: {"payload": payload}
+          expect(response).to have_http_status(:ok)
+          resp_body = JSON.parse(response.body)
+          expect(resp_body).to include "errors"
         end
       end
     end

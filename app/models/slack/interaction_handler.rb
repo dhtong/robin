@@ -54,7 +54,10 @@ module Slack
       selected_platform = @payload["view"]["state"]["values"]["schedule_source_selection-block"]["schedule_source_selection-action"]["selected_option"]["value"]
       selected_account = @customer.external_accounts.find_by(platform: selected_platform)
       presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
-      presenter.with_schedules(selected_account.client.get_schedules(selected_team_id))
+
+      available_schedules = selected_account.client.get_schedules(selected_team_id)
+      return ValidationError.new(Presenters::SlackZendutyChannelConfig::TEAM_BLOCK_ID, "No schedules available") if available_schedules.blank?
+      presenter.with_schedules(available_schedules)
 
       @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
     end
