@@ -101,17 +101,18 @@ module Presenters
 
     def schedule_block(schedules)
       {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
+        "dispatch_action": true,
+        "type": "input",
+        "block_id": "schedule_source_selection_team_schedule-block",
+        "label": {
+          "type": "plain_text",
           "text": "Pick a schedule"
         },
-        "block_id": "schedule_source_selection_team_schedule-block",
-        "accessory": {
+        "element": {
           "type": "static_select",
           "placeholder": {
             "type": "plain_text",
-            "text": "Schedule",
+            "text": "schedule"
           },
           "options": schedule_options(schedules),
           "action_id": "schedule_source_selection_team_schedule-action"
@@ -120,24 +121,6 @@ module Presenters
     end
 
     def team_block(teams)
-      # {
-      #   "type": "input",
-      #   "text": {
-      #     "type": "mrkdwn",
-      #     "text": "Pick a team"
-      #   },
-      #   "block_id": TEAM_BLOCK_ID,
-      #   "accessory": {
-      #     "type": "static_select",
-      #     "placeholder": {
-      #       "type": "plain_text",
-      #       "text": "Service",
-      #     },
-      #     "options": team_options(teams),
-      #     "action_id": "schedule_source_selection_team-action"
-      #   }
-      # }
-
       {
         "block_id": TEAM_BLOCK_ID,
         "dispatch_action": true,

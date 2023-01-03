@@ -56,6 +56,7 @@ module Slack
       presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
 
       available_schedules = selected_account.client.get_schedules(selected_team_id)
+      # TODO this validation is not show right now. maybe validate teams before showing team options.
       return ValidationError.new(Presenters::SlackZendutyChannelConfig::TEAM_BLOCK_ID, "No schedules available") if available_schedules.blank?
       presenter.with_schedules(available_schedules)
 
