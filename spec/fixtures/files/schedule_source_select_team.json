@@ -1,0 +1,184 @@
+{
+    "type": "block_actions",
+    "user": {
+        "id": "U04G7NZTHKQ",
+        "username": "dan",
+        "name": "dan",
+        "team_id": "T04FZQN3B9D"
+    },
+    "api_app_id": "A04GEBFQV0S",
+    "token": "4nbgdBVKWiLlfLTVw2V0qu4d",
+    "container": {
+        "type": "view",
+        "view_id": "V04H7NCSDNW"
+    },
+    "trigger_id": "4582815773157.4543838113319.8af2208f0fd42f9010d1d3e6e1a3fc91",
+    "team": {
+        "id": "T04FZQN3B9D",
+        "domain": "supportbotsworkspace"
+    },
+    "enterprise": null,
+    "is_enterprise_install": false,
+    "view": {
+        "id": "V04H7NCSDNW",
+        "team_id": "T04FZQN3B9D",
+        "type": "modal",
+        "blocks": [
+            {
+                "type": "input",
+                "block_id": "conversations_select-block",
+                "label": {
+                    "type": "plain_text",
+                    "text": "Channel",
+                    "emoji": true
+                },
+                "optional": false,
+                "dispatch_action": false,
+                "element": {
+                    "type": "conversations_select",
+                    "action_id": "conversations_select-action",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Select channel",
+                        "emoji": true
+                    }
+                }
+            },
+            {
+                "type": "section",
+                "block_id": "schedule_source_selection-block",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Pick a service to get schedule from",
+                    "verbatim": false
+                },
+                "accessory": {
+                    "type": "static_select",
+                    "action_id": "schedule_source_selection-action",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Service",
+                        "emoji": true
+                    },
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Zenduty",
+                                "emoji": true
+                            },
+                            "value": "zenduty"
+                        }
+                    ]
+                }
+            },
+            {
+                "type": "section",
+                "block_id": "schedule_source_selection_team-block",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Pick a team",
+                    "verbatim": false
+                },
+                "accessory": {
+                    "type": "static_select",
+                    "action_id": "schedule_source_selection_team-action",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Service",
+                        "emoji": true
+                    },
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Operations Team(Sample)",
+                                "emoji": true
+                            },
+                            "value": "47975507-d54d-42d5-8d31-622653bd2360"
+                        }
+                    ]
+                }
+            }
+        ],
+        "private_metadata": "",
+        "callback_id": "new_channel_config",
+        "state": {
+            "values": {
+                "conversations_select-block": {
+                    "conversations_select-action": {
+                        "type": "conversations_select",
+                        "selected_conversation": null
+                    }
+                },
+                "schedule_source_selection-block": {
+                    "schedule_source_selection-action": {
+                        "type": "static_select",
+                        "selected_option": {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Zenduty",
+                                "emoji": true
+                            },
+                            "value": "zenduty"
+                        }
+                    }
+                },
+                "schedule_source_selection_team-block": {
+                    "schedule_source_selection_team-action": {
+                        "type": "static_select",
+                        "selected_option": {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Operations Team(Sample)",
+                                "emoji": true
+                            },
+                            "value": "47975507-d54d-42d5-8d31-622653bd2360"
+                        }
+                    }
+                }
+            }
+        },
+        "hash": "1672704221.r5X5u150",
+        "title": {
+            "type": "plain_text",
+            "text": "Channel config",
+            "emoji": true
+        },
+        "clear_on_close": false,
+        "notify_on_close": false,
+        "close": null,
+        "submit": {
+            "type": "plain_text",
+            "text": "Submit",
+            "emoji": true
+        },
+        "previous_view_id": null,
+        "root_view_id": "V04H7NCSDNW",
+        "app_id": "A04GEBFQV0S",
+        "external_id": "",
+        "app_installed_team_id": "T04FZQN3B9D",
+        "bot_id": "B04GE8GDAP5"
+    },
+    "actions": [
+        {
+            "type": "static_select",
+            "action_id": "schedule_source_selection_team-action",
+            "block_id": "schedule_source_selection_team-block",
+            "selected_option": {
+                "text": {
+                    "type": "plain_text",
+                    "text": "Operations Team(Sample)",
+                    "emoji": true
+                },
+                "value": "47975507-d54d-42d5-8d31-622653bd2360"
+            },
+            "placeholder": {
+                "type": "plain_text",
+                "text": "Service",
+                "emoji": true
+            },
+            "action_ts": "1672704225.306497"
+        }
+    ]
+}

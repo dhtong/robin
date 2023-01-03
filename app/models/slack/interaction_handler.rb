@@ -44,14 +44,29 @@ module Slack
         handle_integration_selection(action)
       when "schedule_source_selection-action"
         handle_schedule_source_selection
+      when "schedule_source_selection_team-action"
+        handle_schedule_source_selection_team
       end
     end
 
+    def handle_schedule_source_selection_team
+      selected_team_id = @payload["actions"][0]["selected_option"]["value"]
+      selected_platform = @payload["view"]["state"]["values"]["schedule_source_selection-block"]["schedule_source_selection-action"]["selected_option"]["value"]
+      selected_account = @customer.external_accounts.find_by(platform: selected_platform)
+      presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
+      presenter.with_schedules(selected_account.client.get_schedules(selected_team_id))
+
+      @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
+    end
+
     def handle_schedule_source_selection
-      external_accounts = @customer.external_accounts
-      selected_account = external_accounts.find { |a| a.platform == @payload["actions"][0]["selected_option"]["value"] }
-      presenter = Presenters::SlackZendutyChannelConfig.new(external_accounts, selected_account.client.get_teams)
-      @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present_team)
+      selected_platform = @payload["actions"][0]["selected_option"]["value"]
+      selected_account = @customer.external_accounts.find_by(platform: selected_platform)
+
+      presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
+      presenter.with_teams(selected_account.client.get_teams)
+
+      @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
     end
 
     def handle_integration_edit(state_value)
