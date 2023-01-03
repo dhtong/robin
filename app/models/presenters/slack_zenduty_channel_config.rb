@@ -120,21 +120,40 @@ module Presenters
     end
 
     def team_block(teams)
+      # {
+      #   "type": "input",
+      #   "text": {
+      #     "type": "mrkdwn",
+      #     "text": "Pick a team"
+      #   },
+      #   "block_id": TEAM_BLOCK_ID,
+      #   "accessory": {
+      #     "type": "static_select",
+      #     "placeholder": {
+      #       "type": "plain_text",
+      #       "text": "Service",
+      #     },
+      #     "options": team_options(teams),
+      #     "action_id": "schedule_source_selection_team-action"
+      #   }
+      # }
+
       {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": "Pick a team"
-        },
         "block_id": TEAM_BLOCK_ID,
-        "accessory": {
+        "dispatch_action": true,
+        "type": "input",
+        "element": {
           "type": "static_select",
           "placeholder": {
             "type": "plain_text",
-            "text": "Service",
+            "text": "team",
           },
           "options": team_options(teams),
           "action_id": "schedule_source_selection_team-action"
+        },
+        "label": {
+          "type": "plain_text",
+          "text": "Pick a team"
         }
       }
     end
