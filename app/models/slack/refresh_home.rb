@@ -90,12 +90,37 @@ module Slack
         }
       ]
       external_accounts.each do |account|
-        account.channel_configs.eahc do |channel_config|
-          
+        account.channel_configs.each do |channel_config|
+          blocks << view_channel(channel_config)
         end
-        # blocks << view_channel(account)
       end
       blocks
+    end
+
+    def view_channel(channel_config)
+      resp = @client.conversations_info(channel: channel_config.channel_id)
+      {
+        "type": "section",
+        "block_id": channel_config.id + "_channel_config-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": "##{resp["channel"]["name"]}"
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": channel_config.id + "_channel_config-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
+        }
+      }
     end
 
 

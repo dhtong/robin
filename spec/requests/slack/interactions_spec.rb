@@ -131,7 +131,7 @@ RSpec.describe "Interaction", type: :request do
   end
 
   describe "submit channel config" do
-    let(:payload) { file_fixture("channel_config_submission.json").read }
+    let(:payload) { file_fixture("create_channel_config.json").read }
     let!(:external_account) { create(:external_account, customer: customer, platform: "zenduty") }
 
     it "create config record" do
