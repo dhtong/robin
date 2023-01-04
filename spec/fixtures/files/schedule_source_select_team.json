@@ -26,7 +26,7 @@
         "blocks": [
             {
                 "type": "input",
-                "block_id": "conversations_select-block",
+                "block_id": "channels_select-block",
                 "label": {
                     "type": "plain_text",
                     "text": "Channel",
@@ -35,8 +35,8 @@
                 "optional": false,
                 "dispatch_action": false,
                 "element": {
-                    "type": "conversations_select",
-                    "action_id": "conversations_select-action",
+                    "type": "channels_select",
+                    "action_id": "channels_select-action",
                     "placeholder": {
                         "type": "plain_text",
                         "text": "Select channel",
@@ -105,9 +105,9 @@
         "callback_id": "new_channel_config",
         "state": {
             "values": {
-                "conversations_select-block": {
-                    "conversations_select-action": {
-                        "type": "conversations_select",
+                "channels_select-block": {
+                    "channels_select-action": {
+                        "type": "channels_select",
                         "selected_conversation": null
                     }
                 },
