@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   namespace :slack do
+    resources :auth, only: :create
     resources :events, only: :create
     resources :interactions, only: :create
   end
