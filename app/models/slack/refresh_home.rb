@@ -101,14 +101,14 @@ module Slack
       resp = @client.conversations_info(channel: channel_config.channel_id)
       {
         "type": "section",
-        "block_id": channel_config.id + "_channel_config-block",
+        "block_id": channel_config.id.to_s + "_channel_config-block",
         "text": {
           "type": "mrkdwn",
           "text": "##{resp["channel"]["name"]}"
         },
         "accessory": {
           "type": "overflow",
-          "action_id": channel_config.id + "_channel_config-action",
+          "action_id": channel_config.id.to_s + "_channel_config-action",
           "options": [
             {
               "text": {

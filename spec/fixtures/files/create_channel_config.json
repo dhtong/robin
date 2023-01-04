@@ -148,7 +148,7 @@
                 "conversations_select-block": {
                     "conversations_select-action": {
                         "type": "conversations_select",
-                        "selected_channel": "C04GEB66H18"
+                        "selected_conversation": "C04GEB66H18"
                     }
                 },
                 "schedule_source_selection-block": {

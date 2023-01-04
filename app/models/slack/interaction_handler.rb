@@ -34,7 +34,7 @@ module Slack
 
     def handle_channel_config
       state_values = @payload["view"]["state"]["values"]
-      channel_id = state_values["conversations_select-block"]["conversations_select-action"]["selected_channel"]
+      channel_id = state_values["conversations_select-block"]["conversations_select-action"]["selected_conversation"]
       schedule_id = state_values[@channel_config_presenter_class::SCHEDULE_BLOCK_ID][@channel_config_presenter_class::SCHEDULE_ACTION_ID]["selected_option"]["value"]
       schedule_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: schedule_platform).first
