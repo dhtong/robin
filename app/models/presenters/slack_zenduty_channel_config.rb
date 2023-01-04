@@ -36,11 +36,11 @@ module Presenters
         "text": "Channel",
       }
     }
-    PLATFORM_BLOCK_ID = "schedule_source_selection-block"
-    PLATFORM_ACTION_ID = "schedule_source_selection-action"
-    TEAM_BLOCK_ID = "schedule_source_selection_team-block"
-    SCHEDULE_BLOCK_ID = "schedule_source_selection_team_schedule-block"
-    SCHEDULE_ACTION_ID = "schedule_source_selection_team_schedule-action"
+    PLATFORM_BLOCK_ID = "escalation_policy_source_selection-block"
+    PLATFORM_ACTION_ID = "escalation_policy_source_selection-action"
+    TEAM_BLOCK_ID = "escalation_policy_source_selection_team-block"
+    escalation_policy_BLOCK_ID = "escalation_policy_source_selection_team_escalation_policy-block"
+    escalation_policy_ACTION_ID = "escalation_policy_source_selection_team_escalation_policy-action"
 
     class << self
       def from_blocks(blocks)
@@ -59,9 +59,9 @@ module Presenters
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "Pick a service to get schedule from"
+            "text": "Pick a service to get escalation_policy from"
           },
-          "block_id": "schedule_source_selection-block",
+          "block_id": "escalation_policy_source_selection-block",
           "accessory": {
             "type": "static_select",
             "placeholder": {
@@ -69,7 +69,7 @@ module Presenters
               "text": "Service",
             },
             "options": source_options(external_accounts),
-            "action_id": "schedule_source_selection-action"
+            "action_id": "escalation_policy_source_selection-action"
           }
         }
       end
@@ -101,31 +101,31 @@ module Presenters
       @blocks[2] = team_block(teams)
     end
 
-    def with_schedules(schedules)
+    def with_escalation_policies(escalation_policies)
       if @blocks.length < 3
         return raise StandardError
       end
-      @blocks[3] = schedule_block(schedules)
+      @blocks[3] = escalation_policy_block(escalation_policies)
     end
 
     private
 
-    def schedule_block(schedules)
+    def escalation_policy_block(escalation_policies)
       {
         "type": "input",
-        "block_id": "schedule_source_selection_team_schedule-block",
+        "block_id": "escalation_policy_source_selection_team_escalation_policy-block",
         "label": {
           "type": "plain_text",
-          "text": "Pick a schedule"
+          "text": "Pick a escalation_policy"
         },
         "element": {
           "type": "static_select",
           "placeholder": {
             "type": "plain_text",
-            "text": "schedule"
+            "text": "escalation_policy"
           },
-          "options": schedule_options(schedules),
-          "action_id": "schedule_source_selection_team_schedule-action"
+          "options": escalation_policy_options(escalation_policies),
+          "action_id": "escalation_policy_source_selection_team_escalation_policy-action"
         }
       }
     end
@@ -145,7 +145,7 @@ module Presenters
             "text": "team"
           },
           "options": team_options(teams),
-          "action_id": "schedule_source_selection_team-action"
+          "action_id": "escalation_policy_source_selection_team-action"
         }
       }
     end
@@ -162,14 +162,14 @@ module Presenters
       end
     end
 
-    def schedule_options(schedules)
-      schedules.map do |schedule|
+    def escalation_policy_options(escalation_policies)
+      escalation_policies.map do |escalation_policy|
         {
           "text": {
             "type": "plain_text",
-            "text": schedule["name"],
+            "text": escalation_policy["name"],
           },
-          "value": schedule["unique_id"]
+          "value": escalation_policy["unique_id"]
         }
       end
     end
