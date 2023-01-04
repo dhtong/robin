@@ -2,7 +2,7 @@ module Zenduty
   class Client
     extend Forwardable
 
-    attr_reader :api_token # Forst testing in `rails c`
+    attr_reader :api_token # For testing in `rails c`
 
     def_delegators :@team_api, :get_teams, :get_team_details
     def_delegators :@schedule_api, :get_schedules
