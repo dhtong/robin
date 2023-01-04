@@ -39,8 +39,8 @@ module Presenters
     PLATFORM_BLOCK_ID = "escalation_policy_source_selection-block"
     PLATFORM_ACTION_ID = "escalation_policy_source_selection-action"
     TEAM_BLOCK_ID = "escalation_policy_source_selection_team-block"
-    escalation_policy_BLOCK_ID = "escalation_policy_source_selection_team_escalation_policy-block"
-    escalation_policy_ACTION_ID = "escalation_policy_source_selection_team_escalation_policy-action"
+    ESCALATION_POLICY_BLOCK_ID = "escalation_policy_source_selection_team_escalation_policy-block"
+    ESCALATION_POLICY_ACTION_ID = "escalation_policy_source_selection_team_escalation_policy-action"
 
     class << self
       def from_blocks(blocks)
@@ -59,7 +59,7 @@ module Presenters
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "Pick a service to get escalation_policy from"
+            "text": "Pick a service to get an escalation policy from"
           },
           "block_id": "escalation_policy_source_selection-block",
           "accessory": {
@@ -116,7 +116,7 @@ module Presenters
         "block_id": "escalation_policy_source_selection_team_escalation_policy-block",
         "label": {
           "type": "plain_text",
-          "text": "Pick a escalation_policy"
+          "text": "Pick an escalation policy"
         },
         "element": {
           "type": "static_select",
