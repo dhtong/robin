@@ -30,6 +30,8 @@ module Presenters
       }
     }
     TEAM_BLOCK_ID = "schedule_source_selection_team-block"
+    SCHEDULE_BLOCK_ID = "schedule_source_selection_team_schedule-block"
+    SCHEDULE_ACTION_ID = "schedule_source_selection_team_schedule-action"
 
     class << self
       def from_blocks(blocks)
@@ -38,7 +40,7 @@ module Presenters
 
       def from_external_accounts(external_accounts)
         blocks = [CONVERSATION_BLOCK, source_block(external_accounts)]
-        new(blocks: blocks)
+        new(blocks)
       end
 
       private

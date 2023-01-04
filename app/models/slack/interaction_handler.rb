@@ -26,9 +26,15 @@ module Slack
       case @payload["view"]["callback_id"]
       when "new_integration"
         handle_zenduty_token_submission
-      when "new_channel_config"
-        handle_new_channel_config_submission
+      when Presenters::SlackZendutyChannelConfig::CALLBACK_ID
+        handle_channel_config
       end
+    end
+
+    def handle_channel_config
+      state_values = @payload["view"]["state"]["values"]
+      channel_id = state_values["conversations_select-block"]
+      schedule_id = state_values[SlackZendutyChannelConfig::SCHEDULE_BLOCK_ID][SlackZendutyChannelConfig::SCHEDULE_ACTION_ID]
     end
 
     def handle_block_actions
@@ -36,7 +42,7 @@ module Slack
       action = @payload["actions"].last
       case action["action_id"]
       when "new_channel_config-action"
-        presenter = Presenters::BaseChannelConfig.new(@customer.external_accounts)
+        presenter = Presenters::SlackZendutyChannelConfig.from_external_accounts(@customer.external_accounts)
         @slack_client.views_open(trigger_id: @trigger_id, view: presenter.present)
       when "add_integration-action"
         @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
@@ -97,11 +103,6 @@ module Slack
       when "pagerduty"
         # TODO add pd oath
       end
-    end
-
-    def handle_new_channel_config_submission
-      # @slack_client.views_update(view_id: @payload["view"]["id"], view: zenduty_token_input_view)
-      ValidationError.new("conversations_select-block", "Invalid token")
     end
 
     def new_channel_config
