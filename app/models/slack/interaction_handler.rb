@@ -37,7 +37,8 @@ module Slack
       channel_id = state_values["channels_select-block"]["channels_select-action"]["selected_channel"]
       schedule_id = state_values[@channel_config_presenter_class::SCHEDULE_BLOCK_ID][@channel_config_presenter_class::SCHEDULE_ACTION_ID]["selected_option"]["value"]
       schedule_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
-      ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, schedule_platform: schedule_platform, schedule_id: schedule_id)
+      selected_account = @customer.external_accounts.where(platform: schedule_platform).first
+      ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, schedule_id: schedule_id, external_account: selected_account)
     end
 
     def handle_block_actions
@@ -61,7 +62,7 @@ module Slack
     def handle_schedule_source_selection_team
       selected_team_id = @payload["actions"][0]["selected_option"]["value"]
       selected_platform = @payload["view"]["state"]["values"]["schedule_source_selection-block"]["schedule_source_selection-action"]["selected_option"]["value"]
-      selected_account = @customer.external_accounts.find_by(platform: selected_platform)
+      selected_account = @customer.external_accounts.where(platform: selected_platform).first
       presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
 
       available_schedules = selected_account.client.get_schedules(selected_team_id)
@@ -74,7 +75,7 @@ module Slack
 
     def handle_schedule_source_selection
       selected_platform = @payload["actions"][0]["selected_option"]["value"]
-      selected_account = @customer.external_accounts.find_by(platform: selected_platform)
+      selected_account = @customer.external_accounts.where(platform: selected_platform).first
 
       presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
       presenter.with_teams(selected_account.client.get_teams)

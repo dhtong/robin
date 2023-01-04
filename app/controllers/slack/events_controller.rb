@@ -10,7 +10,7 @@ class Slack::EventsController < ApplicationController
     when 'app_home_opened'
       Slack::RefreshHome.new(customer, @slack_client, params[:event][:user]).execute
     when 'app_mention'
-      send_message
+      # send_message
     end
     
     head :ok
@@ -18,13 +18,13 @@ class Slack::EventsController < ApplicationController
 
   private
 
-  def send_message
-    @slack_client.chat_postMessage(channel: channel, text: 'Got it!', as_user: true)
-  end
+  # def send_message
+  #   @slack_client.chat_postMessage(channel: channel, text: 'Got it!', as_user: true)
+  # end
 
-  def channel
-    event[:channel]
-  end
+  # def channel
+  #   event[:channel]
+  # end
 
   def customer
     @customer ||= Customer.find_or_create_by(slack_team_id: params[:team_id])

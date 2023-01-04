@@ -90,10 +90,11 @@ module Slack
         }
       ]
       external_accounts.each do |account|
-        # blocks << view_channel(account.platform)
+        # blocks << view_channel(account)
       end
       blocks
     end
+
 
     def view_integration(integration_name)
       {

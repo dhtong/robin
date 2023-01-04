@@ -132,6 +132,7 @@ RSpec.describe "Interaction", type: :request do
 
   describe "submit channel config" do
     let(:payload) { file_fixture("channel_config_submission.json").read }
+    let!(:external_account) { create(:external_account, customer: customer, platform: "zenduty") }
 
     it "create config record" do
       expect { subject }.to change { ChannelConfig.count }.by 1
