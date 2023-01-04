@@ -77,17 +77,7 @@ module Slack
             "value": "new_channel_config"
           }
         }, 
-        {"type": "divider"},
-        {
-          "type": "context",
-          "elements": [
-            {
-              "type": "image",
-              "image_url": "https://api.slack.com/img/blocks/bkb_template_images/placeholder.png",
-              "alt_text": "placeholder"
-            }
-          ]
-        }
+        {"type": "divider"}
       ]
       external_accounts.each do |account|
         account.channel_configs.each do |channel_config|
@@ -98,13 +88,13 @@ module Slack
     end
 
     def view_channel(channel_config)
-      resp = @client.conversations_info(channel: channel_config.channel_id)
+      # resp = @client.conversations_info(channel: channel_config.channel_id)
       {
         "type": "section",
         "block_id": channel_config.id.to_s + "_channel_config-block",
         "text": {
           "type": "mrkdwn",
-          "text": "##{resp["channel"]["name"]}"
+          "text": "##{channel_config.channel_id}"
         },
         "accessory": {
           "type": "overflow",
