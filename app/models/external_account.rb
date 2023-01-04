@@ -1,5 +1,6 @@
 class ExternalAccount < ApplicationRecord
   belongs_to :customer
+  has_many :channel_configs
 
   def client
     return @client if @client.present?

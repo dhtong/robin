@@ -14,15 +14,22 @@ module Presenters
       }
     }
     CONVERSATION_BLOCK = {
-      "block_id": "channels_select-block",
+      "block_id": "conversations_select-block",
       "type": "input",
       "element": {
-        "type": "channels_select",
+        "type": "conversations_select",
         "placeholder": {
           "type": "plain_text",
           "text": "Select channel",
         },
-        "action_id": "channels_select-action"
+        "filter": {
+          "include": [
+            "public",
+            "private"
+          ],
+          "exclude_bot_users": true
+        },
+        "action_id": "conversations_select-action"
       },
       "label": {
         "type": "plain_text",

@@ -90,6 +90,9 @@ module Slack
         }
       ]
       external_accounts.each do |account|
+        account.channel_configs.eahc do |channel_config|
+          
+        end
         # blocks << view_channel(account)
       end
       blocks
