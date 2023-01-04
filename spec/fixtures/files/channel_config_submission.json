@@ -1,5 +1,9 @@
 {
-    "type": "block_actions",
+    "type": "view_submission",
+    "team": {
+        "id": "T04FZQN3B9D",
+        "domain": "supportbotsworkspace"
+    },
     "user": {
         "id": "U04G7NZTHKQ",
         "username": "dan",
@@ -8,19 +12,9 @@
     },
     "api_app_id": "A04GEBFQV0S",
     "token": "4nbgdBVKWiLlfLTVw2V0qu4d",
-    "container": {
-        "type": "view",
-        "view_id": "V04HCQQ7X36"
-    },
-    "trigger_id": "4590841552468.4543838113319.514e7d5b0e1c6ed1e24298df3216add5",
-    "team": {
-        "id": "T04FZQN3B9D",
-        "domain": "supportbotsworkspace"
-    },
-    "enterprise": null,
-    "is_enterprise_install": false,
+    "trigger_id": "4615068568880.4543838113319.8e011aed50b622f8ed2d3890e51a2a45",
     "view": {
-        "id": "V04HCQQ7X36",
+        "id": "V04HDAXABKL",
         "team_id": "T04FZQN3B9D",
         "type": "modal",
         "blocks": [
@@ -154,7 +148,7 @@
                 "conversations_select-block": {
                     "conversations_select-action": {
                         "type": "conversations_select",
-                        "selected_conversation": null
+                        "selected_conversation": "C04GEB66H18"
                     }
                 },
                 "schedule_source_selection-block": {
@@ -198,7 +192,7 @@
                 }
             }
         },
-        "hash": "1672758513.UyRnvkPS",
+        "hash": "1672799938.aoIa6k0j",
         "title": {
             "type": "plain_text",
             "text": "Channel config",
@@ -213,31 +207,13 @@
             "emoji": true
         },
         "previous_view_id": null,
-        "root_view_id": "V04HCQQ7X36",
+        "root_view_id": "V04HDAXABKL",
         "app_id": "A04GEBFQV0S",
         "external_id": "",
         "app_installed_team_id": "T04FZQN3B9D",
         "bot_id": "B04GE8GDAP5"
     },
-    "actions": [
-        {
-            "type": "static_select",
-            "action_id": "schedule_source_selection_team-action",
-            "block_id": "schedule_source_selection_team-block",
-            "selected_option": {
-                "text": {
-                    "type": "plain_text",
-                    "text": "Operations Team(Sample)",
-                    "emoji": true
-                },
-                "value": "47975507-d54d-42d5-8d31-622653bd2360"
-            },
-            "placeholder": {
-                "type": "plain_text",
-                "text": "team",
-                "emoji": true
-            },
-            "action_ts": "1672758522.091007"
-        }
-    ]
+    "response_urls": [],
+    "is_enterprise_install": false,
+    "enterprise": null
 }

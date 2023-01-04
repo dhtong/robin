@@ -8,6 +8,7 @@ module Slack
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
       @refresh_home_cmd = Slack::RefreshHome.new(customer, slack_client, @caller_id)
+      @channel_config_presenter_class = ::Presenters::SlackZendutyChannelConfig
     end
   
     def execute
@@ -26,15 +27,17 @@ module Slack
       case @payload["view"]["callback_id"]
       when "new_integration"
         handle_zenduty_token_submission
-      when Presenters::SlackZendutyChannelConfig::CALLBACK_ID
+      when @channel_config_presenter_class::CALLBACK_ID
         handle_channel_config
       end
     end
 
     def handle_channel_config
       state_values = @payload["view"]["state"]["values"]
-      channel_id = state_values["conversations_select-block"]
-      schedule_id = state_values[SlackZendutyChannelConfig::SCHEDULE_BLOCK_ID][SlackZendutyChannelConfig::SCHEDULE_ACTION_ID]
+      channel_id = state_values["conversations_select-block"]["conversations_select-action"]
+      schedule_id = state_values[@channel_config_presenter_class::SCHEDULE_BLOCK_ID][@channel_config_presenter_class::SCHEDULE_ACTION_ID]
+      schedule_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]
+      ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, schedule_platform: schedule_platform, schedule_id: schedule_id)
     end
 
     def handle_block_actions
@@ -42,7 +45,7 @@ module Slack
       action = @payload["actions"].last
       case action["action_id"]
       when "new_channel_config-action"
-        presenter = Presenters::SlackZendutyChannelConfig.from_external_accounts(@customer.external_accounts)
+        presenter = @channel_config_presenter_class.from_external_accounts(@customer.external_accounts)
         @slack_client.views_open(trigger_id: @trigger_id, view: presenter.present)
       when "add_integration-action"
         @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)

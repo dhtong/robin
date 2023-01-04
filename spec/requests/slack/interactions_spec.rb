@@ -6,14 +6,13 @@ RSpec.describe "Interaction", type: :request do
   before do
     allow_any_instance_of(Zenduty::Client).to receive(:get_teams).and_return(get_teams_resp)
   end
+  subject { post "/slack/interactions", params: {"payload": payload} }
 
   context "submit zenduty token" do
     let(:payload) { file_fixture("zenduty_token.json").read }
 
     it "submit zenduty token" do
-      expect {
-        post "/slack/interactions", params: {"payload": payload}
-      }.to change { ExternalAccount.count }.by 1
+      expect { subject }.to change { ExternalAccount.count }.by 1
       expect(response).to have_http_status(:ok)
     end
   end
@@ -23,9 +22,7 @@ RSpec.describe "Interaction", type: :request do
     let(:get_teams_resp) { double(success?: false, :[] => {}) }
 
     it "submit zenduty token" do
-      expect {
-        post "/slack/interactions", params: {"payload": payload}
-      }.not_to change { ExternalAccount.count }
+      expect { subject }.not_to change { ExternalAccount.count }
       expect(response).to have_http_status(:ok)
     end
   end
@@ -35,7 +32,7 @@ RSpec.describe "Interaction", type: :request do
 
     it "call slack" do
       expect_any_instance_of(Slack::Web::Client).to receive(:post).with('views.update', any_args)
-      post "/slack/interactions", params: {"payload": payload}
+      subject
       expect(response).to have_http_status(:ok)
     end
   end
@@ -48,7 +45,7 @@ RSpec.describe "Interaction", type: :request do
         'views.open',
         hash_including({view: /options/})
       )
-      post "/slack/interactions", params: {"payload": payload}
+      subject
       expect(response).to have_http_status(:ok)
     end
 
@@ -60,7 +57,7 @@ RSpec.describe "Interaction", type: :request do
           'views.open',
           hash_including({view: /No more integrations available/})
         )
-        post "/slack/interactions", params: {"payload": payload}
+        subject
         expect(response).to have_http_status(:ok)
       end
     end
@@ -74,7 +71,7 @@ RSpec.describe "Interaction", type: :request do
         'views.open',
         anything
       )
-      post "/slack/interactions", params: {"payload": payload}
+      subject
       expect(response).to have_http_status(:ok)
     end
 
@@ -91,7 +88,7 @@ RSpec.describe "Interaction", type: :request do
           'views.update',
           anything
         )
-        post "/slack/interactions", params: {"payload": payload}
+        subject
         expect(response).to have_http_status(:ok)
       end
 
@@ -107,7 +104,7 @@ RSpec.describe "Interaction", type: :request do
             'views.update',
             anything
           )
-          post "/slack/interactions", params: {"payload": payload}
+          subject
           expect(response).to have_http_status(:ok)
         end
       end
@@ -124,12 +121,21 @@ RSpec.describe "Interaction", type: :request do
             'views.update',
             anything
           )
-          post "/slack/interactions", params: {"payload": payload}
+          subject
           expect(response).to have_http_status(:ok)
           resp_body = JSON.parse(response.body)
           expect(resp_body).to include "errors"
         end
       end
+    end
+  end
+
+  describe "submit channel config" do
+    let(:payload) { file_fixture("channel_config_submission.json").read }
+
+    it "create config record" do
+      expect { subject }.to change { ChannelConfig.count }.by 1
+      expect(response).to have_http_status(:ok)
     end
   end
 end

@@ -29,6 +29,8 @@ module Presenters
         "text": "Channel",
       }
     }
+    PLATFORM_BLOCK_ID = "schedule_source_selection-block"
+    PLATFORM_ACTION_ID = "schedule_source_selection-action"
     TEAM_BLOCK_ID = "schedule_source_selection_team-block"
     SCHEDULE_BLOCK_ID = "schedule_source_selection_team_schedule-block"
     SCHEDULE_ACTION_ID = "schedule_source_selection_team_schedule-action"
