@@ -35,10 +35,10 @@ module Slack
     def handle_channel_config
       state_values = @payload["view"]["state"]["values"]
       channel_id = state_values["conversations_select-block"]["conversations_select-action"]["selected_conversation"]
-      schedule_id = state_values[@channel_config_presenter_class::SCHEDULE_BLOCK_ID][@channel_config_presenter_class::SCHEDULE_ACTION_ID]["selected_option"]["value"]
-      schedule_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
-      selected_account = @customer.external_accounts.where(platform: schedule_platform).first
-      ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, schedule_id: schedule_id, external_account: selected_account)
+      escalation_policy_id = state_values[@channel_config_presenter_class::ESCALATION_POLICY_BLOCK_ID][@channel_config_presenter_class::ESCALATION_POLICY_ACTION_ID]["selected_option"]["value"]
+      escalation_policy_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
+      selected_account = @customer.external_accounts.where(platform: escalation_policy_platform).first
+      ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, escalation_policy_id: escalation_policy_id, external_account: selected_account)
       @refresh_home_cmd.execute
     end
 
@@ -53,28 +53,28 @@ module Slack
         @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
       when "integration_selection-action"
         handle_integration_selection(action)
-      when "schedule_source_selection-action"
-        handle_schedule_source_selection
-      when "schedule_source_selection_team-action"
-        handle_schedule_source_selection_team
+      when "escalation_policy_source_selection-action"
+        handle_escalation_policy_source_selection
+      when "escalation_policy_source_selection_team-action"
+        handle_escalation_policy_source_selection_team
       end
     end
 
-    def handle_schedule_source_selection_team
+    def handle_escalation_policy_source_selection_team
       selected_team_id = @payload["actions"][0]["selected_option"]["value"]
-      selected_platform = @payload["view"]["state"]["values"]["schedule_source_selection-block"]["schedule_source_selection-action"]["selected_option"]["value"]
+      selected_platform = @payload["view"]["state"]["values"]["escalation_policy_source_selection-block"]["escalation_policy_source_selection-action"]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: selected_platform).first
       presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
 
-      available_schedules = selected_account.client.get_schedules(selected_team_id)
+      available_escalation_policies = selected_account.client.get_escalation_policies(selected_team_id)
       # TODO this validation is not show right now. maybe validate teams before showing team options.
-      return ValidationError.new(Presenters::SlackZendutyChannelConfig::TEAM_BLOCK_ID, "No schedules available") if available_schedules.blank?
-      presenter.with_schedules(available_schedules)
+      return ValidationError.new(Presenters::SlackZendutyChannelConfig::TEAM_BLOCK_ID, "No escalation policies available") if available_escalation_policies.blank?
+      presenter.with_escalation_policies(available_escalation_policies)
 
       @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
     end
 
-    def handle_schedule_source_selection
+    def handle_escalation_policy_source_selection
       selected_platform = @payload["actions"][0]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: selected_platform).first
 

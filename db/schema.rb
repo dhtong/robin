@@ -10,17 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_04_032048) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_04_231436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "channel_configs", force: :cascade do |t|
     t.string "chat_platform"
     t.string "channel_id"
-    t.string "schedule_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "external_account_id"
+    t.string "escalation_policy_id"
     t.index ["external_account_id"], name: "index_channel_configs_on_external_account_id"
   end
 

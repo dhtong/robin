@@ -18,6 +18,10 @@ class Slack::EventsController < ApplicationController
 
   private
 
+  def get_oncalls
+    external_account = ExternalAccount.first # TODO
+  end
+
   # def send_message
   #   @slack_client.chat_postMessage(channel: channel, text: 'Got it!', as_user: true)
   # end
