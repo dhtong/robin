@@ -10,5 +10,9 @@ module Zenduty
       @team_api = ::Zenduty::TeamsApi.new(@api_token)
       @schedule_api = ::Zenduty::SchedulesApi.new(@api_token)
     end
+
+    def get_team_api
+      @team_api
+    end
   end
 end
