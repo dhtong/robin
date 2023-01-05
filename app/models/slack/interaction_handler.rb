@@ -30,6 +30,7 @@ module Slack
       when @channel_config_presenter_class::CALLBACK_ID
         handle_channel_config
       end
+      @refresh_home_cmd.execute
     end
 
     def handle_channel_config
@@ -40,7 +41,6 @@ module Slack
       escalation_policy_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: escalation_policy_platform).first
       ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, team_id: team_id, escalation_policy_id: escalation_policy_id, external_account: selected_account)
-      @refresh_home_cmd.execute
     end
 
     def handle_block_actions
