@@ -1,8 +1,10 @@
 class Slack::AuthController < ApplicationController
-  def create
+  def index
     client = Slack::Web::Client.new
-    res = client.oauth_v2_access(client_id: ENV["SLACK_CLIENT_ID"], client_secrect: ENV["SLACK_CLIENT_SECRET"], code: params[:code])
-    binding.b
+    res = client.oauth_v2_access(client_id: ENV["SLACK_CLIENT_ID"], client_secret: ENV["SLACK_CLIENT_SECRET"], code: params[:code])
+    puts res 
+    customer = Customer.find_or_create_by(slack_team_id: res.team&.id)
+    ExternalAccount.create(customer: customer, token: res.access_token)
     head :ok
   end
 end
