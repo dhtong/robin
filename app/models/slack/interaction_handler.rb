@@ -35,10 +35,11 @@ module Slack
     def handle_channel_config
       state_values = @payload["view"]["state"]["values"]
       channel_id = state_values["conversations_select-block"]["conversations_select-action"]["selected_conversation"]
+      team_id = state_values[@channel_config_presenter_class::TEAM_BLOCK_ID][@channel_config_presenter_class::TEAM_ACTION_ID]["selected_option"]["value"]
       escalation_policy_id = state_values[@channel_config_presenter_class::ESCALATION_POLICY_BLOCK_ID][@channel_config_presenter_class::ESCALATION_POLICY_ACTION_ID]["selected_option"]["value"]
       escalation_policy_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: escalation_policy_platform).first
-      ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, escalation_policy_id: escalation_policy_id, external_account: selected_account)
+      ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, team_id: team_id, escalation_policy_id: escalation_policy_id, external_account: selected_account)
       @refresh_home_cmd.execute
     end
 

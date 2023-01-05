@@ -39,6 +39,7 @@ module Presenters
     PLATFORM_BLOCK_ID = "escalation_policy_source_selection-block"
     PLATFORM_ACTION_ID = "escalation_policy_source_selection-action"
     TEAM_BLOCK_ID = "escalation_policy_source_selection_team-block"
+    TEAM_ACTION_ID = "escalation_policy_source_selection_team-action"
     ESCALATION_POLICY_BLOCK_ID = "escalation_policy_source_selection_team_escalation_policy-block"
     ESCALATION_POLICY_ACTION_ID = "escalation_policy_source_selection_team_escalation_policy-action"
 
@@ -61,7 +62,7 @@ module Presenters
             "type": "mrkdwn",
             "text": "Pick a service to get an escalation policy from"
           },
-          "block_id": "escalation_policy_source_selection-block",
+          "block_id": PLATFORM_BLOCK_ID,
           "accessory": {
             "type": "static_select",
             "placeholder": {
@@ -69,7 +70,7 @@ module Presenters
               "text": "Service",
             },
             "options": source_options(external_accounts),
-            "action_id": "escalation_policy_source_selection-action"
+            "action_id": PLATFORM_ACTION_ID
           }
         }
       end
@@ -113,7 +114,7 @@ module Presenters
     def escalation_policy_block(escalation_policies)
       {
         "type": "input",
-        "block_id": "escalation_policy_source_selection_team_escalation_policy-block",
+        "block_id": ESCALATION_POLICY_BLOCK_ID,
         "label": {
           "type": "plain_text",
           "text": "Pick an escalation policy"
@@ -125,7 +126,7 @@ module Presenters
             "text": "escalation_policy"
           },
           "options": escalation_policy_options(escalation_policies),
-          "action_id": "escalation_policy_source_selection_team_escalation_policy-action"
+          "action_id": ESCALATION_POLICY_ACTION_ID
         }
       }
     end
@@ -145,7 +146,7 @@ module Presenters
             "text": "team"
           },
           "options": team_options(teams),
-          "action_id": "escalation_policy_source_selection_team-action"
+          "action_id": TEAM_ACTION_ID
         }
       }
     end
