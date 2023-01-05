@@ -19,12 +19,14 @@ class Slack::EventsController < ApplicationController
   private
 
   def send_message
-    client = Zenduty
-    channel_configs.each do |channel_config|
-      oncall = channel_config.external_account.client.oncall(channel_config.team_id)
-    end
+    oncall_users = channel_configs.flat_map do |channel_config|
+      escalation_policies = channel_config.external_account.client.oncall(channel_config.team_id)
+      escalation_policy = escalation_policies.find{|policy| policy["escalation_policy"]["unique_id"] == channel_config.escalation_policy}
+      escalation_policies.users
+    end.uniq_by{|user| user["username"]}
+    names = oncall_users.map{|user| "#{user["first_name"] user["last_name"] (user["email"])}"}
 
-    @slack_client.chat_postMessage(channel: channel, text: 'TODO: page oncalls for #{}', as_user: true)
+    @slack_client.chat_postMessage(channel: channel, text: "TODO: ping #{oncall_users.map(&:join(", ")}", as_user: true)
   end
 
   def channel
