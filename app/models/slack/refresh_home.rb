@@ -93,7 +93,7 @@ module Slack
         "block_id": channel_config.id.to_s + "_channel_config-block",
         "text": {
           "type": "mrkdwn",
-          "text": "<#{channel_config.channel_id}>"
+          "text": "<##{channel_config.channel_id}>"
         },
         "accessory": {
           "type": "overflow",
