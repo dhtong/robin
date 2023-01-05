@@ -30,7 +30,7 @@ class Slack::EventsController < ApplicationController
   end
 
   def channel
-    event[:channel]
+    params[:event][:channel]
   end
   
   def channel_configs
