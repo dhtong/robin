@@ -21,8 +21,8 @@ class Slack::EventsController < ApplicationController
   def send_message
     oncall_users = channel_configs.flat_map do |channel_config|
       escalation_policies = channel_config.external_account.client.oncall(channel_config.team_id)
-      escalation_policy = escalation_policies.find{|policy| policy["escalation_policy"]["unique_id"] == channel_config.escalation_policy}
-      escalation_policies.users
+      escalation_policy = escalation_policies.find{|policy| policy["escalation_policy"]["unique_id"] == channel_config.escalation_policy_id}
+      escalation_policy.users
     end.uniq_by{|user| user["username"]}
     names = oncall_users.map{|user| "#{user['first_name']} #{user['last_name']} (#{user['email']})}"}
 
