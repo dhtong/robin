@@ -32,7 +32,7 @@ class Slack::EventsController < ApplicationController
 
     begin
       @slack_client.conversations_invite(channel: channel, users: slack_users.join(","))
-    rescue Slack::Web::Api::Errors::AlreadyInChannel
+    rescue Slack::Web::Api::Errors::AlreadyInChannel, Slack::Web::Api::Errors::MissingScope
     end
 
     mentions = slack_users.map{|u| "<@#{u}>"}
