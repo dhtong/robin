@@ -94,7 +94,7 @@ module Presenters
 
     def present
       view = BASE_VIEW
-      view[:submit] = SUBMIT_BUTTON if @blocks.len == 4
+      view[:submit] = SUBMIT_BUTTON if @blocks.length == 4
       view[:blocks] = @blocks
       view
     end
