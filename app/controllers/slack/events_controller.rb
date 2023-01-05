@@ -18,17 +18,26 @@ class Slack::EventsController < ApplicationController
 
   private
 
-  def get_oncalls
-    external_account = ExternalAccount.first # TODO
+  def send_message
+    client = Zenduty
+    channel_configs.each do |channel_config|
+      oncall = channel_config.external_account.client.oncall(channel_config.team_id)
+    end
+
+    @slack_client.chat_postMessage(channel: channel, text: 'TODO: page oncalls for #{}', as_user: true)
   end
 
-  # def send_message
-  #   @slack_client.chat_postMessage(channel: channel, text: 'Got it!', as_user: true)
-  # end
+  def channel
+    event[:channel]
+  end
+  
+  def team_ids
+    channel_configs.map(&:team_id).compact.uniq
+  end
 
-  # def channel
-  #   event[:channel]
-  # end
+  def channel_configs
+    @channel_configs ||= ChannelConfig.where(channel_id: channel)
+  end
 
   def customer
     @customer ||= Customer.find_or_create_by(slack_team_id: params[:team_id])

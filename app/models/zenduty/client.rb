@@ -17,8 +17,6 @@ module Zenduty
       @escalation_policies_api = ::Zenduty::EscalationPoliciesApi.new(@api_token)
     end
 
-    private
-
     def oncall(team_id)
       # Not supported by the zenduty gem, so we call the URL directly ourselves.
       # https://apidocs.zenduty.com/#tag/OnCall
