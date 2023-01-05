@@ -26,7 +26,7 @@ class Slack::EventsController < ApplicationController
     end.uniq_by{|user| user["username"]}
     names = oncall_users.map{|user| "#{user['first_name'] user['last_name'] (user['email'])}"}
 
-    @slack_client.chat_postMessage(channel: channel, text: "TODO: ping #{oncall_users.map(&:join(', ')}", as_user: true)
+    @slack_client.chat_postMessage(channel: channel, text: "TODO: ping #{names.join(', ')}", as_user: true)
   end
 
   def channel
