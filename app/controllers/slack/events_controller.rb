@@ -10,7 +10,7 @@ class Slack::EventsController < ApplicationController
     when 'app_home_opened'
       Slack::RefreshHome.new(customer, @slack_client, params[:event][:user]).execute
     when 'app_mention'
-      # send_message
+      send_message
     end
     
     head :ok
