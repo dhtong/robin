@@ -1,6 +1,6 @@
 class Slack::InteractionsController < ApplicationController
   def create
-    client = Slack::Web::Client.new(token: customer.external_accounts.slack.first)
+    client = Slack::Web::Client.new(token: customer.external_accounts.slack.pluck(:token).first)
     handler = Slack::InteractionHandler.new(customer, client, payload)
     res = handler.execute
     if res.is_a? Slack::ValidationError
