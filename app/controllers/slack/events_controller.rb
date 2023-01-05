@@ -29,7 +29,7 @@ class Slack::EventsController < ApplicationController
       resp = @slack_client.users_lookupByEmail(email: zenduty_user["email"])
       resp["user"]["id"]
     end
-    mentions = slack_users.map{|u| "<@#{user}>"}
+    mentions = slack_users.map{|u| "<@#{u}>"}
 
     @slack_client.chat_postMessage(channel: channel, text: mentions.join(', '), as_user: true)
   end
