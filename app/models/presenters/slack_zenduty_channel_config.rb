@@ -6,12 +6,12 @@ module Presenters
       "callback_id": CALLBACK_ID,
       "title": {
         "type": "plain_text",
-        "text": "Channel config"
+        "text": "Channel config",
+      },
+      "submit": {
+        "type": "plain_text",
+        "text": "Submit",
       }
-    }
-    SUBMIT_BUTTON = {
-      "type": "plain_text",
-      "text": "Submit"
     }
     CONVERSATION_BLOCK = {
       "block_id": "conversations_select-block",
@@ -94,7 +94,6 @@ module Presenters
 
     def present
       view = BASE_VIEW
-      view[:submit] = SUBMIT_BUTTON
       view[:blocks] = @blocks
       view
     end
