@@ -4,7 +4,7 @@ class Slack::EventsController < ApplicationController
       return render json: {challenge: params[:challenge]}
     end
 
-    @slack_client = Slack::Web::Client.new(token: customer.external_accounts.slack.pluck(:token).first)
+    @slack_client = Slack::Web::Client.new(token: customer.slack_access_token)
 
     case params[:event][:type]
     when 'app_home_opened'
