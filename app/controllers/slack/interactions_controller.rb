@@ -1,6 +1,7 @@
 class Slack::InteractionsController < ApplicationController
   def create
-    handler = Slack::InteractionHandler.new(customer, Slack::Web::Client.new, payload)
+    client = Slack::Web::Client.new(token: customer.external_accounts.slack.first)
+    handler = Slack::InteractionHandler.new(customer, client, payload)
     res = handler.execute
     if res.is_a? Slack::ValidationError
       return render json: { response_action: "errors", errors: res.to_json }

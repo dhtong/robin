@@ -4,7 +4,7 @@ class Slack::EventsController < ApplicationController
       return render json: {challenge: params[:challenge]}
     end
 
-    @slack_client = Slack::Web::Client.new
+    @slack_client = Slack::Web::Client.new(token: customer.external_accounts.slack.first)
 
     case params[:event][:type]
     when 'app_home_opened'
@@ -31,6 +31,6 @@ class Slack::EventsController < ApplicationController
   # end
 
   def customer
-    @customer ||= Customer.find_or_create_by(slack_team_id: params[:team_id])
+    @customer ||= Customer.find_by(slack_team_id: params[:team_id])
   end
 end

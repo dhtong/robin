@@ -40,10 +40,5 @@ module Robin
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-
-    # todo move to initializer
-    Slack.configure do |config|
-      config.token = ENV['SLACK_API_TOKEN']
-    end
   end
 end
