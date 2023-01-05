@@ -7,11 +7,11 @@ module Presenters
       "title": {
         "type": "plain_text",
         "text": "Channel config",
-      },
-      "submit": {
-        "type": "plain_text",
-        "text": "Submit",
       }
+    }
+    SUBMIT_BUTTON = {
+      "type": "plain_text",
+      "text": "Submit",
     }
     CONVERSATION_BLOCK = {
       "block_id": "conversations_select-block",
@@ -94,6 +94,7 @@ module Presenters
 
     def present
       view = BASE_VIEW
+      view[:submit] = SUBMIT_BUTTON if @blocks.len == 4
       view[:blocks] = @blocks
       view
     end
