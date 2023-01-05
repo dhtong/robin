@@ -24,9 +24,14 @@ class Slack::EventsController < ApplicationController
       escalation_policy = escalation_policies.find{|policy| policy["escalation_policy"]["unique_id"] == channel_config.escalation_policy_id}
       escalation_policy["users"]
     end.uniq {|user| user["username"]}
-    names = oncall_users.map{|user| "#{user['first_name']} #{user['last_name']} (#{user['email']})}"}
 
-    @slack_client.chat_postMessage(channel: channel, text: "TODO: ping #{names.join(', ')}", as_user: true)
+    slack_users = oncall_users.map do |zenduty_user|
+      resp = @slack_client.users_lookupByEmail(email: zenduty_user["email"])
+      resp["user"]["id"]
+    end
+    mentions = slack_users.map{|u| "<@#{user}>"}
+
+    @slack_client.chat_postMessage(channel: channel, text: mentions.join(', '), as_user: true)
   end
 
   def channel
