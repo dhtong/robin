@@ -46,7 +46,7 @@
             },
             {
                 "type": "section",
-                "block_id": "schedule_source_selection-block",
+                "block_id": "escalation_policy_source_selection-block",
                 "text": {
                     "type": "mrkdwn",
                     "text": "Pick a service to get schedule from",
@@ -54,7 +54,7 @@
                 },
                 "accessory": {
                     "type": "static_select",
-                    "action_id": "schedule_source_selection-action",
+                    "action_id": "escalation_policy_source_selection-action",
                     "placeholder": {
                         "type": "plain_text",
                         "text": "Service",
@@ -74,7 +74,7 @@
             },
             {
                 "type": "section",
-                "block_id": "schedule_source_selection_team-block",
+                "block_id": "escalation_policy_source_selection_team-block",
                 "text": {
                     "type": "mrkdwn",
                     "text": "Pick a team",
@@ -82,7 +82,7 @@
                 },
                 "accessory": {
                     "type": "static_select",
-                    "action_id": "schedule_source_selection_team-action",
+                    "action_id": "escalation_policy_source_selection_team-action",
                     "placeholder": {
                         "type": "plain_text",
                         "text": "Service",
@@ -111,8 +111,8 @@
                         "selected_conversation": null
                     }
                 },
-                "schedule_source_selection-block": {
-                    "schedule_source_selection-action": {
+                "escalation_policy_source_selection-block": {
+                    "escalation_policy_source_selection-action": {
                         "type": "static_select",
                         "selected_option": {
                             "text": {
@@ -124,8 +124,8 @@
                         }
                     }
                 },
-                "schedule_source_selection_team-block": {
-                    "schedule_source_selection_team-action": {
+                "escalation_policy_source_selection_team-block": {
+                    "escalation_policy_source_selection_team-action": {
                         "type": "static_select",
                         "selected_option": {
                             "text": {
@@ -163,8 +163,8 @@
     "actions": [
         {
             "type": "static_select",
-            "action_id": "schedule_source_selection_team-action",
-            "block_id": "schedule_source_selection_team-block",
+            "action_id": "escalation_policy_source_selection_team-action",
+            "block_id": "escalation_policy_source_selection_team-block",
             "selected_option": {
                 "text": {
                     "type": "plain_text",

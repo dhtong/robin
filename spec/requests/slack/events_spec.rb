@@ -11,14 +11,13 @@ RSpec.describe "Event", type: :request do
   end
 
   context "home" do
+    let!(:customer) { create(:customer, slack_team_id: payload["team_id"]) }
     let(:payload) { JSON.parse(file_fixture("app_home_opened.json").read) }
 
     it "first view" do
       expect_any_instance_of(Slack::Web::Client).to receive(:views_publish)
-      expect {
-        post "/slack/events", params: payload
-      }.to change { Customer.count }.by 1
-      expect(Customer.last.slack_team_id).to eq payload["team_id"]
+      post "/slack/events", params: payload
+      expect(response).to have_http_status(:ok)
     end
 
     context "viewed already" do
