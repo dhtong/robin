@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_05_015421) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_07_161141) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_015421) do
     t.bigint "external_account_id"
     t.string "escalation_policy_id"
     t.string "team_id"
+    t.datetime "disabled_at"
     t.index ["external_account_id"], name: "index_channel_configs_on_external_account_id"
   end
 
@@ -42,6 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_05_015421) do
     t.string "refresh_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "disabled_at"
     t.index ["customer_id"], name: "index_external_accounts_on_customer_id"
   end
 
