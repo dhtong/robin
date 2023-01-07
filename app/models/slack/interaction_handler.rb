@@ -39,8 +39,10 @@ module Slack
       team_id = state_values[@channel_config_presenter_class::TEAM_BLOCK_ID][@channel_config_presenter_class::TEAM_ACTION_ID]["selected_option"]["value"]
       escalation_policy_id = state_values[@channel_config_presenter_class::ESCALATION_POLICY_BLOCK_ID][@channel_config_presenter_class::ESCALATION_POLICY_ACTION_ID]["selected_option"]["value"]
       escalation_policy_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
-      selected_account = @customer.external_accounts.where(platform: escalation_policy_platform).first
-      ChannelConfig.create(chat_platform: "slack", channel_id: channel_id, team_id: team_id, escalation_policy_id: escalation_policy_id, external_account: selected_account)
+      selected_account_id = @customer.external_accounts.where(platform: escalation_policy_platform).pluck(:id).first
+      attributes = {chat_platform: "slack", channel_id: channel_id, team_id: team_id, escalation_policy_id: escalation_policy_id, external_account_id: selected_account_id}
+      # a channel can only link to one escalation_policy. this also deletes the history if the user has set a different policy before.
+      ChannelConfig.upsert(attributes, unique_by: [:external_account_id, :channel_id])
     end
 
     def handle_block_actions
