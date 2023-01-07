@@ -1,0 +1,39 @@
+{
+  "type": "block_actions",
+  "user": {
+    "id": "U04G7NZTHKQ",
+    "username": "dan",
+    "name": "dan",
+    "team_id": "T04FZQN3B9D"
+  },
+  "api_app_id": "A04GEBFQV0S",
+  "token": "4nbgdBVKWiLlfLTVw2V0qu4d",
+  "container": {
+    "type": "view",
+    "view_id": "V04GP8H3KLK"
+  },
+  "trigger_id": "4611853511412.4543838113319.02754da5cafc5cd1053b8ae2297bf518",
+  "team": {
+    "id": "T04FZQN3B9D",
+    "domain": "supportbotsworkspace"
+  },
+  "enterprise": null,
+  "is_enterprise_install": false,
+  "view": {},
+  "actions": [
+    {
+      "type": "overflow",
+      "action_id": "15_edit_channel_config-action",
+      "block_id": "15_edit_channel_config-block",
+      "selected_option": {
+        "text": {
+          "type": "plain_text",
+          "text": "Delete",
+          "emoji": true
+        },
+        "value": "delete"
+      },
+      "action_ts": "1673109934.357367"
+    }
+  ]
+}

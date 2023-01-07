@@ -90,14 +90,14 @@ module Slack
     def view_channel(channel_config)
       {
         "type": "section",
-        "block_id": channel_config.id.to_s + "_channel_config-block",
+        "block_id": channel_config.id.to_s + "_edit_channel_config-block",
         "text": {
           "type": "mrkdwn",
           "text": "<##{channel_config.channel_id}>"
         },
         "accessory": {
           "type": "overflow",
-          "action_id": channel_config.id.to_s + "_channel_config-action",
+          "action_id": channel_config.id.to_s + "_edit_channel_config-action",
           "options": [
             {
               "text": {

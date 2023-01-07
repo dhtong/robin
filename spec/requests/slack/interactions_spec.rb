@@ -9,6 +9,18 @@ RSpec.describe "Interaction", type: :request do
   subject { post "/slack/interactions", params: {"payload": payload} }
   let(:stub_refresh) { expect_any_instance_of(Slack::RefreshHome).to receive(:execute) }
 
+  context "delete channel config" do
+    let(:payload) { file_fixture("delete_channel_config.json").read }
+    let(:id) { 15 }
+    let!(:channel_config) { create(:channel_config, id: id) }
+
+    it "delete records" do
+      stub_refresh
+      expect { subject }.to change { ChannelConfig.unscoped.find(15).disabled_at }.from nil
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   context "submit zenduty token" do
     let(:payload) { file_fixture("zenduty_token.json").read }
 

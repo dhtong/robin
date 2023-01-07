@@ -50,6 +50,8 @@ module Slack
       when "new_channel_config-action"
         presenter = @channel_config_presenter_class.from_external_accounts(@customer.external_accounts)
         @slack_client.views_open(trigger_id: @trigger_id, view: presenter.present)
+      when /_edit_channel_config-action$/
+        handle_channel_config_edit(action)
       when "add_integration-action"
         @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
       when "integration_selection-action"
@@ -240,6 +242,16 @@ module Slack
           }
         ]
       }
+    end
+
+    # this change db state
+    def handle_channel_config_edit(action)
+      case action["selected_option"]["value"]
+      when "delete"
+        channel_config_id = action["action_id"].scan(/^\d+/).first.to_i
+        ChannelConfig.where(id: channel_config_id).update_all(disabled_at: Time.current)
+      end
+      @refresh_home_cmd.execute
     end
   end
 end
