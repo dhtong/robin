@@ -7,11 +7,13 @@ RSpec.describe "Interaction", type: :request do
     allow_any_instance_of(Zenduty::Client).to receive(:get_teams).and_return(get_teams_resp)
   end
   subject { post "/slack/interactions", params: {"payload": payload} }
+  let(:stub_refresh) { expect_any_instance_of(Slack::RefreshHome).to receive(:execute) }
 
   context "submit zenduty token" do
     let(:payload) { file_fixture("zenduty_token.json").read }
 
     it "submit zenduty token" do
+      stub_refresh
       expect { subject }.to change { ExternalAccount.count }.by 1
       expect(response).to have_http_status(:ok)
     end
@@ -22,6 +24,7 @@ RSpec.describe "Interaction", type: :request do
     let(:get_teams_resp) { double(success?: false, :[] => {}) }
 
     it "submit zenduty token" do
+      stub_refresh
       expect { subject }.not_to change { ExternalAccount.count }
       expect(response).to have_http_status(:ok)
     end
@@ -98,7 +101,7 @@ RSpec.describe "Interaction", type: :request do
   
         it "submission" do
           allow_any_instance_of(Zenduty::Client).to receive(:get_teams).and_return get_teams_resp
-          allow_any_instance_of(Zenduty::Client).to receive(:get_schedules).and_return get_schedule_resp
+          allow_any_instance_of(Zenduty::Client).to receive(:get_escalation_policies).and_return get_schedule_resp
 
           expect_any_instance_of(Slack::Web::Client).to receive(:post).with(
             'views.update',
@@ -115,7 +118,7 @@ RSpec.describe "Interaction", type: :request do
   
         it "submission" do
           allow_any_instance_of(Zenduty::Client).to receive(:get_teams).and_return get_teams_resp
-          allow_any_instance_of(Zenduty::Client).to receive(:get_schedules).and_return get_schedule_resp
+          allow_any_instance_of(Zenduty::Client).to receive(:get_escalation_policies).and_return get_schedule_resp
 
           expect_any_instance_of(Slack::Web::Client).not_to receive(:post).with(
             'views.update',
@@ -135,6 +138,7 @@ RSpec.describe "Interaction", type: :request do
     let!(:external_account) { create(:external_account, customer: customer, platform: "zenduty") }
 
     it "create config record" do
+      stub_refresh
       expect { subject }.to change { ChannelConfig.count }.by 1
       expect(response).to have_http_status(:ok)
     end

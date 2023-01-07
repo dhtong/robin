@@ -40,7 +40,7 @@
             },
             {
                 "type": "section",
-                "block_id": "schedule_source_selection-block",
+                "block_id": "escalation_policy_source_selection-block",
                 "text": {
                     "type": "mrkdwn",
                     "text": "Pick a service to get schedule from",
@@ -48,7 +48,7 @@
                 },
                 "accessory": {
                     "type": "static_select",
-                    "action_id": "schedule_source_selection-action",
+                    "action_id": "escalation_policy_source_selection-action",
                     "placeholder": {
                         "type": "plain_text",
                         "text": "Service",
@@ -68,7 +68,7 @@
             },
             {
                 "type": "section",
-                "block_id": "schedule_source_selection_team-block",
+                "block_id": "escalation_policy_source_selection_team-block",
                 "text": {
                     "type": "mrkdwn",
                     "text": "Pick a team",
@@ -76,7 +76,7 @@
                 },
                 "accessory": {
                     "type": "static_select",
-                    "action_id": "schedule_source_selection_team-action",
+                    "action_id": "escalation_policy_source_selection_team-action",
                     "placeholder": {
                         "type": "plain_text",
                         "text": "team",
@@ -104,7 +104,7 @@
             },
             {
                 "type": "input",
-                "block_id": "schedule_source_selection_team_schedule-block",
+                "block_id": "escalation_policy_source_selection_team_escalation_policy-block",
                 "label": {
                     "type": "plain_text",
                     "text": "Pick a schedule",
@@ -114,7 +114,7 @@
                 "dispatch_action": false,
                 "element": {
                     "type": "static_select",
-                    "action_id": "schedule_source_selection_team_schedule-action",
+                    "action_id": "escalation_policy_source_selection_team_escalation_policy-action",
                     "placeholder": {
                         "type": "plain_text",
                         "text": "schedule",
@@ -151,8 +151,8 @@
                         "selected_conversation": "C04GEB66H18"
                     }
                 },
-                "schedule_source_selection-block": {
-                    "schedule_source_selection-action": {
+                "escalation_policy_source_selection-block": {
+                    "escalation_policy_source_selection-action": {
                         "type": "static_select",
                         "selected_option": {
                             "text": {
@@ -164,8 +164,8 @@
                         }
                     }
                 },
-                "schedule_source_selection_team-block": {
-                    "schedule_source_selection_team-action": {
+                "escalation_policy_source_selection_team-block": {
+                    "escalation_policy_source_selection_team-action": {
                         "type": "static_select",
                         "selected_option": {
                             "text": {
@@ -177,8 +177,8 @@
                         }
                     }
                 },
-                "schedule_source_selection_team_schedule-block": {
-                    "schedule_source_selection_team_schedule-action": {
+                "escalation_policy_source_selection_team_escalation_policy-block": {
+                    "escalation_policy_source_selection_team_escalation_policy-action": {
                         "type": "static_select",
                         "selected_option": {
                             "text": {
