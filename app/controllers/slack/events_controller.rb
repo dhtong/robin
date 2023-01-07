@@ -37,7 +37,7 @@ class Slack::EventsController < ApplicationController
 
     mentions = slack_users.map{|u| "<@#{u}>"}
 
-    @slack_client.chat_postMessage(channel: channel, text: "Someone needs you! #{mentions.join(', ')}", as_user: true)
+    @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:thread_ts], text: "Someone needs you! #{mentions.join(', ')}", as_user: true)
   end
 
   def channel
