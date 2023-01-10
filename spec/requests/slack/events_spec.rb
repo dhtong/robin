@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Event", type: :request do
+  let(:stub_slack) { stub_request(:post, /slack/).to_return(status: 200, body: "", headers: {}) }
+
   it "challenge" do
     challenge_message = 'sss'
     post "/slack/events", params: { challenge: challenge_message }
@@ -8,6 +10,26 @@ RSpec.describe "Event", type: :request do
     response_body = JSON.parse(response.body)
     expect(response_body['challenge']).to eq challenge_message
     expect(response).to have_http_status(:ok)
+  end
+
+  context "app_mention" do
+    let!(:customer) { create(:customer, slack_team_id: payload["team_id"]) }
+    let(:payload) { JSON.parse(file_fixture("app_mention.json").read) }
+
+    it "store message" do
+      stub_slack
+      expect {
+        post "/slack/events", params: payload
+      }.to change { Message.count }.by 1      
+    end
+
+    it "skip nil message" do
+      payload["event"]["text"] = "<@U04GT12RTK3>"
+      stub_slack
+      expect {
+        post "/slack/events", params: payload
+      }.not_to change { Message.count }
+    end
   end
 
   context "home" do

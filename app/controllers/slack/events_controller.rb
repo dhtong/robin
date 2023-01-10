@@ -10,6 +10,7 @@ class Slack::EventsController < ApplicationController
     when 'app_home_opened'
       Slack::RefreshHome.new(customer, @slack_client, params[:event][:user]).execute
     when 'app_mention'
+      record_message
       send_message
     end
     
@@ -17,6 +18,13 @@ class Slack::EventsController < ApplicationController
   end
 
   private
+
+  def record_message
+    # removing the first word in text
+    content = params[:event][:text][/(?<=\s).*/]
+    return if content.nil?
+    Message.create(content: content, customer: customer, channel_id: channel)
+  end
 
   def send_message
     oncall_users = channel_configs.flat_map do |channel_config|

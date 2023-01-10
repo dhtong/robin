@@ -1,0 +1,50 @@
+{
+    "token": "[FILTERED]",
+    "team_id": "T04FZQN3B9D",
+    "api_app_id": "A04GEBFQV0S",
+    "event": {
+        "client_msg_id": "108837a4-2c66-4255-92a4-c5e222668857",
+        "type": "app_mention",
+        "text": "<@U04GT12RTK3> some text",
+        "user": "U04G7NZTHKQ",
+        "ts": "1673360805.275909",
+        "blocks": [
+            {
+                "type": "rich_text",
+                "block_id": "odq+5",
+                "elements": [
+                    {
+                        "type": "rich_text_section",
+                        "elements": [
+                            {
+                                "type": "user",
+                                "user_id": "U04GT12RTK3"
+                            },
+                            {
+                                "type": "text",
+                                "text": " some text"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "team": "T04FZQN3B9D",
+        "channel": "C04GT0GUEBT",
+        "event_ts": "1673360805.275909"
+    },
+    "type": "event_callback",
+    "event_id": "Ev04J59Q8FD3",
+    "event_time": 1673360805,
+    "authorizations": [
+        {
+            "enterprise_id": null,
+            "team_id": "T04FZQN3B9D",
+            "user_id": "U04GT12RTK3",
+            "is_bot": true,
+            "is_enterprise_install": false
+        }
+    ],
+    "is_ext_shared_channel": false,
+    "event_context": "4-eyJldCI6ImFwcF9tZW50aW9uIiwidGlkIjoiVDA0RlpRTjNCOUQiLCJhaWQiOiJBMDRHRUJGUVYwUyIsImNpZCI6IkMwNEdUMEdVRUJUIn0"
+}
