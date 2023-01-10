@@ -27,6 +27,8 @@ class Slack::EventsController < ApplicationController
   end
 
   def send_message
+    return @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:ts], text: "there is no oncall schedule linked to this channel yet.", as_user: true) if channel_configs.blank?
+
     oncall_users = channel_configs.flat_map do |channel_config|
       escalation_policies = channel_config.external_account.client.oncall(channel_config.team_id)
       escalation_policy = escalation_policies.find{|policy| policy["escalation_policy"]["unique_id"] == channel_config.escalation_policy_id}
