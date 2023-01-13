@@ -4,6 +4,10 @@ Rails.application.routes.draw do
     resources :events, only: :create
     resources :interactions, only: :create
   end
+
+  namespace :telegram do
+    resources :events, only: :create
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
