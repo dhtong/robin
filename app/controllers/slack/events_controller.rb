@@ -20,10 +20,7 @@ class Slack::EventsController < ApplicationController
   private
 
   def record_message
-    # removing the first word in text
-    content = params[:event][:text][/(?<=\s).*/]
-    return if content.nil?
-    Message.create(content: content, customer: customer, channel_id: channel)
+    Message.create(content: params[:event][:text], customer: customer, channel_id: channel)
   end
 
   def send_message

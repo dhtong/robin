@@ -22,14 +22,6 @@ RSpec.describe "Event", type: :request do
         post "/slack/events", params: payload
       }.to change { Message.count }.by 1      
     end
-
-    it "skip nil message" do
-      payload["event"]["text"] = "<@U04GT12RTK3>"
-      stub_slack
-      expect {
-        post "/slack/events", params: payload
-      }.not_to change { Message.count }
-    end
   end
 
   context "home" do
