@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_10_141954) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_21_181334) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "channel_configs", force: :cascade do |t|
@@ -33,6 +34,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_10_141954) do
     t.datetime "updated_at", null: false
     t.string "slack_team_id"
     t.string "slack_access_token"
+    t.uuid "external_id", default: -> { "gen_random_uuid()" }
+    t.index ["external_id"], name: "index_customers_on_external_id"
     t.index ["slack_team_id"], name: "index_customers_on_slack_team_id"
   end
 
