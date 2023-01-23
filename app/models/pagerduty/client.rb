@@ -16,7 +16,7 @@ module Pagerduty
         redirect_uri: AUTH_URI,
         code: code
       }
-      @oauth_conn.post("post", body, "Content-Type" => "application/json")
+      @oauth_conn.post("post", body.to_json, "Content-Type" => "application/json")
     end
   end
 end
