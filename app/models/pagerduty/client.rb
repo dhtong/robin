@@ -11,12 +11,12 @@ module Pagerduty
       )
     end
 
-    def oauth(code)
+    def oauth(code, customer_external_id)
       body = {
         grant_type: :authorization_code,
         client_id: @client_id,
         client_secret: @client_secret,
-        redirect_uri: AUTH_URI,
+        redirect_uri: AUTH_URI + "?external_id=#{customer_external_id}",
         code: code
       }
       @oauth_conn.post("/oauth/token", body.to_json, "Content-Type" => "application/json")
