@@ -13,12 +13,27 @@ RSpec.describe "Pagerduty::Auth", type: :request do
     }
   end
 
-  let(:stub_pd) { stub_request(:post, "https://identity.pagerduty.com/oauth/token").to_return(status: 200, body: oauth_resp.to_json, headers: {}) }
-  let(:external_id) { "ddd-eee" }
+  let(:oauth_url) { "https://identity.pagerduty.com/oauth/token" }
+  let(:stub_pd) { stub_request(:post, oauth_url).to_return(status: 200, body: oauth_resp.to_json, headers: {}) }
+  let!(:customer) { create(:customer) }
+  let(:external_id) { customer.external_id }
+  subject { get "/pagerduty/auth", params: { external_id: external_id} }
+  let!(:customer) { create(:customer) }
 
   it "auth" do
     stub_pd
-    get "/pagerduty/auth", params: { external_id: external_id }
+    expect { subject }.to change { ExternalAccount.count }.by 1
     expect(response).to redirect_to("https://supportbots.xyz/")
+  end
+
+  context "failed" do
+    let(:oauth_resp) { { "error": "invalid_grant" } }
+    let(:stub_pd) { stub_request(:post, oauth_url).to_return(status: 400, body: oauth_resp.to_json, headers: {}) }
+
+    it "400" do
+      stub_pd
+      expect { subject }.not_to change { ExternalAccount.count }
+      expect(response).to have_http_status(:bad_request)
+    end
   end
 end

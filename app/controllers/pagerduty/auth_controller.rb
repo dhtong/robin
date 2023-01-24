@@ -1,11 +1,11 @@
 class Pagerduty::AuthController < ApplicationController
   def index
     pd_client = Pagerduty::Client.new(ENV["PD_CLIENT_ID"], ENV["PD_CLIENT_SECRET"])
-    # not handling response failure TODO
-    p params[:code]
-    resp = JSON.parse(pd_client.oauth(params[:code], params[:external_id]).body)
-    p resp
-    ExternalAccount.create(customer: customer, platform: "pagerduty", token: resp["access_token"], refresh_token: resp["refresh_token"])
+    resp = pd_client.oauth(params[:code], params[:external_id])
+    return render json: resp.body, status: :bad_request unless resp.success?
+
+    resp_body = JSON.parse(resp.body)
+    ExternalAccount.create!(customer: customer, platform: "pagerduty", token: resp_body["access_token"], refresh_token: resp_body["refresh_token"])
     redirect_to "https://supportbots.xyz/", allow_other_host: true
   end
 
