@@ -5,7 +5,10 @@ module Pagerduty
     def initialize(client_id, client_secret)
       @client_id = client_id
       @client_secret = client_secret
-      @oauth_conn = Faraday.new(url: "https://identity.pagerduty.com/oauth/token")
+      @oauth_conn = Faraday.new(
+        url: "https://identity.pagerduty.com",
+        headers: {'Content-Type' => 'application/json'}
+      )
     end
 
     def oauth(code)
@@ -16,7 +19,7 @@ module Pagerduty
         redirect_uri: AUTH_URI,
         code: code
       }
-      @oauth_conn.post("post", body.to_json, "Content-Type" => "application/json")
+      @oauth_conn.post("/oauth/token", body.to_json, "Content-Type" => "application/json")
     end
   end
 end
