@@ -12,14 +12,13 @@ RSpec.describe "Pagerduty::Auth", type: :request do
       "expires_in":864000
     }
   end
-  let(:stub_pd) { stub_request(:post, /pagerduty/).to_return(status: 200, body: oauth_resp.to_json, headers: {}) }
+
+  let(:stub_pd) { stub_request(:post, "https://identity.pagerduty.com/oauth/token").to_return(status: 200, body: oauth_resp.to_json, headers: {}) }
   let(:external_id) { "ddd-eee" }
 
   it "auth" do
-    challenge_message = 'sss'
+    stub_pd
     get "/pagerduty/auth", params: { external_id: external_id }
-
-    response_body = JSON.parse(response.body)
-    expect(response).to have_http_status(:ok)
+    expect(response).to redirect_to("https://supportbots.xyz/")
   end
 end
