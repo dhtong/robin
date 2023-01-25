@@ -45,6 +45,7 @@ module Slack
       ChannelConfig.upsert(attributes, unique_by: [:external_account_id, :channel_id])
     end
 
+    # handle an action on slack. this results in a view change.
     def handle_block_actions
       raise StandardError.new("more than one actions") if @payload["actions"].size > 1
       action = @payload["actions"].last
@@ -79,6 +80,7 @@ module Slack
       @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
     end
 
+    # integration to use for a channel config
     def handle_escalation_policy_source_selection
       selected_platform = @payload["actions"][0]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: selected_platform).first
@@ -106,6 +108,7 @@ module Slack
       account.save
     end
   
+    # new integration to add
     def handle_integration_selection(action)
       case action["selected_option"]["value"]
       when "zenduty"
@@ -247,6 +250,7 @@ module Slack
     end
 
     # this change db state
+    # this is the overflow menu
     def handle_channel_config_edit(action)
       case action["selected_option"]["value"]
       when "delete"
