@@ -29,9 +29,15 @@ class Slack::EventsController < ApplicationController
     oncall_users = channel_config.oncall_users
 
     slack_users = oncall_users.map do |user|
-      resp = @slack_client.users_lookupByEmail(email: user["email"])
+      begin
+        resp = @slack_client.users_lookupByEmail(email: user["email"])
+      rescue Slack::Web::Api::Errors::UsersNotFound
+        @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:thread_ts], text: "Slack user not found for #{user["email"]}", as_user: true)
+      end
       resp["user"]["id"]
     end
+
+    return if slack_users.empty?
 
     begin
       @slack_client.conversations_invite(channel: channel, users: slack_users.join(","))
