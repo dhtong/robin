@@ -134,13 +134,14 @@ module Presenters::Slack
 
     def team_block(teams)
       {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
+        "type": "input",
+        "dispatch_action": true,
+        "label": {
+          "type": "plain_text",
           "text": "Pick a team"
         },
         "block_id": TEAM_BLOCK_ID,
-        "accessory": {
+        "element": {
           "type": "static_select",
           "placeholder": {
             "type": "plain_text",
