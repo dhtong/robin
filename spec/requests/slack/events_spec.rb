@@ -22,7 +22,7 @@ RSpec.describe "Event", type: :request do
       stub_slack
       expect {
         post "/slack/events", params: payload
-      }.to change { Message.count }.by 1      
+      }.to change { Records::Message.count }.by 1      
     end
   end
 
@@ -43,7 +43,7 @@ RSpec.describe "Event", type: :request do
         allow_any_instance_of(Slack::Web::Client).to receive(:views_publish)
         expect {
           post "/slack/events", params: payload
-        }.to_not change { Customer.count }
+        }.to_not change { Records::Customer.count }
       end
     end
   end

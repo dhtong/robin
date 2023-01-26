@@ -20,7 +20,7 @@ class Slack::EventsController < ApplicationController
   private
 
   def record_message
-    Message.create(content: params[:event][:text], customer: customer, channel_id: channel)
+    Records::Message.create(content: params[:event][:text], customer: customer, channel_id: channel)
   end
 
   def send_message
@@ -52,10 +52,10 @@ class Slack::EventsController < ApplicationController
   end
   
   def channel_config
-    @channel_config ||= ChannelConfig.find_by(channel_id: channel)
+    @channel_config ||= Records::ChannelConfig.find_by(channel_id: channel)
   end
 
   def customer
-    @customer ||= Customer.find_by(slack_team_id: params[:team_id])
+    @customer ||= Records::Customer.find_by(slack_team_id: params[:team_id])
   end
 end

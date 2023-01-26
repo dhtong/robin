@@ -22,7 +22,7 @@ RSpec.describe "Pagerduty::Auth", type: :request do
 
   it "auth" do
     stub_pd
-    expect { subject }.to change { ExternalAccount.count }.by 1
+    expect { subject }.to change { Records::ExternalAccount.count }.by 1
     expect(response).to redirect_to("https://supportbots.xyz/")
   end
 
@@ -32,7 +32,7 @@ RSpec.describe "Pagerduty::Auth", type: :request do
 
     it "400" do
       stub_pd
-      expect { subject }.not_to change { ExternalAccount.count }
+      expect { subject }.not_to change { Records::ExternalAccount.count }
       expect(response).to have_http_status(:bad_request)
     end
   end

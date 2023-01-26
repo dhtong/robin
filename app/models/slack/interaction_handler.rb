@@ -45,7 +45,7 @@ module Slack
       selected_account_id = @customer.external_accounts.where(platform: escalation_policy_platform).pluck(:id).first
       attributes = {chat_platform: "slack", channel_id: channel_id, team_id: team_id, escalation_policy_id: escalation_policy_id, external_account_id: selected_account_id}
       # a channel can only link to one escalation_policy. this also deletes the history if the user has set a different policy before.
-      ChannelConfig.upsert(attributes, unique_by: [:external_account_id, :channel_id])
+      Records::ChannelConfig.upsert(attributes, unique_by: [:external_account_id, :channel_id])
     end
 
     # handle an action on slack. this results in a view change.
@@ -112,7 +112,7 @@ module Slack
   
     def handle_zenduty_token_submission
       zenduty_token = @payload["view"]["state"]["values"][ZENDUTY_TOKEN_BLOCK_ID]["zenduty_token-action"]["value"]
-      account = ExternalAccount.new(customer: @customer, platform: "zenduty", token: zenduty_token)
+      account = Records::ExternalAccount.new(customer: @customer, platform: "zenduty", token: zenduty_token)
       res = account.client.get_teams
       return ValidationError.new(ZENDUTY_TOKEN_BLOCK_ID, res["error"]) unless res.success?
       account.save
@@ -265,7 +265,7 @@ module Slack
       case action["selected_option"]["value"]
       when "delete"
         channel_config_id = action["action_id"].scan(/^\d+/).first.to_i
-        ChannelConfig.where(id: channel_config_id).update_all(disabled_at: Time.current)
+        Records::ChannelConfig.where(id: channel_config_id).update_all(disabled_at: Time.current)
       end
       @refresh_home_cmd.execute
     end

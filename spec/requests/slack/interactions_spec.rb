@@ -16,7 +16,7 @@ RSpec.describe "Interaction", type: :request do
 
     it "delete records" do
       stub_refresh
-      expect { subject }.to change { ChannelConfig.unscoped.find(15).disabled_at }.from nil
+      expect { subject }.to change { Records::ChannelConfig.unscoped.find(15).disabled_at }.from nil
       expect(response).to have_http_status(:ok)
     end
   end
@@ -26,7 +26,7 @@ RSpec.describe "Interaction", type: :request do
 
     it "submit zenduty token" do
       stub_refresh
-      expect { subject }.to change { ExternalAccount.count }.by 1
+      expect { subject }.to change { Records::ExternalAccount.count }.by 1
       expect(response).to have_http_status(:ok)
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe "Interaction", type: :request do
 
     it "submit zenduty token" do
       stub_refresh
-      expect { subject }.not_to change { ExternalAccount.count }
+      expect { subject }.not_to change { Records::ExternalAccount.count }
       expect(response).to have_http_status(:ok)
     end
   end
@@ -174,7 +174,7 @@ RSpec.describe "Interaction", type: :request do
 
     it "create config record" do
       stub_refresh
-      expect { subject }.to change { ChannelConfig.count }.by 1
+      expect { subject }.to change { Records::ChannelConfig.count }.by 1
       expect(response).to have_http_status(:ok)
     end
 
@@ -184,8 +184,8 @@ RSpec.describe "Interaction", type: :request do
 
       it "create config record" do
         stub_refresh
-        expect { subject }.to change { ChannelConfig.count }.by 1
-        expect(ChannelConfig.last.team_id).to be_nil
+        expect { subject }.to change { Records::ChannelConfig.count }.by 1
+        expect(Records::ChannelConfig.last.team_id).to be_nil
         expect(response).to have_http_status(:ok)
       end
     end

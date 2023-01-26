@@ -12,7 +12,7 @@ class Slack::InteractionsController < ApplicationController
   private
 
   def customer
-    Customer.find_by(slack_team_id: payload["team"]["id"])
+    Records::Customer.find_by(slack_team_id: payload["team"]["id"])
   end
 
   def payload
