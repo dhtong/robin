@@ -25,9 +25,8 @@ class Slack::EventsController < ApplicationController
 
   def send_message
     return @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:ts], text: "there is no oncall schedule linked to this channel yet.", as_user: true) if channel_config.blank?
-
     oncall_users = channel_config.oncall_users
-
+    p oncall_users
     slack_users = oncall_users.map do |user|
       begin
         resp = @slack_client.users_lookupByEmail(email: user["email"])

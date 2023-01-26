@@ -15,6 +15,8 @@ RSpec.describe "Event", type: :request do
   context "app_mention" do
     let!(:customer) { create(:customer, slack_team_id: payload["team_id"]) }
     let(:payload) { JSON.parse(file_fixture("app_mention.json").read) }
+    let!(:channel_config) { create(:channel_config, channel_id: payload["event"]["channel"]) }
+    let(:stub_oncall) { stub_request(:post, /slack/).to_return(status: 200, body: "", headers: {}) }
 
     it "store message" do
       stub_slack
