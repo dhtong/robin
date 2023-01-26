@@ -54,13 +54,14 @@ module Presenters::Slack
 
       def source_block(external_accounts)
         {
-          "type": "section",
+          "dispatch_action": true,
+          "type": "input",
           "text": {
-            "type": "mrkdwn",
+            "type": "plain_text",
             "text": "Pick a service to get an escalation policy from"
           },
           "block_id": PLATFORM_BLOCK_ID,
-          "accessory": {
+          "element": {
             "type": "static_select",
             "placeholder": {
               "type": "plain_text",
