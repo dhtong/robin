@@ -35,7 +35,7 @@ class Slack::EventsController < ApplicationController
         @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:thread_ts], text: "Slack user not found for #{user["email"]}", as_user: true)
       end
     end.compact
-
+    p "slack uesr - ------- -- -- -- ----- #{slack_users}"
     return if slack_users.empty?
 
     begin
