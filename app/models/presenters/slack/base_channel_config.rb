@@ -56,9 +56,9 @@ module Presenters::Slack
         {
           "dispatch_action": true,
           "type": "input",
-          "text": {
+          "label": {
             "type": "plain_text",
-            "text": "Pick a service to get an escalation policy from"
+            "text": "Pick a service to get a schedule or escalation policy from"
           },
           "block_id": PLATFORM_BLOCK_ID,
           "element": {
