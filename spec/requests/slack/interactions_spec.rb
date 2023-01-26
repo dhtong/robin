@@ -93,8 +93,8 @@ RSpec.describe "Interaction", type: :request do
     context 'select pagerduty' do
       let(:payload) { file_fixture("schedule_source_select-pd.json").read }
 
-      let!(:external_account) { create(:external_account, customer: customer, platform: "zenduty") }
-      let!(:other_external_account) { create(:external_account, customer: customer, platform: "pagerduty") }
+      let!(:other_external_account) { create(:external_account, customer: customer, platform: "zenduty") }
+      let!(:external_account) { create(:external_account, customer: customer, platform: "pagerduty") }
       let(:schedules_resp) do
         {
           "schedules": [{ "id": "PZBWKR7", "summary": "customer"}]
@@ -176,6 +176,18 @@ RSpec.describe "Interaction", type: :request do
       stub_refresh
       expect { subject }.to change { ChannelConfig.count }.by 1
       expect(response).to have_http_status(:ok)
+    end
+
+    context 'pagerduty' do
+      let(:payload) { file_fixture("create_channel_config_pd.json").read }
+      let!(:external_account) { create(:external_account, customer: customer, platform: "pagerduty") }
+
+      it "create config record" do
+        stub_refresh
+        expect { subject }.to change { ChannelConfig.count }.by 1
+        expect(ChannelConfig.last.team_id).to be_nil
+        expect(response).to have_http_status(:ok)
+      end
     end
   end
 end

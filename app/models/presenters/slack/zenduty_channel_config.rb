@@ -2,8 +2,6 @@ module Presenters::Slack
   class ZendutyChannelConfig < BaseChannelConfig
     TEAM_BLOCK_ID = "escalation_policy_source_selection_team-block"
     TEAM_ACTION_ID = "escalation_policy_source_selection_team-action"
-    ESCALATION_POLICY_BLOCK_ID = "escalation_policy_source_selection_team_escalation_policy-block"
-    ESCALATION_POLICY_ACTION_ID = "escalation_policy_source_selection_team_escalation_policy-action"
 
     def with_teams(teams)
       @blocks[2] = team_block(teams)

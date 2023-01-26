@@ -1,8 +1,5 @@
 module Presenters::Slack
   class PagerdutyChannelConfig < BaseChannelConfig
-    SCHEDULE_BLOCK_ID = "pd_schedule_selection-block"
-    SCHEDULE_ACTION_ID = "pd_schedule_selection-action"
-
     def with_schedules(schedules)
       @blocks[2] = schedule_block(schedules)
       @blocks = @blocks[..2]
@@ -17,7 +14,7 @@ module Presenters::Slack
           "type": "plain_text",
           "text": "Pick a schedule"
         },
-        "block_id": SCHEDULE_BLOCK_ID,
+        "block_id": ESCALATION_POLICY_BLOCK_ID,
         "element": {
           "type": "static_select",
           "placeholder": {
@@ -25,7 +22,7 @@ module Presenters::Slack
             "text": "schedule"
           },
           "options": schedule_options(schedules),
-          "action_id": SCHEDULE_ACTION_ID
+          "action_id": ESCALATION_POLICY_ACTION_ID
         }
       }
     end

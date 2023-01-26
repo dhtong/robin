@@ -3,6 +3,8 @@ module Presenters::Slack
     CALLBACK_ID = "new_channel_config"
     PLATFORM_BLOCK_ID = "escalation_policy_source_selection-block"
     PLATFORM_ACTION_ID = "escalation_policy_source_selection-action"
+    ESCALATION_POLICY_BLOCK_ID = "escalation_policy-block"
+    ESCALATION_POLICY_ACTION_ID = "escalation_policy-action"
 
     BASE_VIEW = {
       "type": "modal",

@@ -8,7 +8,8 @@ module Slack
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
       @refresh_home_cmd = Slack::RefreshHome.new(customer, slack_client, @caller_id)
-      @channel_config_presenter_class = ::Presenters::Slack::ZendutyChannelConfig
+      @channel_config_presenter_class = ::Presenters::Slack::BaseChannelConfig
+      @zd_config_presenter_cls = ::Presenters::Slack::ZendutyChannelConfig
     end
   
     def execute
@@ -36,9 +37,11 @@ module Slack
     def handle_channel_config
       state_values = @payload["view"]["state"]["values"]
       channel_id = state_values["conversations_select-block"]["conversations_select-action"]["selected_conversation"]
-      team_id = state_values[@channel_config_presenter_class::TEAM_BLOCK_ID][@channel_config_presenter_class::TEAM_ACTION_ID]["selected_option"]["value"]
       escalation_policy_id = state_values[@channel_config_presenter_class::ESCALATION_POLICY_BLOCK_ID][@channel_config_presenter_class::ESCALATION_POLICY_ACTION_ID]["selected_option"]["value"]
       escalation_policy_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
+
+      team_id = state_values[@zd_config_presenter_cls::TEAM_BLOCK_ID][@zd_config_presenter_cls::TEAM_ACTION_ID]["selected_option"]["value"] if escalation_policy_platform == "zenduty"
+
       selected_account_id = @customer.external_accounts.where(platform: escalation_policy_platform).pluck(:id).first
       attributes = {chat_platform: "slack", channel_id: channel_id, team_id: team_id, escalation_policy_id: escalation_policy_id, external_account_id: selected_account_id}
       # a channel can only link to one escalation_policy. this also deletes the history if the user has set a different policy before.
