@@ -1,6 +1,9 @@
 module Presenters::Slack
   class BaseChannelConfig
     CALLBACK_ID = "new_channel_config"
+    PLATFORM_BLOCK_ID = "escalation_policy_source_selection-block"
+    PLATFORM_ACTION_ID = "escalation_policy_source_selection-action"
+
     BASE_VIEW = {
       "type": "modal",
       "callback_id": CALLBACK_ID,
@@ -40,6 +43,45 @@ module Presenters::Slack
     class << self
       def from_blocks(blocks)
         new(blocks)
+      end
+
+      def from_external_accounts(external_accounts)
+        blocks = [CONVERSATION_BLOCK, source_block(external_accounts)]
+        new(blocks)
+      end
+
+      private
+
+      def source_block(external_accounts)
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "Pick a service to get an escalation policy from"
+          },
+          "block_id": PLATFORM_BLOCK_ID,
+          "accessory": {
+            "type": "static_select",
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Service",
+            },
+            "options": source_options(external_accounts),
+            "action_id": PLATFORM_ACTION_ID
+          }
+        }
+      end
+
+      def source_options(external_accounts)
+        external_accounts.map do |account|
+          {
+            "text": {
+              "type": "plain_text",
+              "text": account.platform.capitalize,
+            },
+            "value": account.platform
+          }
+        end
       end
     end
 
