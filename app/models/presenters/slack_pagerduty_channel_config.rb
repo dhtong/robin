@@ -13,7 +13,7 @@ module Presenters
     def schedule_block(schedules)
       {
         "type": "input",
-        "text": {
+        "label": {
           "type": "plain_text",
           "text": "Pick a schedule"
         },
