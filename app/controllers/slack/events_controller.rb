@@ -31,10 +31,10 @@ class Slack::EventsController < ApplicationController
     slack_users = oncall_users.map do |user|
       begin
         resp = @slack_client.users_lookupByEmail(email: user["email"])
+        resp["user"]["id"]
       rescue Slack::Web::Api::Errors::UsersNotFound
         @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:thread_ts], text: "Slack user not found for #{user["email"]}", as_user: true)
       end
-      resp["user"]["id"]
     end
 
     return if slack_users.empty?
