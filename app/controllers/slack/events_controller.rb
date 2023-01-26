@@ -26,16 +26,15 @@ class Slack::EventsController < ApplicationController
   def send_message
     return @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:ts], text: "there is no oncall schedule linked to this channel yet.", as_user: true) if channel_config.blank?
     oncall_users = channel_config.oncall_users
-    p oncall_users
     slack_users = oncall_users.map do |user|
       begin
         resp = @slack_client.users_lookupByEmail(email: user["email"])
         resp["user"]["id"]
       rescue Slack::Web::Api::Errors::UsersNotFound
         @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:thread_ts], text: "Slack user not found for #{user["email"]}", as_user: true)
+        nil
       end
     end.compact
-    p "slack uesr - ------- -- -- -- ----- #{slack_users}"
     return if slack_users.empty?
 
     begin
