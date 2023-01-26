@@ -24,16 +24,12 @@ class Slack::EventsController < ApplicationController
   end
 
   def send_message
-    return @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:ts], text: "there is no oncall schedule linked to this channel yet.", as_user: true) if channel_configs.blank?
+    return @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:ts], text: "there is no oncall schedule linked to this channel yet.", as_user: true) if channel_config.blank?
 
-    oncall_users = channel_configs.flat_map do |channel_config|
-      escalation_policies = channel_config.external_account.client.oncall(channel_config.team_id)
-      escalation_policy = escalation_policies.find{|policy| policy["escalation_policy"]["unique_id"] == channel_config.escalation_policy_id}
-      escalation_policy["users"]
-    end.uniq {|user| user["username"]}
+    oncall_users = channel_config.oncall_users
 
-    slack_users = oncall_users.map do |zenduty_user|
-      resp = @slack_client.users_lookupByEmail(email: zenduty_user["email"])
+    slack_users = oncall_users.map do |user|
+      resp = @slack_client.users_lookupByEmail(email: user["email"])
       resp["user"]["id"]
     end
 
@@ -51,8 +47,8 @@ class Slack::EventsController < ApplicationController
     params[:event][:channel]
   end
   
-  def channel_configs
-    @channel_configs ||= ChannelConfig.where(channel_id: channel)
+  def channel_config
+    @channel_config ||= ChannelConfig.find_by(channel_id: channel)
   end
 
   def customer

@@ -18,5 +18,13 @@ module Pagerduty
       # not handle pagination
       JSON.parse(res.body)["schedules"]
     end
+
+    def get_oncall(schedule_id)
+      res = @oauth_conn.get("/oncalls", { schedule_ids: [schedule_id], include: ["users"]})
+      return nil unless res.success?
+      res_body = JSON.parse(res.body)
+      return [] if res_body["oncalls"].empty?
+      res_body["oncalls"].map { |oncall| oncall["user"] }
+    end
   end
 end
