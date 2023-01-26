@@ -1,5 +1,5 @@
 module Pagerduty
-  class Client
+  class OauthClient
     AUTH_URI = "https://supportbots.herokuapp.com/pagerduty/auth"
 
     def self.get_redirect_uri(customer_external_id)

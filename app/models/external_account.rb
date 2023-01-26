@@ -9,6 +9,8 @@ class ExternalAccount < ApplicationRecord
     case platform
     when "zenduty"
       @client = Zenduty::Client.new(token)
+    when "pagerduty"
+      @client = Pagerduty::ApiClient.new(token)
     end
     @client
   end

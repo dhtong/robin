@@ -1,0 +1,89 @@
+{
+  "type": "block_actions",
+  "team": {
+    "id": "T04FZQN3B9D",
+    "domain": "supportbotsworkspace"
+  },
+  "user": {
+    "id": "U04G7NZTHKQ",
+    "username": "dan",
+    "name": "dan",
+    "team_id": "T04FZQN3B9D"
+  },
+  "actions": [
+      {
+          "type": "static_select",
+          "action_id": "escalation_policy_source_selection-action",
+          "block_id": "escalation_policy_source_selection-block",
+          "selected_option": {
+              "text": {
+                  "type": "plain_text",
+                  "text": "Pagerduty",
+                  "emoji": true
+              },
+              "value": "pagerduty"
+          },
+          "placeholder": {
+              "type": "plain_text",
+              "text": "Service",
+              "emoji": true
+          },
+          "action_ts": "1672697040.366897"
+      }
+  ],
+  "view": {
+    "id": "V04HA1LKHC4",
+    "team_id": "T04FZQN3B9D",
+    "type": "modal",
+    "blocks": [
+        {
+            "type": "input",
+            "block_id": "conversations_select-block",
+            "label": {
+                "type": "plain_text",
+                "text": "Channel",
+                "emoji": true
+            },
+            "optional": false,
+            "dispatch_action": false,
+            "element": {
+                "type": "conversations_select",
+                "action_id": "conversations_select-action",
+                "placeholder": {
+                    "type": "plain_text",
+                    "text": "Select channel",
+                    "emoji": true
+                }
+            }
+        },
+        {
+            "type": "section",
+            "block_id": "escalation_policy_source_selection-block",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Pick a service to get schedule from",
+                "verbatim": false
+            },
+            "accessory": {
+                "type": "static_select",
+                "action_id": "escalation_policy_source_selection-action",
+                "placeholder": {
+                    "type": "plain_text",
+                    "text": "Service",
+                    "emoji": true
+                },
+                "options": [
+                    {
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Zenduty",
+                            "emoji": true
+                        },
+                        "value": "zenduty"
+                    }
+                ]
+            }
+        }
+    ]
+  }
+}

@@ -90,6 +90,29 @@ RSpec.describe "Interaction", type: :request do
       expect(response).to have_http_status(:ok)
     end
 
+    context 'select pagerduty' do
+      let(:payload) { file_fixture("schedule_source_select-pd.json").read }
+
+      let!(:external_account) { create(:external_account, customer: customer, platform: "zenduty") }
+      let!(:other_external_account) { create(:external_account, customer: customer, platform: "pagerduty") }
+      let(:schedules_resp) do
+        {
+          "schedules": [{ "id": "PZBWKR7", "summary": "customer"}]
+        }
+      end
+      let(:stub_pd_schedules) { stub_request(:get, "https://api.pagerduty.com/schedules").to_return(status: 200, body: schedules_resp.to_json, headers: {}) }
+
+      it "show zenduty schedules" do
+        stub_pd_schedules
+        expect_any_instance_of(Slack::Web::Client).to receive(:post).with(
+          'views.update',
+          anything
+        )
+        subject
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
     context 'select zenduty' do
       let(:payload) { file_fixture("schedule_source_select.json").read }
       let!(:external_account) { create(:external_account, customer: customer, platform: "zenduty") }

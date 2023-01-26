@@ -1,6 +1,6 @@
 class Pagerduty::AuthController < ApplicationController
   def index
-    pd_client = Pagerduty::Client.new(ENV["PD_CLIENT_ID"], ENV["PD_CLIENT_SECRET"])
+    pd_client = Pagerduty::OauthClient.new(ENV["PD_CLIENT_ID"], ENV["PD_CLIENT_SECRET"])
     resp = pd_client.oauth(params[:code], params[:external_id])
     return render json: resp.body, status: :bad_request unless resp.success?
 
