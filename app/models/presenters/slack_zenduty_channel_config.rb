@@ -100,6 +100,7 @@ module Presenters
 
     def with_teams(teams)
       @blocks[2] = team_block(teams)
+      @blocks = @blocks[..2]
     end
 
     def with_escalation_policies(escalation_policies)

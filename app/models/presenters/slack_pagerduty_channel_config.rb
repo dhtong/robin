@@ -5,19 +5,20 @@ module Presenters
 
     def with_schedules(schedules)
       @blocks[2] = schedule_block(schedules)
+      @blocks = @blocks[..2]
     end
 
     private
 
     def schedule_block(schedules)
       {
-        "type": "section",
+        "type": "input",
         "text": {
-          "type": "mrkdwn",
+          "type": "plain_text",
           "text": "Pick a schedule"
         },
         "block_id": SCHEDULE_BLOCK_ID,
-        "accessory": {
+        "element": {
           "type": "static_select",
           "placeholder": {
             "type": "plain_text",
