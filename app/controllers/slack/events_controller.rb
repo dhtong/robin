@@ -35,7 +35,7 @@ class Slack::EventsController < ApplicationController
       rescue Slack::Web::Api::Errors::UsersNotFound
         @slack_client.chat_postMessage(channel: channel, thread_ts: params[:event][:thread_ts], text: "Slack user not found for #{user["email"]}", as_user: true)
       end
-    end
+    end.compact
 
     return if slack_users.empty?
 
