@@ -8,7 +8,7 @@ module Slack
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
       @refresh_home_cmd = Slack::RefreshHome.new(customer, slack_client, @caller_id)
-      @channel_config_presenter_class = ::Presenters::SlackZendutyChannelConfig
+      @channel_config_presenter_class = ::Presenters::Slack::ZendutyChannelConfig
     end
   
     def execute
@@ -70,11 +70,11 @@ module Slack
       selected_team_id = @payload["actions"][0]["selected_option"]["value"]
       selected_platform = @payload["view"]["state"]["values"]["escalation_policy_source_selection-block"]["escalation_policy_source_selection-action"]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: selected_platform).first
-      presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
+      presenter = Presenters::Slack::ZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
 
       available_escalation_policies = selected_account.client.get_escalation_policies(selected_team_id)
       # TODO this validation is not show right now. maybe validate teams before showing team options.
-      return ValidationError.new(Presenters::SlackZendutyChannelConfig::TEAM_BLOCK_ID, "No escalation policies available") if available_escalation_policies.blank?
+      return ValidationError.new(Presenters::Slack::ZendutyChannelConfig::TEAM_BLOCK_ID, "No escalation policies available") if available_escalation_policies.blank?
       presenter.with_escalation_policies(available_escalation_policies)
 
       @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
@@ -87,10 +87,10 @@ module Slack
 
       case selected_platform
       when "zenduty"
-        presenter = Presenters::SlackZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
+        presenter = Presenters::Slack::ZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
         presenter.with_teams(selected_account.client.get_teams)  
       when "pagerduty"
-        presenter = Presenters::SlackPagerdutyChannelConfig.from_blocks(@payload["view"]["blocks"])
+        presenter = Presenters::Slack::PagerdutyChannelConfig.from_blocks(@payload["view"]["blocks"])
         schedules = selected_account.client.list_schedules
         presenter.with_schedules(schedules)
       end

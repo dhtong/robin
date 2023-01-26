@@ -1,5 +1,5 @@
-module Presenters
-  class SlackBaseChannelConfig
+module Presenters::Slack
+  class BaseChannelConfig
     CALLBACK_ID = "new_channel_config"
     BASE_VIEW = {
       "type": "modal",

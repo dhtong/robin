@@ -1,5 +1,5 @@
-module Presenters
-  class SlackPagerdutyChannelConfig < SlackBaseChannelConfig
+module Presenters::Slack
+  class PagerdutyChannelConfig < BaseChannelConfig
     SCHEDULE_BLOCK_ID = "pd_schedule_selection-block"
     SCHEDULE_ACTION_ID = "pd_schedule_selection-action"
 

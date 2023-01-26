@@ -1,5 +1,5 @@
-module Presenters
-  class SlackZendutyChannelConfig
+module Presenters::Slack
+  class ZendutyChannelConfig
     CALLBACK_ID = "new_channel_config"
     BASE_VIEW = {
       "type": "modal",
