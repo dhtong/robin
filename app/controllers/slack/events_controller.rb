@@ -17,6 +17,11 @@ class Slack::EventsController < ApplicationController
     head :ok
   end
 
+  def ping
+    Slack::PingerJob.perform_later('testter')
+    head :ok
+  end
+
   private
 
   def record_message
