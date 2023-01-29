@@ -11,8 +11,8 @@ class Slack::EventsController < ApplicationController
       Slack::RefreshHome.new(customer, @slack_client, params[:event][:user]).execute
     when 'app_mention'
       msg = record_message
-      send_message
-      # Slack::PingOncall.perform_later(msg.id)
+      # send_message
+      Slack::PingOncall.perform_later(msg.id)
     end
     
     head :ok

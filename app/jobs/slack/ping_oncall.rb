@@ -25,7 +25,7 @@ class Slack::PingOncall < ApplicationJob
         resp = @slack_client.users_lookupByEmail(email: user["email"])
         resp["user"]["id"]
       rescue Slack::Web::Api::Errors::UsersNotFound
-        @slack_client.chat_postMessage(channel: channel, text: "Slack user not found for #{user["email"]}", as_user: true)
+        @slack_client.chat_postMessage(channel: @message.channel_id, text: "Slack user not found for #{user["email"]}", as_user: true)
         nil
       end
     end.compact
