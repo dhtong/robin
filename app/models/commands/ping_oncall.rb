@@ -34,7 +34,7 @@ module Commands
     private
 
     def post_message(msg)
-      @chat_client.chat_postMessage(channel: @message.channel_id, thread_ts: @message.event_payload["ts"], text: msg, as_user: true)
+      @chat_client.chat_postMessage(channel: @message.channel_id, thread_ts: @message.event_payload["thread_ts"], text: msg, as_user: true)
     end
   end
 end
