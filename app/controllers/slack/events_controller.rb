@@ -21,7 +21,7 @@ class Slack::EventsController < ApplicationController
   private
 
   def record_message
-    Records::Message.create(content: params[:event][:text], customer: customer, channel_id: channel)
+    Records::Message.create(content: params[:event][:text], customer: customer, channel_id: channel, event_payload: params[:event])
   end
 
   def send_message
