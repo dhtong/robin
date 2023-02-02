@@ -11,6 +11,7 @@ class Slack::EventsController < ApplicationController
       Slack::RefreshHome.new(customer, @slack_client, params[:event][:user]).execute
     when 'app_mention'
       msg = record_message
+      return head :ok if msg.nil?
       Slack::PingOncall.perform_later(msg.id)
     end
     
@@ -20,7 +21,10 @@ class Slack::EventsController < ApplicationController
   private
 
   def record_message
-    Records::Message.create(content: params[:event][:text], customer: customer, channel_id: channel, event_payload: params[:event])
+    external_message_id = params[:event][:client_message_id]
+    existing_message = Records::Message.find_by(external_id: external_message_id)
+    return nil unless existing_message.nil?
+    Records::Message.create(content: params[:event][:text], customer: customer, channel_id: channel, event_payload: params[:event], external_id: external_message_id)
   end
 
   def channel

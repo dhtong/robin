@@ -23,7 +23,24 @@ RSpec.describe "Event", type: :request do
       stub_slack
       expect {
         post "/slack/events", params: payload
-      }.to change { Records::Message.count }.by 1      
+      }.to change { Records::Message.count }.by 1
+
+      # call again should not create another message
+      expect {
+        post "/slack/events", params: payload
+      }.not_to change { Records::Message.count }
+    end
+
+    it "create job " do
+      stub_slack
+      expect {
+        post "/slack/events", params: payload
+      }.to have_enqueued_job(Slack::PingOncall)
+
+      # call again should not create the job
+      expect {
+        post "/slack/events", params: payload
+      }.not_to have_enqueued_job(Slack::PingOncall)
     end
   end
 
