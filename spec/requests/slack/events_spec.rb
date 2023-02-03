@@ -31,6 +31,20 @@ RSpec.describe "Event", type: :request do
       }.not_to change { Records::Message.count }
     end
 
+    context 'no message id' do
+      let!(:exisiting_message) { create(:message, external_id: nil) }
+      before do
+        payload["event"]["client_msg_id"] = nil
+      end
+
+      it 'create a new message' do
+        stub_slack
+        expect {
+          post "/slack/events", params: payload
+        }.to change { Records::Message.count }
+      end
+    end
+
     it "create job " do
       stub_slack
       expect {

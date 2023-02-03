@@ -22,8 +22,8 @@ class Slack::EventsController < ApplicationController
 
   def record_message
     external_message_id = params[:event][:client_msg_id]
-    existing_message = Records::Message.find_by(external_id: external_message_id)
-    return nil unless existing_message.nil?
+    existing_message = Records::Message.find_by(external_id: external_message_id) if external_message_id.present?
+    return nil if existing_message.present?
     Records::Message.create(content: params[:event][:text], customer: customer, channel_id: channel, event_payload: params[:event], external_id: external_message_id)
   end
 
