@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_02_170614) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_05_164229) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -26,6 +26,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_02_170614) do
     t.datetime "disabled_at"
     t.index ["external_account_id", "channel_id"], name: "index_channel_configs_on_external_account_id_and_channel_id", unique: true
     t.index ["external_account_id"], name: "index_channel_configs_on_external_account_id"
+  end
+
+  create_table "customer_users", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.string "email"
+    t.string "slack_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_customer_users_on_customer_id"
+    t.index ["email"], name: "index_customer_users_on_email"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -64,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_02_170614) do
     t.index ["external_id"], name: "index_messages_on_external_id"
   end
 
+  add_foreign_key "customer_users", "customers"
   add_foreign_key "external_accounts", "customers"
   add_foreign_key "messages", "customers"
 end
