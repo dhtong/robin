@@ -1,7 +1,7 @@
 module Pagerduty
   class ApiClient
     def initialize(access_token)
-      @oauth_conn = Faraday.new(
+      @api_conn = Faraday.new(
         url: "https://api.pagerduty.com",
         headers: {
           "Content-Type": "application/json",
@@ -12,7 +12,7 @@ module Pagerduty
     end
 
     def list_schedules
-      res = @oauth_conn.get("/schedules")
+      res = @api_conn.get("/schedules")
       # not handling errors. this is a silent fail
       return [] unless res.success?
       # not handle pagination
@@ -20,11 +20,18 @@ module Pagerduty
     end
 
     def get_oncall(schedule_id)
-      res = @oauth_conn.get("/oncalls", { schedule_ids: [schedule_id], include: ["users"]})
+      res = @api_conn.get("/oncalls", { schedule_ids: [schedule_id], include: ["users"]})
       return nil unless res.success?
       res_body = JSON.parse(res.body)
       return [] if res_body["oncalls"].empty?
       res_body["oncalls"].map { |oncall| oncall["user"] }
+    end
+
+    def get_user(id)
+      res = @api_conn.get("/users/#{id}")
+      return nil unless res.success?
+      res_body = JSON.parse(res.body)
+      Domain::OncallUser.new(res_body["user"])
     end
   end
 end

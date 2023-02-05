@@ -24,5 +24,10 @@ module Zenduty
       # TODO(alec): Upstream fix?
       @api_client._get("/api/account/teams/#{team_id}/oncall")
     end
+
+    def get_user(team_id, member_id)
+      res = @api_client._get("/api/account/teams/#{team_id}/members/#{member_id}")
+      Domain::OncallUser.new(res["user"])
+    end
   end
 end

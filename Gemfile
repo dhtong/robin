@@ -66,3 +66,5 @@ gem "httparty", "~> 0.20.0" # needed by zenduty but they somehow didn't specify 
 gem "sentry-ruby"
 gem "sentry-rails"
 
+
+gem "recursive-open-struct", "~> 1.1"
