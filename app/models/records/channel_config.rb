@@ -8,7 +8,7 @@ module Records
 
       case external_account.platform
       when "pagerduty"
-        client.get_oncall(escalation_policy_id)
+        client.get_oncall(escalation_policy_id) # escalation_policy_id actually maps to schedule_id in pagerduty's concept
       when "zenduty"
         escalation_policies = client.oncall(team_id)
         escalation_policy = escalation_policies.find{|policy| policy["escalation_policy"]["unique_id"] == escalation_policy_id}
