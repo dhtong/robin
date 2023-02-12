@@ -31,7 +31,7 @@ module Pagerduty
       res = @api_conn.get("/users/#{id}")
       return nil unless res.success?
       res_body = JSON.parse(res.body)
-      Domain::OncallUser.new(res_body["user"])
+      Domain::User.new(res_body["user"])
     end
   end
 end

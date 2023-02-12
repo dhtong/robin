@@ -27,7 +27,7 @@ module Zenduty
 
     def get_user(team_id, member_id)
       res = @api_client._get("/api/account/teams/#{team_id}/members/#{member_id}")
-      Domain::OncallUser.new(res["user"])
+      Domain::User.new(res["user"])
     end
   end
 end
