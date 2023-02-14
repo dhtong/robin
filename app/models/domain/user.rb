@@ -3,7 +3,7 @@ module Domain
     extend Forwardable
 
     # TODO fix forwarding to private method RecursiveOpenStruct#first_name
-    def_delegators :@source, :first_name, :last_name, :email, :id
+    def_delegators :@source, :email, :id
 
     class << self
       def from_pd(h)
@@ -26,6 +26,13 @@ module Domain
       end
     end
 
+    def first_name
+      @source.first_name&.downcase
+    end
+
+    def last_name
+      @source.last_name&.downcase
+    end
 
     def initialize(h)
       @source = RecursiveOpenStruct.new(h)

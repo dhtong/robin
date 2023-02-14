@@ -13,8 +13,8 @@ RSpec.describe Commands::MatchUser do
         "team": "61010821-08aa-4098-94f8-f88f1990b54a",
         "user": {
           "username": "507dfda0-a1fd-40e5-943a-e",
-          "first_name": "Mary",
-          "last_name": "Jane",
+          "first_name": "mary",
+          "last_name": "jane",
           "email": oncall_email
         },
         "joining_date": "2022-07-08T11:09:38.230395Z",
@@ -80,7 +80,6 @@ RSpec.describe Commands::MatchUser do
 
         customer_users = user_contact.reload.customer_users
         expect(customer_users.length).to be 2
-        binding.b
         expect(user_contact.reload.customer_users.pluck(:id).last).to eq Records::CustomerUser.last.id
       end
     end
