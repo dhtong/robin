@@ -9,7 +9,7 @@ FactoryBot.define do
       user_contacts { [] }
     end
 
-    after(:build) do |cu, evaluator|
+    after(:create) do |cu, evaluator|
       cu.user_contacts << evaluator.user_contacts
     end
   end

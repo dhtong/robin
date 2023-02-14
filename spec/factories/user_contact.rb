@@ -7,7 +7,7 @@ FactoryBot.define do
       customer_users { [] }
     end
 
-    after(:build) do |uc, evaluator|
+    after(:create) do |uc, evaluator|
       if evaluator.customer_users.any?
         uc.customer_users << evaluator.customer_users
       else

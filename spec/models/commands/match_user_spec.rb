@@ -73,12 +73,15 @@ RSpec.describe Commands::MatchUser do
     context "contact exists but belong to a different customer_user" do
       let!(:user_contact) { create(:user_contact, method: :email, number: oncall_email) }
 
-      it "change custmer_user_id" do
+      it "create custmer_user_id" do
         expect { 
           described_class.new.execute(external_account.id, oncall_user_id, channel_config_id: channel_config.id)
         }.to change { Records::CustomerUser.count }.by 1
 
-        expect(user_contact.reload.customer_users.pluck(:id)).to eq [Records::CustomerUser.last.id]
+        customer_users = user_contact.reload.customer_users
+        expect(customer_users.length).to be 2
+        binding.b
+        expect(user_contact.reload.customer_users.pluck(:id).last).to eq Records::CustomerUser.last.id
       end
     end
 

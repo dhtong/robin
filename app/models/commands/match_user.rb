@@ -20,7 +20,7 @@ module Commands
 
       customer_user = Records::CustomerUser.find_or_create_by(slack_user_id: slack_user.id, customer_id: external_account.customer_id)
       contact = Records::UserContact.find_or_create_by(number: oncall_user.email, method: "email")
-      contact.update(customer_users: [customer_user])
+      contact.customer_users << customer_user
     end
 
     private
