@@ -1,7 +1,16 @@
 FactoryBot.define do
   factory :customer_user, class: "Records::CustomerUser" do
-    after_create do |cu|
-      cu.customers << FactoryBot.create(:customer)
+    association :customer
+    # after(:build) do |cu|
+    #   cu.user_contacts << FactoryBot.build(:user_contact)
+    # end
+
+    transient do
+      user_contacts { [] }
+    end
+
+    after(:build) do |cu, evaluator|
+      cu.user_contacts << evaluator.user_contacts
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_14_011910) do]
+ActiveRecord::Schema[7.0].define(version: 2023_02_14_011910) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -75,13 +75,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_14_011910) do]
   end
 
   create_table "user_contact_associations", force: :cascade do |t|
-    t.bigint "user_contacts_id", null: false
-    t.bigint "customer_users_id", null: false
+    t.bigint "user_contact_id", null: false
+    t.bigint "customer_user_id", null: false
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["customer_users_id"], name: "index_user_contact_associations_on_customer_users_id"
-    t.index ["user_contacts_id"], name: "index_user_contact_associations_on_user_contacts_id"
+    t.index ["customer_user_id"], name: "index_user_contact_associations_on_customer_user_id"
+    t.index ["user_contact_id"], name: "index_user_contact_associations_on_user_contact_id"
   end
 
   create_table "user_contacts", force: :cascade do |t|
@@ -95,6 +95,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_14_011910) do]
   add_foreign_key "customer_users", "customers"
   add_foreign_key "external_accounts", "customers"
   add_foreign_key "messages", "customers"
-  add_foreign_key "user_contact_associations", "customer_users", column: "customer_users_id"
-  add_foreign_key "user_contact_associations", "user_contacts", column: "user_contacts_id"
+  add_foreign_key "user_contact_associations", "customer_users"
+  add_foreign_key "user_contact_associations", "user_contacts"
 end

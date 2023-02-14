@@ -7,10 +7,10 @@ module Commands
       external_account = Records::ExternalAccount.find(external_account_id)
       oncall_user = get_oncall_user(external_account, oncall_user_id, channel_config_id)
       contact = Records::UserContact.find_by(number: oncall_user.email, method: "email")
-      customer_user = contact&.customer_users
+      contact&.customer_users&.each do |cu|
+        return if cu.customer_id == external_account.customer_id
+      end
       # if customer_user does not belong to the same customer as the external_account. we will switch the contact to a different customer user
-      # TODO allow a contact to belong to many customer users.
-      return if customer_user.present? && customer_user.customer_id == external_account.customer_id
 
       # find prospects. match by name. and partial email matching.
       slack_users = get_slack_users(external_account)
@@ -20,7 +20,7 @@ module Commands
 
       customer_user = Records::CustomerUser.find_or_create_by(slack_user_id: slack_user.id, customer_id: external_account.customer_id)
       contact = Records::UserContact.find_or_create_by(number: oncall_user.email, method: "email")
-      contact.update(customer_user: customer_user)
+      contact.update(customer_users: [customer_user])
     end
 
     private
