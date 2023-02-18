@@ -43,8 +43,8 @@ module Domain
 
     def match?(other)
       return true if self.email == other.email
-      return true if self.email.match(@@company_email_regex)[:company_email] == other.email.match(@@company_email_regex)[:company_email]
-      return true if self.first_name == other.first_name && self.last_name == other.last_name
+      return true if self.email.present? && self.email&.match(@@company_email_regex)[:company_email] == other.email&.match(@@company_email_regex)[:company_email]
+      return true if self.first_name.present? && self.last_name.present? && self.first_name == other.first_name && self.last_name == other.last_name
     end
   end
 end

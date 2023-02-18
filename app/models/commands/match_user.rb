@@ -6,6 +6,8 @@ module Commands
       # get domain oncall user
       external_account = Records::ExternalAccount.find(external_account_id)
       oncall_user = get_oncall_user(external_account, oncall_user_id, channel_config_id)
+      # this is somewhat unexpected.
+      return if oncall_user.nil?
       contact = Records::UserContact.find_by(number: oncall_user.email, method: "email")
       contact&.customer_users&.each do |cu|
         return if cu.customer_id == external_account.customer_id
@@ -25,6 +27,7 @@ module Commands
 
     private
 
+    # get the user from oncall service. the user is not necessarily current oncall.
     def get_oncall_user(external_account, oncall_user_id, channel_config_id)
       oncall_client = external_account.client
       case external_account.platform

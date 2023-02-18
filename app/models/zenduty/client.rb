@@ -25,9 +25,16 @@ module Zenduty
       @api_client._get("/api/account/teams/#{team_id}/oncall")
     end
 
-    def get_user(team_id, member_id)
-      res = @api_client._get("/api/account/teams/#{team_id}/members/#{member_id}")
-      Domain::User.new(res["user"])
+    def get_user(team_id, member_username)
+      # unfortunately zenduty member id is not exposed in other zenduty endpoints
+      users_res = @api_client._get("/api/account/teams/#{team_id}/members")
+      return unless users_res.success?
+      users_res.each do |u|
+        if u["user"]["username"] == member_username
+          return Domain::User.new(u["user"])
+        end
+      end
+      return nil
     end
   end
 end
