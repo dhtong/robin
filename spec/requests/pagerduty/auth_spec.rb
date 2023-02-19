@@ -18,7 +18,6 @@ RSpec.describe "Pagerduty::Auth", type: :request do
   let!(:customer) { create(:customer) }
   let(:external_id) { customer.external_id }
   subject { get "/pagerduty/auth", params: { external_id: external_id} }
-  let!(:customer) { create(:customer) }
 
   it "auth" do
     stub_pd
