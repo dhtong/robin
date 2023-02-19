@@ -68,3 +68,9 @@ gem "sentry-rails"
 
 
 gem "recursive-open-struct", "~> 1.1"
+
+gem "dry-struct", "~> 1.6"
+
+gem "dry-types", "~> 1.7"
+
+gem "dry-monads", "~> 1.6"
