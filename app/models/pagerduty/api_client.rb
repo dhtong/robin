@@ -1,5 +1,7 @@
 module Pagerduty
   class ApiClient
+    USER_PAGE_LIMIT = 100
+
     def initialize(access_token)
       @api_conn = Faraday.new(
         url: "https://api.pagerduty.com",
@@ -19,6 +21,19 @@ module Pagerduty
       JSON.parse(res.body)["schedules"]
     end
 
+    def list_users
+      fetch = true
+      offset = 0
+      users = []
+      while fetch
+        res = json_body { @api_conn.get("/users", { offset: offset, limit: USER_PAGE_LIMIT } ) }
+        users += res["users"].map { |u| Domain::User.from_pd(u) }
+        offset += res["users"].size
+        fetch = res["more"]
+      end
+      users
+    end
+
     def get_oncall(schedule_id)
       res = @api_conn.get("/oncalls", { schedule_ids: [schedule_id], include: ["users"]})
       return nil unless res.success?
@@ -31,7 +46,15 @@ module Pagerduty
       res = @api_conn.get("/users/#{id}")
       return nil unless res.success?
       res_body = JSON.parse(res.body)
-      Domain::User.new(res_body["user"])
+      Domain::User.from_pd(res_body["user"])
+    end
+
+    private
+
+    def json_body
+      res = yield
+      return unless res.success?
+      JSON.parse(res.body)
     end
   end
 end

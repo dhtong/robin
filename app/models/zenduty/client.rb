@@ -27,14 +27,16 @@ module Zenduty
 
     def get_user(team_id, member_username)
       # unfortunately zenduty member id is not exposed in other zenduty endpoints
-      users_res = @api_client._get("/api/account/teams/#{team_id}/members")
-      return unless users_res.success?
-      users_res.each do |u|
-        if u["user"]["username"] == member_username
-          return Domain::User.new(u["user"])
-        end
-      end
-      return nil
+      team_users = list_users(team_id)
+      team_users.find { |u| u.username == member_username }
+    end
+
+    def list_users
+      teams_res = @api_client._get("/api/account/teams/")
+      return unless teams_res.success?
+      teams_res.map do |team| 
+        team["members"].map { |m| Domain::User.from_zd(m) }
+      end.flatten
     end
   end
 end

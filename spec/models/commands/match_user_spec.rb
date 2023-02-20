@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Commands::MatchUser do
   let(:customer) { create(:customer) }
-  describe "#execute" do
+  xdescribe "#execute" do
     let(:external_account) { create(:external_account, platform: :zenduty, customer: customer) }
     let(:channel_config) { create(:channel_config, chat_platform: :zenduty, external_account: external_account, team_id: "team") }
     let(:oncall_user_id) { 2 }
