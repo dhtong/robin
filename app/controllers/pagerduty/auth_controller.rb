@@ -5,7 +5,9 @@ class Pagerduty::AuthController < ApplicationController
     return render json: resp.body, status: :bad_request unless resp.success?
 
     resp_body = JSON.parse(resp.body)
-    Records::ExternalAccount.create!(customer: customer, platform: "pagerduty", token: resp_body["access_token"], refresh_token: resp_body["refresh_token"])
+    # TODO prevent duplicate
+    account = Records::ExternalAccount.create!(customer: customer, platform: "pagerduty", token: resp_body["access_token"], refresh_token: resp_body["refresh_token"])
+    Slack::MatchUsersForAccount.perform_later(account.id)
     redirect_to "https://supportbots.xyz/", allow_other_host: true
   end
 
