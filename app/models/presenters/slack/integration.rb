@@ -1,6 +1,7 @@
 module Presenters::Slack
   class Integration
     CALLBACK_ID = "new_integration"
+    PAGERDUTY_AUTH_BLOCK_ID = "pagerduty_auth-block"
 
     class << self
       def no_integrations_available
