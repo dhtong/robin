@@ -188,78 +188,15 @@ module Slack
       view
     end
 
-    INTEGRATION_OPTIONS = [
-      {
-        "text": {
-          "type": "plain_text",
-          "text": "Zenduty",
-          "emoji": true
-        },
-        "value": "zenduty"
-      }
-    ]
+    INTEGRATION_OPTIONS = %w[zenduty]
 
     def new_integration_selection
-      existing_options = @customer.external_accounts.pluck(:platform).to_set
-      available_options = INTEGRATION_OPTIONS.select { |o| existing_options.exclude?(o[:value]) }
+      existing_options = @customer.external_accounts.pluck(:platform)
+      available_options = INTEGRATION_OPTIONS - existing_options
       if available_options.empty?
-        return {
-          "type": "modal",
-          "callback_id": "new_integration",
-          "title": {
-            "type": "plain_text",
-            "text": "Integrations",
-          },
-          "close": {
-            "type": "plain_text",
-            "text": "Close",
-          },
-          "blocks": [
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "No more integrations available.\nPlease edit existing ones or file a new integration feature request!"
-              }
-            }
-          ]
-        }
+        return Presenters::Slack::Integration.no_integrations_available
       end
-
-      {
-        "type": "modal",
-        "callback_id": "new_integration",
-        "title": {
-          "type": "plain_text",
-          "text": "Integrations",
-          "emoji": true
-        },
-        "close": {
-          "type": "plain_text",
-          "text": "Cancel",
-          "emoji": true
-        },
-        "blocks": [
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "Pick a service to integrate with"
-            },
-            "block_id": "integration_selection-block",
-            "accessory": {
-              "type": "static_select",
-              "placeholder": {
-                "type": "plain_text",
-                "text": "Service",
-                "emoji": true
-              },
-              "options": available_options,
-              "action_id": "integration_selection-action"
-            }
-          }
-        ]
-      }
+      Presenters::Slack::Integration.new_integration_selection(available_options)
     end
 
     # this change db state
