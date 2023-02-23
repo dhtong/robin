@@ -192,7 +192,7 @@ module Slack
      # todo move this to presenters
     def pagerduty_auth_redirect_view(external_id)
       view = new_integration_selection
-      view[:close] = {"type": "plain_text", "text": "Done", "emoji": true}
+      view[:submit] = {"type": "plain_text", "text": "Done", "emoji": true}
       url = "https://identity.pagerduty.com/oauth/authorize?client_id=8bded887-2b85-4e2a-85a3-7ef758afb8ae&redirect_uri=#{Pagerduty::OauthClient.get_redirect_uri(external_id)}&scope=read&response_type=code"
       token_block = {
         "block_id": Presenters::Slack::Integration::PAGERDUTY_AUTH_BLOCK_ID,
