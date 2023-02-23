@@ -111,14 +111,16 @@ module Slack
     end
   
     def handle_zenduty_token_submission
-      zenduty_token = @payload["view"]["state"]["values"][ZENDUTY_TOKEN_BLOCK_ID]["zenduty_token-action"]["value"]
-      # TODO prevent duplicates.
-      account = Records::ExternalAccount.new(customer: @customer, platform: "zenduty", token: zenduty_token)
-      # TODO find a cheaper endpoint
-      res = account.client.get_teams
-      return ValidationError.new(ZENDUTY_TOKEN_BLOCK_ID, res["error"]) unless res.success?
-      account.save!
-      Slack::MatchUsersForAccount.perform_later(account.id)
+      zenduty_token = @payload.dig("view", "state", "values", ZENDUTY_TOKEN_BLOCK_ID, "zenduty_token-action", "value")
+      if zenduty_token != nil
+        # TODO prevent duplicates.
+        account = Records::ExternalAccount.new(customer: @customer, platform: "zenduty", token: zenduty_token)
+        # TODO find a cheaper endpoint
+        res = account.client.get_teams
+        return ValidationError.new(ZENDUTY_TOKEN_BLOCK_ID, res["error"]) unless res.success?
+        account.save!
+        Slack::MatchUsersForAccount.perform_later(account.id)
+      end
     end
   
     # new integration to add
