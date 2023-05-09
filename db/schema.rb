@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_19_135949) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_08_224817) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -26,6 +26,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_19_135949) do
     t.datetime "disabled_at"
     t.index ["external_account_id", "channel_id"], name: "index_channel_configs_on_external_account_id_and_channel_id", unique: true
     t.index ["external_account_id"], name: "index_channel_configs_on_external_account_id"
+  end
+
+  create_table "channel_subscribers", force: :cascade do |t|
+    t.bigint "customer_user_id", null: false
+    t.bigint "channel_config_id", null: false
+    t.datetime "disabled_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_config_id"], name: "index_channel_subscribers_on_channel_config_id"
+    t.index ["customer_user_id"], name: "index_channel_subscribers_on_customer_user_id"
   end
 
   create_table "customer_users", force: :cascade do |t|

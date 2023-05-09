@@ -1,6 +1,9 @@
 module Records
   class ChannelConfig < ApplicationRecord
     belongs_to :external_account
+    has_many :channel_subscribers # associations records
+    has_many :subscribers, through: :channel_subscribers, source: :customer_user
+
     default_scope { where(disabled_at: nil) }
 
     def oncall_users
