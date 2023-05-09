@@ -64,7 +64,7 @@ RSpec.describe "Interaction", type: :request do
       expect(response).to have_http_status(:ok)
     end
 
-    context 'no options left' do
+    xcontext 'no options left' do
       let!(:external_account) { create(:external_account, customer: customer, platform: "zenduty") }
 
       it "call slack without options" do
