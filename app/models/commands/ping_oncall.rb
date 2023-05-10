@@ -29,6 +29,7 @@ module Commands
 
       mentions = slack_users.map{|u| "<@#{u}>"}
       post_message("Hey someone needs you! #{mentions.join(', ')}")
+      ping_subscribers
     end
 
     private
