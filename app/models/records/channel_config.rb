@@ -4,7 +4,7 @@ module Records
     has_many :channel_subscribers # associations records
     has_many :subscribers, through: :channel_subscribers, source: :customer_user
 
-    scope :active, -> { where(disabled_at: nil) }
+    default_scope { where(disabled_at: nil) }
 
     def oncall_users
       client = external_account.client 
