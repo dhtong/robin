@@ -41,22 +41,22 @@ module Presenters::Slack
         "text": "Channel",
       }
     }
+
     SUBSCRIBER_BLOCK = {
-      "type": "input",
-      "element": {
-        "type": "multi_users_select",
-        "placeholder": {
-          "type": "plain_text",
-          "text": "Select users",
-          "emoji": true
-        },
-        "action_id": "multi_subscribers_select-action"
-      },
-      "label": {
-        "type": "plain_text",
-        "text": "[optional] Subscribers",
-      }
-    }
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "[optional] Subscribers to always get a private ping"
+			},
+			"accessory": {
+				"type": "multi_users_select",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select",
+				},
+				"action_id": "multi_subscribers_select-action"
+			}
+		}
 
     class << self
       def from_blocks(blocks)
