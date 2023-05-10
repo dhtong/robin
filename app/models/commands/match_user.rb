@@ -32,7 +32,7 @@ module Commands
       oncall_client = external_account.client
       case external_account.platform
       when "zenduty"
-        channel_config = Records::ChannelConfig.find(channel_config_id)
+        channel_config = Records::ChannelConfig.active.find(channel_config_id)
         oncall_client.get_user(channel_config.team_id, oncall_user_id)
       when "pagerduty"
         oncall_client.get_user(oncall_user_id)

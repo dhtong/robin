@@ -3,7 +3,7 @@ module Commands
     def initialize(message_id)
       @message = Records::Message.find(message_id)
       @customer = Records::Customer.find(@message.customer_id)
-      @channel_config = Records::ChannelConfig.find_by(channel_id: @message.channel_id)
+      @channel_config = Records::ChannelConfig.active.find_by(channel_id: @message.channel_id)
       @chat_client = Slack::Web::Client.new(token: @customer.slack_access_token)
     end
 

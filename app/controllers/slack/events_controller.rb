@@ -32,7 +32,7 @@ class Slack::EventsController < ApplicationController
   end
   
   def channel_config
-    @channel_config ||= Records::ChannelConfig.find_by(channel_id: channel)
+    @channel_config ||= Records::ChannelConfig.active.find_by(channel_id: channel)
   end
 
   def customer

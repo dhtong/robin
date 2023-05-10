@@ -243,7 +243,7 @@ module Slack
       case action["selected_option"]["value"]
       when "delete"
         channel_config_id = action["action_id"].scan(/^\d+/).first.to_i
-        Records::ChannelConfig.where(id: channel_config_id).update_all(disabled_at: Time.current)
+        Records::ChannelConfig.active.where(id: channel_config_id).update_all(disabled_at: Time.current)
       end
       @refresh_home_cmd.execute
     end
