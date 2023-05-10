@@ -5,6 +5,8 @@ module Presenters::Slack
     PLATFORM_ACTION_ID = "escalation_policy_source_selection-action"
     ESCALATION_POLICY_BLOCK_ID = "escalation_policy-block"
     ESCALATION_POLICY_ACTION_ID = "escalation_policy-action"
+    SUBSCRIBER_BLOCK_ID = "multi_subscribers_select-block"
+    SUBSCRIBER_ACTION_ID = "multi_subscribers_select-action"
 
     BASE_VIEW = {
       "type": "modal",
@@ -43,6 +45,7 @@ module Presenters::Slack
     }
 
     SUBSCRIBER_BLOCK = {
+      "block_id": SUBSCRIBER_BLOCK_ID,
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
@@ -54,7 +57,7 @@ module Presenters::Slack
 					"type": "plain_text",
 					"text": "Select",
 				},
-				"action_id": "multi_subscribers_select-action"
+				"action_id": SUBSCRIBER_ACTION_ID
 			}
 		}
 
