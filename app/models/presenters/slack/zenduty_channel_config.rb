@@ -20,6 +20,7 @@ module Presenters::Slack
     def escalation_policy_block(escalation_policies)
       {
         "type": "input",
+        "dispatch_action": true,
         "block_id": ESCALATION_POLICY_BLOCK_ID,
         "label": {
           "type": "plain_text",

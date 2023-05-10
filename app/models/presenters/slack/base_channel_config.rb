@@ -41,6 +41,22 @@ module Presenters::Slack
         "text": "Channel",
       }
     }
+    SUBSCRIBER_BLOCK = {
+      "type": "input",
+      "element": {
+        "type": "multi_users_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select users",
+          "emoji": true
+        },
+        "action_id": "multi_subscribers_select-action"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "[optional] Subscribers",
+      }
+    }
 
     class << self
       def from_blocks(blocks)
@@ -48,7 +64,7 @@ module Presenters::Slack
       end
 
       def from_external_accounts(external_accounts)
-        blocks = [CONVERSATION_BLOCK, source_block(external_accounts)]
+        blocks = [CONVERSATION_BLOCK, SUBSCRIBER_BLOCK, source_block(external_accounts)]
         new(blocks)
       end
 
@@ -96,6 +112,13 @@ module Presenters::Slack
       view = BASE_VIEW
       view[:blocks] = @blocks
       view
+    end
+
+    def with_subscribers
+      if @blocks.length < 3
+        return raise StandardError
+      end
+      @blocks[3] = escalation_policy_block(escalation_policies)
     end
   end
 end
