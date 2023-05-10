@@ -45,7 +45,7 @@ module Slack
       selected_account_id = @customer.external_accounts.where(platform: escalation_policy_platform).pluck(:id).first
       attributes = {chat_platform: "slack", team_id: team_id, escalation_policy_id: escalation_policy_id, external_account_id: selected_account_id, channel_id: channel_id}
       # a channel can only link to one escalation_policy. this also deletes the history if the user has set a different policy before.
-      channel_config = Records::ChannelConfig.find_or_initialize_by(channel_id: channel_id, external_account_id: selected_account_id)
+      channel_config = Records::ChannelConfig.unscoped.find_or_initialize_by(channel_id: channel_id, external_account_id: selected_account_id)
       channel_config.update!(chat_platform: "slack", team_id: team_id, escalation_policy_id: escalation_policy_id)
       # channel_config = Records::ChannelConfig.upsert(attributes, unique_by: [:external_account_id, :channel_id])
       subscriber_slack_ids = state_values[@channel_config_presenter_class::SUBSCRIBER_BLOCK_ID][@channel_config_presenter_class::SUBSCRIBER_ACTION_ID]["selected_users"]
