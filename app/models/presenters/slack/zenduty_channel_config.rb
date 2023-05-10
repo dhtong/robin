@@ -4,15 +4,15 @@ module Presenters::Slack
     TEAM_ACTION_ID = "escalation_policy_source_selection_team-action"
 
     def with_teams(teams)
-      @blocks[2] = team_block(teams)
-      @blocks = @blocks[..2]
+      @blocks[3] = team_block(teams)
+      @blocks = @blocks[..3]
     end
 
     def with_escalation_policies(escalation_policies)
-      if @blocks.length < 3
+      if @blocks.length < 4
         return raise StandardError
       end
-      @blocks[3] = escalation_policy_block(escalation_policies)
+      @blocks[4] = escalation_policy_block(escalation_policies)
     end
 
     private

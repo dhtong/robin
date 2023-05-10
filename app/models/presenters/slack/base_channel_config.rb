@@ -113,12 +113,5 @@ module Presenters::Slack
       view[:blocks] = @blocks
       view
     end
-
-    def with_subscribers
-      if @blocks.length < 3
-        return raise StandardError
-      end
-      @blocks[3] = escalation_policy_block(escalation_policies)
-    end
   end
 end
