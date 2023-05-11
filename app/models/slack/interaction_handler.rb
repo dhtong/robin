@@ -1,5 +1,7 @@
 module Slack
   class InteractionHandler
+    include ChannelConfigBlocks
+
     def initialize(customer, slack_client, payload)
       @customer = customer
       @slack_client = slack_client
@@ -36,9 +38,9 @@ module Slack
 
     def handle_channel_config
       state_values = @payload["view"]["state"]["values"]
-      channel_id = state_values["conversations_select-block"]["conversations_select-action"]["selected_conversation"]
-      escalation_policy_id = state_values[@channel_config_presenter_class::ESCALATION_POLICY_BLOCK_ID][@channel_config_presenter_class::ESCALATION_POLICY_ACTION_ID]["selected_option"]["value"]
-      escalation_policy_platform = state_values[@channel_config_presenter_class::PLATFORM_BLOCK_ID][@channel_config_presenter_class::PLATFORM_ACTION_ID]["selected_option"]["value"]
+      channel_id = state_values[CHANNEL_SELECT_BLOCK_ID]["conversations_select-action"]["selected_conversation"]
+      escalation_policy_id = state_values[ESCALATION_POLICY_BLOCK_ID][ESCALATION_POLICY_ACTION_ID]["selected_option"]["value"]
+      escalation_policy_platform = state_values[PLATFORM_BLOCK_ID][PLATFORM_ACTION_ID]["selected_option"]["value"]
 
       team_id = state_values[@zd_config_presenter_cls::TEAM_BLOCK_ID][@zd_config_presenter_cls::TEAM_ACTION_ID]["selected_option"]["value"] if escalation_policy_platform == "zenduty"
 
@@ -69,7 +71,7 @@ module Slack
         @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
       when "integration_selection-action"
         handle_integration_selection(action)
-      when "escalation_policy_source_selection-action"
+      when PLATFORM_ACTION_ID
         handle_escalation_policy_source_selection
       when "escalation_policy_source_selection_team-action"
         handle_escalation_policy_source_selection_team
@@ -78,7 +80,7 @@ module Slack
 
     def handle_escalation_policy_source_selection_team
       selected_team_id = @payload["actions"][0]["selected_option"]["value"]
-      selected_platform = @payload["view"]["state"]["values"]["escalation_policy_source_selection-block"]["escalation_policy_source_selection-action"]["selected_option"]["value"]
+      selected_platform = @payload["view"]["state"]["values"][PLATFORM_BLOCK_ID][PLATFORM_ACTION_ID]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: selected_platform).first
       presenter = Presenters::Slack::ZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
 

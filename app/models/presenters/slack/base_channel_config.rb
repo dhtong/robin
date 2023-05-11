@@ -1,5 +1,7 @@
 module Presenters::Slack
   class BaseChannelConfig
+    include Slack::ChannelConfigBlocks
+
     CALLBACK_ID = "new_channel_config"
     PLATFORM_BLOCK_ID = "escalation_policy_source_selection-block"
     PLATFORM_ACTION_ID = "escalation_policy_source_selection-action"
@@ -46,20 +48,20 @@ module Presenters::Slack
 
     SUBSCRIBER_BLOCK = {
       "block_id": SUBSCRIBER_BLOCK_ID,
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "[optional] Subscribers to always get a private ping"
-			},
-			"accessory": {
-				"type": "multi_users_select",
-				"placeholder": {
-					"type": "plain_text",
-					"text": "Select",
-				},
-				"action_id": SUBSCRIBER_ACTION_ID
-			}
-		}
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "[optional] Subscribers to always get a private ping"
+      },
+      "accessory": {
+        "type": "multi_users_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select",
+        },
+        "action_id": SUBSCRIBER_ACTION_ID
+      }
+    }
 
     class << self
       def from_blocks(blocks)
