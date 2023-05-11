@@ -48,10 +48,10 @@ module Slack
       channel_config = Records::ChannelConfig.unscoped.find_or_initialize_by(channel_id: channel_id, external_account_id: selected_account_id)
       channel_config.update!(chat_platform: "slack", team_id: team_id, escalation_policy_id: escalation_policy_id, disabled_at: nil)
       # channel_config = Records::ChannelConfig.upsert(attributes, unique_by: [:external_account_id, :channel_id])
-      subscriber_slack_ids = state_values[@channel_config_presenter_class::SUBSCRIBER_BLOCK_ID][@channel_config_presenter_class::SUBSCRIBER_ACTION_ID]["selected_users"]
-      subscribers = subscriber_slack_ids.map do |s_id|
+      subscriber_slack_ids = state_values.dig(@channel_config_presenter_class::SUBSCRIBER_BLOCK_ID, @channel_config_presenter_class::SUBSCRIBER_ACTION_ID, "selected_users")
+      subscribers = subscriber_slack_ids&.map do |s_id|
         Records::CustomerUser.find_or_create_by!(customer_id: @customer.id, slack_user_id: s_id)
-      end
+      end || []
       channel_config.subscribers = subscribers
     end
 
