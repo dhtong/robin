@@ -11,7 +11,6 @@ module Slack
       @caller_id = payload["user"]["id"]
       @refresh_home_cmd = Slack::RefreshHome.new(customer, slack_client, @caller_id)
       @channel_config_presenter_class = ::Presenters::Slack::BaseChannelConfig
-      @zd_config_presenter_cls = ::Presenters::Slack::ZendutyChannelConfig
     end
   
     def execute
@@ -30,7 +29,7 @@ module Slack
       case @payload["view"]["callback_id"]
       when "new_integration"
         handle_zenduty_token_submission
-      when @channel_config_presenter_class::CALLBACK_ID
+      when CHANNEL_CONFIG_CALLBACK_ID
         handle_channel_config
       end
       @refresh_home_cmd.execute
@@ -42,7 +41,7 @@ module Slack
       escalation_policy_id = state_values[ESCALATION_POLICY_BLOCK_ID][ESCALATION_POLICY_ACTION_ID]["selected_option"]["value"]
       escalation_policy_platform = state_values[PLATFORM_BLOCK_ID][PLATFORM_ACTION_ID]["selected_option"]["value"]
 
-      team_id = state_values[@zd_config_presenter_cls::TEAM_BLOCK_ID][@zd_config_presenter_cls::TEAM_ACTION_ID]["selected_option"]["value"] if escalation_policy_platform == "zenduty"
+      team_id = state_values[ZENDUTY_TEAM_BLOCK_ID][ZENDUTY_TEAM_ACTION_ID]["selected_option"]["value"] if escalation_policy_platform == "zenduty"
 
       selected_account_id = @customer.external_accounts.where(platform: escalation_policy_platform).pluck(:id).first
       attributes = {chat_platform: "slack", team_id: team_id, escalation_policy_id: escalation_policy_id, external_account_id: selected_account_id, channel_id: channel_id}
@@ -50,7 +49,7 @@ module Slack
       channel_config = Records::ChannelConfig.unscoped.find_or_initialize_by(channel_id: channel_id, external_account_id: selected_account_id)
       channel_config.update!(chat_platform: "slack", team_id: team_id, escalation_policy_id: escalation_policy_id, disabled_at: nil)
       # channel_config = Records::ChannelConfig.upsert(attributes, unique_by: [:external_account_id, :channel_id])
-      subscriber_slack_ids = state_values.dig(@channel_config_presenter_class::SUBSCRIBER_BLOCK_ID, @channel_config_presenter_class::SUBSCRIBER_ACTION_ID, "selected_users")
+      subscriber_slack_ids = state_values.dig(SUBSCRIBER_BLOCK_ID, SUBSCRIBER_ACTION_ID, "selected_users")
       subscribers = subscriber_slack_ids&.map do |s_id|
         Records::CustomerUser.find_or_create_by!(customer_id: @customer.id, slack_user_id: s_id)
       end || []
@@ -86,7 +85,7 @@ module Slack
 
       available_escalation_policies = selected_account.client.get_escalation_policies(selected_team_id)
       # TODO this validation is not show right now. maybe validate teams before showing team options.
-      return ValidationError.new(Presenters::Slack::ZendutyChannelConfig::TEAM_BLOCK_ID, "No escalation policies available") if available_escalation_policies.blank?
+      return ValidationError.new(ZENDUTY_TEAM_BLOCK_ID, "No escalation policies available") if available_escalation_policies.blank?
       presenter.with_escalation_policies(available_escalation_policies)
 
       @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)

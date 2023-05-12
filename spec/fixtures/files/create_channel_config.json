@@ -151,6 +151,14 @@
                         "selected_conversation": "C04GEB66H18"
                     }
                 },
+                "multi_subscribers_select-block": {
+                    "multi_subscribers_select-action": {
+                      "type": "multi_users_select",
+                      "selected_users": [
+                        "U04G7NZTHKQ"
+                      ]
+                    }
+                },
                 "escalation_policy_source_selection-block": {
                     "escalation_policy_source_selection-action": {
                         "type": "static_select",
