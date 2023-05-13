@@ -5,6 +5,7 @@ module Domain
 
       attribute :id, Types::String
       attribute :blocks, Types.Array(Block)
+      attribute :state, Types.Constructor(State)
     end
   end
 end

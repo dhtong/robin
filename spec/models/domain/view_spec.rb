@@ -86,6 +86,7 @@ RSpec.describe Domain::Slack::View do
       expect(v.blocks.count).to eq 2
       expect(v.blocks[1].element).to be_nil
       expect(v.blocks[0].element.type).not_to be_blank
+      expect(v.blocks[0].id).to eq v.blocks[0].block_id
     end
   end
 end
