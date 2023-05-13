@@ -6,6 +6,7 @@ module Slack
       @customer = customer
       @slack_client = slack_client
       @payload = payload
+      @interaction = Domain::Slack::Interaction.new(payload)
 
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
@@ -26,7 +27,7 @@ module Slack
 
     # process modal view submission. this usually results in a (db) state change.
     def handle_view_submission
-      case @payload["view"]["callback_id"]
+      case @interaction.view.callback_id
       when "new_integration"
         handle_zenduty_token_submission
       when CHANNEL_CONFIG_CALLBACK_ID

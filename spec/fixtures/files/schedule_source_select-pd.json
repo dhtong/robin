@@ -35,6 +35,8 @@
     "id": "V04HA1LKHC4",
     "team_id": "T04FZQN3B9D",
     "type": "modal",
+    "callback_id": "",
+    "state": {},
     "blocks": [
         {
             "type": "input",

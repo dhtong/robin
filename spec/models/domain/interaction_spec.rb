@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Domain::Slack::View do
+RSpec.describe Domain::Slack::Interaction do
   describe "#initialize" do
-    let(:payload) do
+    let(:view) do
       {
         "id": "V057AMA75MY",
         "team_id": "T04FZQN3B9D",
@@ -80,13 +80,39 @@ RSpec.describe Domain::Slack::View do
         }
       }
     end
+    let(:payload) do
+      {
+        "view": view,
+        "actions": [
+          {
+            "type": "static_select",
+            "action_id": "escalation_policy_source_selection_team-action",
+            "block_id": "escalation_policy_source_selection_team-block",
+            "selected_option": {
+              "text": {
+                "type": "plain_text",
+                "text": "Operations Team(Sample)",
+                "emoji": true
+              },
+              "value": "47975507-d54d-42d5-8d31-622653bd2360"
+            },
+            "placeholder": {
+              "type": "plain_text",
+              "text": "team",
+              "emoji": true
+            },
+            "action_ts": "1683810749.028916"
+          }
+        ]
+      }
+    end
 
     it 'init' do
-      v = described_class.new(payload)
-      expect(v.blocks.count).to eq 2
-      expect(v.blocks[1].element).to be_nil
-      expect(v.blocks[0].element.type).not_to be_blank
-      expect(v.blocks[0].id).to eq v.blocks[0].block_id
+      intr = described_class.new(payload)
+      expect(intr.view.blocks.count).to eq 2
+      expect(intr.view.blocks[1].element).to be_nil
+      expect(intr.view.blocks[0].element.type).not_to be_blank
+      expect(intr.view.blocks[0].id).to eq intr.view.blocks[0].block_id
     end
   end
 end

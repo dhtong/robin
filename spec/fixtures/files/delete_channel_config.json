@@ -19,7 +19,12 @@
   },
   "enterprise": null,
   "is_enterprise_install": false,
-  "view": {},
+  "view": {
+    "callback_id": "",
+    "id": "",
+    "blocks": [],
+    "state": {}
+  },
   "actions": [
     {
       "type": "overflow",
