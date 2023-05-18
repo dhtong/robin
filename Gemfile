@@ -74,3 +74,7 @@ gem "dry-struct", "~> 1.6"
 gem "dry-types", "~> 1.7"
 
 gem "dry-monads", "~> 1.6"
+
+gem "dry-container", "~> 0.11.0"
+
+gem "dry-auto_inject", "~> 1.0"
