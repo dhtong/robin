@@ -68,6 +68,10 @@ module Presenters::Slack
         new(blocks)
       end
 
+      def from_dry_blocks(blocks)
+        new(blocks.to_h)
+      end
+
       def from_external_accounts(external_accounts)
         blocks = [CONVERSATION_BLOCK, SUBSCRIBER_BLOCK, source_block(external_accounts)]
         new(blocks)
