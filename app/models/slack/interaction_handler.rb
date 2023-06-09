@@ -92,7 +92,6 @@ module Slack
     def handle_escalation_policy_source_selection
       selected_platform = @payload["actions"][0]["selected_option"]["value"]
       selected_account = @customer.external_accounts.where(platform: selected_platform).first
-
       case selected_platform
       when "zenduty"
         presenter = Presenters::Slack::ZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
