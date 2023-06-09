@@ -9,7 +9,6 @@ module Slack::Actions
     def execute(customer, interaction)
       selected_platform = interaction.actions[0].selected_option.value
       selected_account = customer.external_accounts.where(platform: selected_platform).first
-
       case selected_platform
       when "zenduty"
         presenter = @zenduty_presenter.from_dry_blocks(interaction.view.blocks)

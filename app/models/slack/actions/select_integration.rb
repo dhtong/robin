@@ -16,6 +16,8 @@ module Slack::Actions
 
     private
 
+    INTEGRATION_OPTIONS = %w[zenduty pagerduty]
+
     # todo move this to presenters
     def zenduty_token_input_view
       view = new_integration_selection

@@ -69,7 +69,7 @@ module Presenters::Slack
       end
 
       def from_dry_blocks(blocks)
-        new(blocks.to_h)
+        new(blocks.map(&:to_h))
       end
 
       def from_external_accounts(external_accounts)
