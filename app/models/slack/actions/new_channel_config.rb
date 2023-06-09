@@ -5,7 +5,7 @@ module Slack::Actions
       @channel_config_presenter_class = ::Presenters::Slack::BaseChannelConfig
     end
 
-    def execute(customer, interaction)
+    def execute(customer, interaction, _payload)
       presenter = @channel_config_presenter_class.from_external_accounts(customer.external_accounts)
       Slack::Web::Client.new(token: customer.slack_access_token).
         views_open(trigger_id: interaction.trigger_id, view: presenter.present)

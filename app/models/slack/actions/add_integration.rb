@@ -4,7 +4,7 @@ module Slack::Actions
     def initialize
     end
 
-    def execute(customer, interaction)
+    def execute(customer, interaction, _payload)
       @customer = customer
       @slack_client = Slack::Web::Client.new(token: customer.slack_access_token)
       @slack_client.views_open(trigger_id: interaction.trigger_id, view: new_integration_selection)

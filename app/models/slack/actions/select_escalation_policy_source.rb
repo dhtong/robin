@@ -6,15 +6,15 @@ module Slack::Actions
       @pagerduty_presenter = Presenters::Slack::PagerdutyChannelConfig
     end
 
-    def execute(customer, interaction)
+    def execute(customer, interaction, payload)
       selected_platform = interaction.actions[0].selected_option.value
       selected_account = customer.external_accounts.where(platform: selected_platform).first
       case selected_platform
       when "zenduty"
-        presenter = @zenduty_presenter.from_dry_blocks(interaction.view.blocks)
+        presenter = @zenduty_presenter.from_blocks(payload["view"]["blocks"])
         presenter.with_teams(selected_account.client.get_teams)  
       when "pagerduty"
-        presenter = @pagerduty_presenter.from_dry_blocks(interaction.view.blocks)
+        presenter = @pagerduty_presenter.from_blocks(payload["view"]["blocks"])
         schedules = selected_account.client.list_schedules
         presenter.with_schedules(schedules)
       end

@@ -66,7 +66,7 @@ module Slack
       case action["action_id"]
       when "new_channel_config-action", "add_integration-action", PLATFORM_ACTION_ID, "integration_selection-action"
         action_id = action["action_id"].delete_suffix("-action")
-        @action_registry[action_id].execute(@customer, @interaction)
+        @action_registry[action_id].execute(@customer, @interaction, @payload)
       when /_edit_channel_config-action$/
         handle_channel_config_edit(action)
       when "escalation_policy_source_selection_team-action"

@@ -2,7 +2,7 @@ module Slack::Actions
   class SelectIntegration
     ZENDUTY_TOKEN_BLOCK_ID = "zenduty_token-block"
 
-    def execute(customer, interaction)
+    def execute(customer, interaction, _payload)
       @customer = customer
       slack_client = Slack::Web::Client.new(token: customer.slack_access_token)
       action = interaction.actions[-1]
