@@ -1,5 +1,5 @@
 module Slack::Actions
-  class NewChannelConfig
+  class AddIntegration
 
     def initialize
     end
