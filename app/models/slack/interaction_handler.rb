@@ -7,7 +7,7 @@ module Slack
       @slack_client = slack_client
       @payload = payload
       @interaction = Domain::Slack::Interaction.new(payload)
-      @action_registry = Actions::Registry.new
+      @action_registry = Actions::Registry
 
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
@@ -61,10 +61,11 @@ module Slack
     # handle an action on slack. this results in a view change.
     def handle_block_actions
       raise StandardError.new("more than one actions") if @payload["actions"].size > 1
-      action_id = @payload["actions"].last["action_id"].delete_suffix("-action")
+      action = @payload["actions"].last
 
       case action["action_id"]
       when "new_channel_config-action", "add_integration-action"
+        action_id = action["action_id"].delete_suffix("-action")
         @action_registry[action_id].execute(@customer, @interaction)
         # presenter = @channel_config_presenter_class.from_external_accounts(@customer.external_accounts)
         # @slack_client.views_open(trigger_id: @trigger_id, view: presenter.present)

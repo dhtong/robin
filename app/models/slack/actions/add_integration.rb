@@ -4,11 +4,15 @@ module Slack::Actions
     def initialize
     end
 
-    def execute
-      @slack_client.views_open(trigger_id: @trigger_id, view: new_integration_selection)
+    def execute(customer, interaction)
+      @customer = customer
+      @slack_client = Slack::Web::Client.new(token: customer.slack_access_token)
+      @slack_client.views_open(trigger_id: interaction.trigger_id, view: new_integration_selection)
     end
 
     private
+
+    INTEGRATION_OPTIONS = %w[zenduty pagerduty]
 
     def new_integration_selection
       existing_options = @customer.external_accounts.pluck(:platform)
