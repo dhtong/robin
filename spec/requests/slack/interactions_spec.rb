@@ -174,7 +174,9 @@ RSpec.describe "Interaction", type: :request do
 
     it "create config record" do
       stub_refresh
-      expect { subject }.to change { Records::ChannelConfig.count }.by 1
+      expect { subject }
+        .to change { Records::ChannelConfig.count }.by(1)
+        .and change { Records::ChannelSubscriber.count }.by 1
       expect(response).to have_http_status(:ok)
     end
 
