@@ -64,11 +64,11 @@ module Slack
       action = @payload["actions"].last
 
       case action["action_id"]
-      when "new_channel_config-action", "add_integration-action", PLATFORM_ACTION_ID, "integration_selection-action"
+      when "new_channel_config-action", "add_integration-action", PLATFORM_ACTION_ID, "integration_selection-action", "edit_channel_config-action"
         action_id = action["action_id"].delete_suffix("-action")
         @action_registry[action_id].execute(@customer, @interaction, @payload)
-      when "edit_channel_config-action"
-        handle_channel_config_edit(action)
+      # when "edit_channel_config-action"
+      #   handle_channel_config_edit(action)
       when "escalation_policy_source_selection_team-action"
         handle_escalation_policy_source_selection_team
       end
