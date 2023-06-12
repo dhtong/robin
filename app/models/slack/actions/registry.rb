@@ -7,5 +7,6 @@ module Slack::Actions
     register "add_integration", -> { AddIntegration.new }
     register "integration_selection", -> { SelectIntegration.new }
     register "escalation_policy_source_selection", -> { SelectEscalationPolicySource.new }
+    register "escalation_policy_source_selection_team", -> { SelectEscalationPolicyTeam.new }
   end
 end

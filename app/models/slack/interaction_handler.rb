@@ -63,13 +63,16 @@ module Slack
       raise StandardError.new("more than one actions") if @payload["actions"].size > 1
       action = @payload["actions"].last
 
-      case action["action_id"]
-      when "new_channel_config-action", "add_integration-action", PLATFORM_ACTION_ID, "integration_selection-action", "edit_channel_config-action"
-        action_id = action["action_id"].delete_suffix("-action")
-        @action_registry[action_id].execute(@customer, @interaction, @payload)
-      when "escalation_policy_source_selection_team-action"
-        handle_escalation_policy_source_selection_team
-      end
+      action_id = action["action_id"].delete_suffix("-action")
+      @action_registry[action_id].execute(@customer, @interaction, @payload)
+
+      # case action["action_id"]
+      # when "new_channel_config-action", "add_integration-action", PLATFORM_ACTION_ID, "integration_selection-action", "edit_channel_config-action"
+      #   action_id = action["action_id"].delete_suffix("-action")
+      #   @action_registry[action_id].execute(@customer, @interaction, @payload)
+      # when "escalation_policy_source_selection_team-action"
+      #   handle_escalation_policy_source_selection_team
+      # end
     end
 
     def handle_escalation_policy_source_selection_team
