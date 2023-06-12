@@ -65,28 +65,6 @@ module Slack
 
       action_id = action["action_id"].delete_suffix("-action")
       @action_registry[action_id].execute(@customer, @interaction, @payload)
-
-      # case action["action_id"]
-      # when "new_channel_config-action", "add_integration-action", PLATFORM_ACTION_ID, "integration_selection-action", "edit_channel_config-action"
-      #   action_id = action["action_id"].delete_suffix("-action")
-      #   @action_registry[action_id].execute(@customer, @interaction, @payload)
-      # when "escalation_policy_source_selection_team-action"
-      #   handle_escalation_policy_source_selection_team
-      # end
-    end
-
-    def handle_escalation_policy_source_selection_team
-      selected_team_id = @payload["actions"][0]["selected_option"]["value"]
-      selected_platform = @payload["view"]["state"]["values"][PLATFORM_BLOCK_ID][PLATFORM_ACTION_ID]["selected_option"]["value"]
-      selected_account = @customer.external_accounts.where(platform: selected_platform).first
-      presenter = Presenters::Slack::ZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
-
-      available_escalation_policies = selected_account.client.get_escalation_policies(selected_team_id)
-      # TODO this validation is not show right now. maybe validate teams before showing team options.
-      return ValidationError.new(ZENDUTY_TEAM_BLOCK_ID, "No escalation policies available") if available_escalation_policies.blank?
-      presenter.with_escalation_policies(available_escalation_policies)
-
-      @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
     end
   
     def handle_zenduty_token_submission
