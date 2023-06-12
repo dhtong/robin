@@ -67,8 +67,6 @@ module Slack
       when "new_channel_config-action", "add_integration-action", PLATFORM_ACTION_ID, "integration_selection-action", "edit_channel_config-action"
         action_id = action["action_id"].delete_suffix("-action")
         @action_registry[action_id].execute(@customer, @interaction, @payload)
-      # when "edit_channel_config-action"
-      #   handle_channel_config_edit(action)
       when "escalation_policy_source_selection_team-action"
         handle_escalation_policy_source_selection_team
       end
@@ -86,32 +84,6 @@ module Slack
       presenter.with_escalation_policies(available_escalation_policies)
 
       @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
-    end
-
-    # integration to use for a channel config
-    def handle_escalation_policy_source_selection
-      selected_platform = @payload["actions"][0]["selected_option"]["value"]
-      selected_account = @customer.external_accounts.where(platform: selected_platform).first
-      case selected_platform
-      when "zenduty"
-        presenter = Presenters::Slack::ZendutyChannelConfig.from_blocks(@payload["view"]["blocks"])
-        presenter.with_teams(selected_account.client.get_teams)  
-      when "pagerduty"
-        presenter = Presenters::Slack::PagerdutyChannelConfig.from_blocks(@payload["view"]["blocks"])
-        schedules = selected_account.client.list_schedules
-        presenter.with_schedules(schedules)
-      end
-      
-      @slack_client.views_update(view_id: @payload["view"]["id"], view: presenter.present)
-    end
-
-    def handle_integration_edit(state_value)
-      state_value.each do |action_id, action_value|
-        case action_id
-        when "integration_edit_zenduty-action"
-          p action_value
-        end
-      end
     end
   
     def handle_zenduty_token_submission
@@ -135,41 +107,6 @@ module Slack
       when "pagerduty"
         @slack_client.views_update(view_id: @payload["view"]["id"], view: pagerduty_auth_redirect_view(@customer.external_id))
       end
-    end
-
-    def new_channel_config
-      {
-        "type": "modal",
-        "callback_id": "new_channel_config",
-        "title": {
-          "type": "plain_text",
-          "text": "Channel config",
-        },
-        "submit": {
-          "type": "plain_text",
-          "text": "Submit",
-        },
-        "blocks": [
-          {
-            "block_id": "conversations_select-block",
-            "type": "input",
-            "element": {
-              "type": "conversations_select",
-              "placeholder": {
-                "type": "plain_text",
-                "text": "Select channel",
-                "emoji": true
-              },
-              "action_id": "conversations_select-action"
-            },
-            "label": {
-              "type": "plain_text",
-              "text": "Channel",
-              "emoji": true
-            }
-          }
-        ]
-      }
     end
 
     ZENDUTY_TOKEN_BLOCK_ID = "zenduty_token-block"
@@ -232,17 +169,6 @@ module Slack
         return Presenters::Slack::Integration.no_integrations_available
       end
       Presenters::Slack::Integration.new_integration_selection(available_options)
-    end
-
-    # this change db state
-    # this is the overflow menu
-    def handle_channel_config_edit(action)
-      case action["selected_option"]["value"]
-      when "delete"
-        channel_config_id = action["block_id"].scan(/^\d+/).first.to_i
-        Records::ChannelConfig.where(id: channel_config_id).update_all(disabled_at: Time.current)
-      end
-      @refresh_home_cmd.execute
     end
   end
 end
