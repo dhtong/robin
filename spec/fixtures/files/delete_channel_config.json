@@ -28,7 +28,7 @@
   "actions": [
     {
       "type": "overflow",
-      "action_id": "15_edit_channel_config-action",
+      "action_id": "edit_channel_config-action",
       "block_id": "15_edit_channel_config-block",
       "selected_option": {
         "text": {

@@ -97,7 +97,7 @@ module Slack
         },
         "accessory": {
           "type": "overflow",
-          "action_id": channel_config.id.to_s + "_edit_channel_config-action",
+          "action_id": "edit_channel_config-action",
           "options": [
             {
               "text": {

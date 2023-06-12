@@ -67,7 +67,7 @@ module Slack
       when "new_channel_config-action", "add_integration-action", PLATFORM_ACTION_ID, "integration_selection-action"
         action_id = action["action_id"].delete_suffix("-action")
         @action_registry[action_id].execute(@customer, @interaction, @payload)
-      when /_edit_channel_config-action$/
+      when "edit_channel_config-action"
         handle_channel_config_edit(action)
       when "escalation_policy_source_selection_team-action"
         handle_escalation_policy_source_selection_team
@@ -239,7 +239,7 @@ module Slack
     def handle_channel_config_edit(action)
       case action["selected_option"]["value"]
       when "delete"
-        channel_config_id = action["action_id"].scan(/^\d+/).first.to_i
+        channel_config_id = action["block_id"].scan(/^\d+/).first.to_i
         Records::ChannelConfig.where(id: channel_config_id).update_all(disabled_at: Time.current)
       end
       @refresh_home_cmd.execute
