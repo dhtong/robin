@@ -16,5 +16,8 @@ module Slack
 
     SUBSCRIBER_BLOCK_ID = "multi_subscribers_select-block"
     SUBSCRIBER_ACTION_ID = "multi_subscribers_select-action"
+
+    ZENDUTY_TOKEN_BLOCK_ID = "zenduty_token-block"
+    ZENDUTY_TOKEN_ACTION_ID = "zenduty_token-action"
   end
 end

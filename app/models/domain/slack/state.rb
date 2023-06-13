@@ -1,5 +1,6 @@
 module Domain::Slack
   class State
+    delegate :dig, to: :@h
     
     def initialize(h)
       @h = h

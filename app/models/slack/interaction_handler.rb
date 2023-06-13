@@ -8,6 +8,7 @@ module Slack
       @payload = payload
       @interaction = Domain::Slack::Interaction.new(payload)
       @action_registry = Actions::Registry
+      @submission_registry = Submissions::Registry
 
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
@@ -28,12 +29,7 @@ module Slack
 
     # process modal view submission. this usually results in a (db) state change.
     def handle_view_submission
-      case @interaction.view.callback_id
-      when "new_integration"
-        handle_zenduty_token_submission
-      when CHANNEL_CONFIG_CALLBACK_ID
-        handle_channel_config
-      end
+      @submission_registry[@interaction.view.callback_id].execute(@customer, @interaction, @payload)
       @refresh_home_cmd.execute
     end
 
@@ -66,20 +62,7 @@ module Slack
       action_id = action["action_id"].delete_suffix("-action")
       @action_registry[action_id].execute(@customer, @interaction, @payload)
     end
-  
-    def handle_zenduty_token_submission
-      zenduty_token = @payload.dig("view", "state", "values", ZENDUTY_TOKEN_BLOCK_ID, "zenduty_token-action", "value")
-      if zenduty_token != nil
-        # TODO prevent duplicates.
-        account = Records::ExternalAccount.new(customer: @customer, platform: "zenduty", token: zenduty_token)
-        # TODO find a cheaper endpoint
-        res = account.client.get_teams
-        return ValidationError.new(ZENDUTY_TOKEN_BLOCK_ID, res["error"]) unless res.success?
-        account.save!
-        Slack::MatchUsersForAccount.perform_later(account.id)
-      end
-    end
-  
+
     # new integration to add
     def handle_integration_selection(action)
       case action["selected_option"]["value"]
