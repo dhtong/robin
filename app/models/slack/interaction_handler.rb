@@ -13,7 +13,6 @@ module Slack
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
       @refresh_home_cmd = Slack::RefreshHome.new(customer, slack_client, @caller_id)
-      @channel_config_presenter_class = ::Presenters::Slack::BaseChannelConfig
     end
   
     def execute
@@ -33,27 +32,6 @@ module Slack
       @refresh_home_cmd.execute
     end
 
-    def handle_channel_config
-      state_values = @payload["view"]["state"]["values"]
-      channel_id = state_values[CHANNEL_SELECT_BLOCK_ID]["conversations_select-action"]["selected_conversation"]
-      escalation_policy_id = state_values[ESCALATION_POLICY_BLOCK_ID][ESCALATION_POLICY_ACTION_ID]["selected_option"]["value"]
-      escalation_policy_platform = state_values[PLATFORM_BLOCK_ID][PLATFORM_ACTION_ID]["selected_option"]["value"]
-
-      team_id = state_values[ZENDUTY_TEAM_BLOCK_ID][ZENDUTY_TEAM_ACTION_ID]["selected_option"]["value"] if escalation_policy_platform == "zenduty"
-
-      selected_account_id = @customer.external_accounts.where(platform: escalation_policy_platform).pluck(:id).first
-      attributes = {chat_platform: "slack", team_id: team_id, escalation_policy_id: escalation_policy_id, external_account_id: selected_account_id, channel_id: channel_id}
-      # a channel can only link to one escalation_policy. this also deletes the history if the user has set a different policy before.
-      channel_config = Records::ChannelConfig.unscoped.find_or_initialize_by(channel_id: channel_id, external_account_id: selected_account_id)
-      channel_config.update!(chat_platform: "slack", team_id: team_id, escalation_policy_id: escalation_policy_id, disabled_at: nil)
-      # channel_config = Records::ChannelConfig.upsert(attributes, unique_by: [:external_account_id, :channel_id])
-      subscriber_slack_ids = state_values.dig(SUBSCRIBER_BLOCK_ID, SUBSCRIBER_ACTION_ID, "selected_users")
-      subscribers = subscriber_slack_ids&.map do |s_id|
-        Records::CustomerUser.find_or_create_by!(customer_id: @customer.id, slack_user_id: s_id)
-      end || []
-      channel_config.subscribers = subscribers
-    end
-
     # handle an action on slack. this results in a view change.
     def handle_block_actions
       raise StandardError.new("more than one actions") if @payload["actions"].size > 1
@@ -61,78 +39,6 @@ module Slack
 
       action_id = action["action_id"].delete_suffix("-action")
       @action_registry[action_id].execute(@customer, @interaction, @payload)
-    end
-
-    # new integration to add
-    def handle_integration_selection(action)
-      case action["selected_option"]["value"]
-      when "zenduty"
-        @slack_client.views_update(view_id: @payload["view"]["id"], view: zenduty_token_input_view)
-      when "pagerduty"
-        @slack_client.views_update(view_id: @payload["view"]["id"], view: pagerduty_auth_redirect_view(@customer.external_id))
-      end
-    end
-
-    ZENDUTY_TOKEN_BLOCK_ID = "zenduty_token-block"
-  
-    # todo move this to presenters
-    def zenduty_token_input_view
-      view = new_integration_selection
-      view[:submit] = {"type": "plain_text", "text": "Submit", "emoji": true}
-      token_block = {
-        "block_id": ZENDUTY_TOKEN_BLOCK_ID,
-        "type": "input",
-        "element": {
-          "type": "plain_text_input",
-          "action_id": "zenduty_token-action"
-        },
-        "label": {
-          "type": "plain_text",
-          "text": "Access token",
-          "emoji": true
-        }
-      }
-      view[:blocks] << token_block
-      view
-    end
-
-     # todo move this to presenters
-    def pagerduty_auth_redirect_view(external_id)
-      view = new_integration_selection
-      view[:submit] = {"type": "plain_text", "text": "Done", "emoji": true}
-      url = "https://identity.pagerduty.com/oauth/authorize?client_id=8bded887-2b85-4e2a-85a3-7ef758afb8ae&redirect_uri=#{Pagerduty::OauthClient.get_redirect_uri(external_id)}&scope=read&response_type=code"
-      token_block = {
-        "block_id": Presenters::Slack::Integration::PAGERDUTY_AUTH_BLOCK_ID,
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": "This button will redirect you to pagerduty to give this app access"
-        },
-        "accessory": {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "text": "Redirect",
-            "emoji": true
-          },
-          "value": "pd_redirect",
-          "url": url,
-          "action_id": "button-action"
-        }
-      }
-      view[:blocks] << token_block
-      view
-    end
-
-    INTEGRATION_OPTIONS = %w[zenduty pagerduty]
-
-    def new_integration_selection
-      existing_options = @customer.external_accounts.pluck(:platform)
-      available_options = INTEGRATION_OPTIONS - existing_options
-      if available_options.empty?
-        return Presenters::Slack::Integration.no_integrations_available
-      end
-      Presenters::Slack::Integration.new_integration_selection(available_options)
     end
   end
 end
