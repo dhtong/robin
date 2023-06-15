@@ -1,0 +1,284 @@
+{
+  "type": "block_actions",
+  "user": {
+    "id": "U04G7NZTHKQ",
+    "username": "dan",
+    "name": "dan",
+    "team_id": "T04FZQN3B9D"
+  },
+  "api_app_id": "A04GEBFQV0S",
+  "token": "4nbgdBVKWiLlfLTVw2V0qu4d",
+  "container": {
+    "type": "view",
+    "view_id": "V04R02XDB16"
+  },
+  "trigger_id": "5414316460263.4543838113319.b110fe6c9a792745411503ecfb516214",
+  "team": {
+    "id": "T04FZQN3B9D",
+    "domain": "supportbotsworkspace"
+  },
+  "enterprise": null,
+  "is_enterprise_install": false,
+  "view": {
+    "id": "V04R02XDB16",
+    "team_id": "T04FZQN3B9D",
+    "type": "home",
+    "blocks": [
+      {
+        "type": "section",
+        "block_id": "DeI",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*Integrations*",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "button",
+          "action_id": "add_integration-action",
+          "text": {
+            "type": "plain_text",
+            "text": "Add",
+            "emoji": true
+          },
+          "value": "add_integration"
+        }
+      },
+      {
+        "type": "divider",
+        "block_id": "mnWb"
+      },
+      {
+        "type": "section",
+        "block_id": "zenduty_integration-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": "zenduty",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_integration-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "block_id": "pagerduty_integration-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": "pagerduty",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_integration-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
+        }
+      },
+      {
+        "type": "context",
+        "block_id": "XuW",
+        "elements": [
+          {
+            "type": "image",
+            "image_url": "https:\\/\\/api.slack.com\\/img\\/blocks\\/bkb_template_images\\/placeholder.png",
+            "alt_text": "placeholder"
+          }
+        ]
+      },
+      {
+        "type": "section",
+        "block_id": "\\/VW3B",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*Oncall channels*",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "button",
+          "action_id": "new_channel_config-action",
+          "text": {
+            "type": "plain_text",
+            "text": "New",
+            "emoji": true
+          },
+          "value": "new_channel_config"
+        }
+      },
+      {
+        "type": "divider",
+        "block_id": "sngU"
+      },
+      {
+        "type": "section",
+        "block_id": "14_edit_channel_config-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": "<#C04GT0EMY0H>",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_channel_config-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "block_id": "15_edit_channel_config-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": "<#C04HLR8LDFE>",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_channel_config-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "block_id": "28_edit_channel_config-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": "<#C04GEB66H18>",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_channel_config-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "block_id": "34_edit_channel_config-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": "<#C04LGGHFMDL>",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_channel_config-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
+        }
+      },
+      {
+        "type": "section",
+        "block_id": "30_edit_channel_config-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": "<#C04GT0GUEBT>",
+          "verbatim": false
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_channel_config-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
+        }
+      }
+    ],
+    "private_metadata": "",
+    "callback_id": "",
+    "state": {
+      "values": {}
+    },
+    "hash": "1686790585.NsuUj00s",
+    "title": {
+      "type": "plain_text",
+      "text": "View Title",
+      "emoji": true
+    },
+    "clear_on_close": false,
+    "notify_on_close": false,
+    "close": null,
+    "submit": null,
+    "previous_view_id": null,
+    "root_view_id": "V04R02XDB16",
+    "app_id": "A04GEBFQV0S",
+    "external_id": "",
+    "app_installed_team_id": "T04FZQN3B9D",
+    "bot_id": "B04GE8GDAP5"
+  },
+  "actions": [
+    {
+      "type": "overflow",
+      "action_id": "edit_integration-action",
+      "block_id": "pagerduty_integration-block",
+      "selected_option": {
+        "text": {
+          "type": "plain_text",
+          "text": "Delete",
+          "emoji": true
+        },
+        "value": "delete"
+      },
+      "action_ts": "1686790596.596647"
+    }
+  ]
+}

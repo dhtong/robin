@@ -21,6 +21,17 @@ RSpec.describe "Interaction", type: :request do
     end
   end
 
+  context "delete integration" do
+    let(:payload) { file_fixture("delete_integration.json").read }
+    let!(:external_account) { create(:external_account, customer: customer, platform: "pagerduty") }
+
+    it "delete records" do
+      stub_refresh
+      expect { subject }.to change { external_account.reload.disabled_at }.from nil
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   context "submit zenduty token" do
     let(:payload) { file_fixture("zenduty_token.json").read }
 
