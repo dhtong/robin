@@ -120,22 +120,21 @@ module Slack
         "text": {
           "type": "mrkdwn",
           "text": integration_name
+        },
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_integration-action",
+          "options": [
+            {
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }
+          ]
         }
-        # not showing delete action for now. we need to disable all related channel config when we have delete.
-        # "accessory": {
-        #   "type": "overflow",
-        #   "action_id": integration_name + "_integration-action",
-        #   "options": [
-        #     {
-        #       "text": {
-        #         "type": "plain_text",
-        #         "text": "Delete",
-        #         "emoji": true
-        #       },
-        #       "value": "delete"
-        #     }
-        #   ]
-        # }
       }
     end
   end
