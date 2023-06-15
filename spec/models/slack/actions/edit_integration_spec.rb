@@ -11,10 +11,19 @@ RSpec.describe Slack::Actions::EditIntegration do
     }
   )
   end
+  let(:cconfig) { create(:channel_config, external_account: external_account) }
+  let(:past_disabled_at) { 10.minute.ago }
+  let(:disabled_config) { create(:channel_config, external_account: external_account, disabled_at: past_disabled_at) }
 
   let(:refresh_cmd) { double(new: double(execute: nil)) }
   
-  it 'create subscriber assocations' do
-    expect { described_class.new(refresh_cmd).execute(customer, inter, nil) }.to change { external_account.reload.disabled_at }.from nil
+  it 'disable every thing' do
+    expect { described_class.new(refresh_cmd).execute(customer, inter, nil) }
+    .to change { external_account.reload.disabled_at }.from(nil)
+    .and change { cconfig.reload.disabled_at }.from(nil)
+  end
+
+  it 'not set disabled_at for already disabled' do
+    expect { described_class.new(refresh_cmd).execute(customer, inter, nil) }.not_to change { disabled_config.reload.disabled_at }.from past_disabled_at
   end
 end
