@@ -119,7 +119,7 @@ module Slack
         "block_id": integration_name + "_integration-block",
         "text": {
           "type": "mrkdwn",
-          "text": integration_name
+          "text": integration_name.capitalize
         },
         "accessory": {
           "type": "overflow",
