@@ -12,9 +12,9 @@ class WheretoController < ApplicationController
     url = URI("https://api.foursquare.com/v3/places/search?query=restaurants&ll=40.733114%2C-73.955605&radius=500&fields=name%2Cwebsite&open_now=true&sort=RATING&limit=30")
     places = fetch_random_places_nearby
 
-    body = { response_url: response_url, text: "Try one of these: #{places.map(&:to_markdown).to_sentence}.", in_channel: params[:channel_id], reactions: ["one", "two", "three"] }
+    body = { text: "Try one of these: #{places.map(&:to_markdown).to_sentence}.", response_type: "in_channel", reactions: ["one", "two", "three"] }
 
-    r = HTTParty.post("https://api.slack.com/api/chat.postMessage", body: body.to_json, headers: {'Content-Type' => 'application/json'})
+    r = HTTParty.post(response_url, body: body.to_json, headers: {'Content-Type' => 'application/json'})
     p r
   end
 
