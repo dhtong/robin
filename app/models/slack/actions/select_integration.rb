@@ -2,7 +2,7 @@ module Slack::Actions
   class SelectIntegration
     ZENDUTY_TOKEN_BLOCK_ID = "zenduty_token-block"
 
-    def execute(customer, interaction, _payload)
+    def execute(customer, interaction, payload)
       @customer = customer
       slack_client = Slack::Web::Client.new(token: customer.slack_access_token)
       action = interaction.actions[-1]
@@ -10,7 +10,7 @@ module Slack::Actions
       when "zenduty"
         slack_client.views_update(view_id: interaction.view.id, view: zenduty_token_input_view)
       when "pagerduty"
-        slack_client.views_update(view_id: interaction.view.id, view: pagerduty_auth_redirect_view(customer.external_id))
+        slack_client.views_update(view_id: interaction.view.id, view: pagerduty_auth_redirect_view(customer.external_id, payload["view"]))
       end
     end
 
@@ -40,31 +40,12 @@ module Slack::Actions
     end
 
      # todo move this to presenters
-    def pagerduty_auth_redirect_view(external_id)
-      view = new_integration_selection
-      view[:submit] = {"type": "plain_text", "text": "Done", "emoji": true}
+    def pagerduty_auth_redirect_view(external_id, view)
       url = "https://identity.pagerduty.com/oauth/authorize?client_id=8bded887-2b85-4e2a-85a3-7ef758afb8ae&redirect_uri=#{Pagerduty::OauthClient.get_redirect_uri(external_id)}&scope=read&response_type=code"
-      token_block = {
-        "block_id": Presenters::Slack::Integration::PAGERDUTY_AUTH_BLOCK_ID,
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": "This button will redirect you to pagerduty to give this app access"
-        },
-        "accessory": {
-          "type": "button",
-          "text": {
-            "type": "plain_text",
-            "text": "Redirect",
-            "emoji": true
-          },
-          "value": "pd_redirect",
-          "url": url,
-          "action_id": "button-action"
-        }
-      }
-      view[:blocks] << token_block
-      view
+      
+      p = Presenters::Slack::Integration.from_blocks(view["blocks"])
+      p.set_pagerduty_redirect(url)
+      p.present
     end
 
     def new_integration_selection

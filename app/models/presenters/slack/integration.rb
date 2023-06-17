@@ -2,8 +2,26 @@ module Presenters::Slack
   class Integration
     CALLBACK_ID = "new_integration"
     PAGERDUTY_AUTH_BLOCK_ID = "pagerduty_auth-block"
+    BASE_VIEW = {
+      {
+        "type": "modal",
+        "callback_id": CALLBACK_ID,
+        "title": {
+          "type": "plain_text",
+          "text": "Integrations",
+        },
+        "close": {
+          "type": "plain_text",
+          "text": "Close",
+        }
+      }
+    }
 
     class << self
+      def from_blocks(blocks)
+        new(blocks)
+      end
+
       def no_integrations_available
         {
           "type": "modal",
@@ -79,6 +97,41 @@ module Presenters::Slack
           }
         end
       end
+    end
+
+    def initialize(blocks)
+      @blocks = blocks || []
+      @submit = {"type": "plain_text", "text": "Close", "emoji": true}
+    end
+
+    def set_pagerduty_redirect(url)
+      @blocks[1] = token_block = {
+        "block_id": PAGERDUTY_AUTH_BLOCK_ID,
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "This button will redirect you to pagerduty to give this app access"
+        },
+        "accessory": {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Redirect",
+            "emoji": true
+          },
+          "value": "pd_redirect",
+          "url": url,
+          "action_id": "button-action"
+        }
+      }
+      @submit = {"type": "plain_text", "text": "Done", "emoji": true}
+    end
+
+    def present
+      view = BASE_VIEW
+      view[:blocks] = @blocks
+      view[:submit] = @submit
+      view
     end
   end
 end
