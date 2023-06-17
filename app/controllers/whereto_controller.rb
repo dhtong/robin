@@ -25,6 +25,6 @@ class WheretoController < ApplicationController
     response = HTTParty.get(request_url, headers: {'Authorization': ENV["FS_API"]})
     results = response["results"]
     
-    results.map {|result| Place.new(**result)}
+    results.map {|result| Place.new(**result)}.sample(count)
   end
 end
