@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   namespace :pagerduty do
     resources :auth, only: :index
   end
+
+  post '/whereto', to: "whereto#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
