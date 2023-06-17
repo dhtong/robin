@@ -7,15 +7,15 @@ class WheretoController < ApplicationController
   
   # location
   def index
-    p params
     response_url = params[:response_url]
   
     url = URI("https://api.foursquare.com/v3/places/search?query=restaurants&ll=40.733114%2C-73.955605&radius=500&fields=name%2Cwebsite&open_now=true&sort=RATING&limit=30")
     places = fetch_random_places_nearby
 
-    body = { text: "Try one of these: #{places.map(&:to_markdown).to_sentence}.", response_type: "in_channel" }
+    body = { text: "Try one of these: #{places.map(&:to_markdown).to_sentence}.", response_type: "in_channel", reactions: ["one", "two", "three"] }
 
-    HTTParty.post(response_url, body: body.to_json, headers: {'Content-Type' => 'application/json'})
+    r = HTTParty.post(response_url, body: body.to_json, headers: {'Content-Type' => 'application/json'})
+    p r
   end
 
   private
