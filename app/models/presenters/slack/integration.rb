@@ -3,17 +3,15 @@ module Presenters::Slack
     CALLBACK_ID = "new_integration"
     PAGERDUTY_AUTH_BLOCK_ID = "pagerduty_auth-block"
     BASE_VIEW = {
-      {
-        "type": "modal",
-        "callback_id": CALLBACK_ID,
-        "title": {
-          "type": "plain_text",
-          "text": "Integrations",
-        },
-        "close": {
-          "type": "plain_text",
-          "text": "Close",
-        }
+      "type": "modal",
+      "callback_id": CALLBACK_ID,
+      "title": {
+        "type": "plain_text",
+        "text": "Integrations",
+      },
+      "close": {
+        "type": "plain_text",
+        "text": "Close",
       }
     }
 
