@@ -119,7 +119,7 @@ module Presenters::Slack
           },
           "value": "pd_redirect",
           "url": url,
-          "action_id": "button-action"
+          "action_id": "noop-action"
         }
       }
       @submit = {"type": "plain_text", "text": "Done", "emoji": true}
