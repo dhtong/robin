@@ -12,7 +12,7 @@ module Slack
 
       @trigger_id = payload["trigger_id"]
       @caller_id = payload["user"]["id"]
-      @refresh_home_cmd = Slack::RefreshHome.new(customer, slack_client, @caller_id)
+      @refresh_home_cmd = Slack::RefreshHome.new(customer_id: customer.id, caller_id: @caller_id)
     end
   
     def execute

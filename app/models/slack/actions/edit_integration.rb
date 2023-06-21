@@ -22,9 +22,8 @@ module Slack::Actions
       end
 
       @refresh_home_cmd_clz.new(
-        customer,
-        Slack::Web::Client.new(token: customer.slack_access_token),
-        interaction.user.id
+        customer_id: customer.id,
+        caller_id: interaction.user.id
       ).execute
     end
   end

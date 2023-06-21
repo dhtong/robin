@@ -8,7 +8,7 @@ class Slack::EventsController < ApplicationController
 
     case params[:event][:type]
     when 'app_home_opened'
-      Slack::RefreshHome.new(customer, @slack_client, params[:event][:user]).execute
+      Slack::RefreshHome.new(customer_id: customer.id, caller_id: params[:event][:user]).execute
     when 'app_mention'
       msg = record_message
       return head :ok if msg.nil?

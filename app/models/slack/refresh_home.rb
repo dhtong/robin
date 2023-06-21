@@ -1,9 +1,10 @@
 module Slack
   class RefreshHome
-    def initialize(customer, client, caller_id)
-      @customer = customer
-      @client = client
+    def initialize(customer_id:, caller_id:)
+      @customer = Records::Customer.includes(external_accounts: { channel_configs: [:subscribers] }).find(customer_id)
+      @client = Slack::Web::Client.new(token: @customer.slack_access_token)
       @caller_id = caller_id
+      @show_channel_cfg_presenter_clz = Presenters::Slack::ShowChannelConfig 
     end
 
 
@@ -93,7 +94,7 @@ module Slack
         "block_id": channel_config.id.to_s + "_edit_channel_config-block",
         "text": {
           "type": "mrkdwn",
-          "text": "<##{channel_config.channel_id}>"
+          "text": @show_channel_cfg_presenter_clz.present(channel_config) # "<##{channel_config.channel_id}>"
         },
         "accessory": {
           "type": "overflow",
