@@ -4,7 +4,7 @@ module Slack
       @customer = Records::Customer.includes(external_accounts: { channel_configs: [:subscribers] }).find(customer_id)
       @client = Slack::Web::Client.new(token: @customer.slack_access_token)
       @caller_id = caller_id
-      @show_channel_cfg_presenter_clz = Presenters::Slack::ShowChannelConfig 
+      @show_channel_cfg_presenter_clz = Presenters::Slack::ShowChannelConfig.new
     end
 
 
