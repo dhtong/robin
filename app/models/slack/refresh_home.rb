@@ -9,7 +9,6 @@ module Slack
 
 
     def execute
-      p "------ updating home ------"
       external_accounts = @customer.external_accounts
 
       blocks = display_integrations(external_accounts)

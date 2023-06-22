@@ -57,6 +57,7 @@ module Presenters::Slack
         },
         "action_id": SUBSCRIBER_ACTION_ID
       },
+      "optional": true,
       "label": {
         "type": "plain_text",
         "text": "[optional] Subscribers to always get a private ping"
