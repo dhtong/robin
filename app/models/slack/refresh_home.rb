@@ -108,15 +108,15 @@ module Slack
                 "emoji": true
               },
               "value": "delete"
-            },
-            {
-              "text": {
-                "type": "plain_text",
-                "text": "Edit",
-                "emoji": true
-              },
-              "value": "edit"
-            }
+            }#,
+            # {
+            #   "text": {
+            #     "type": "plain_text",
+            #     "text": "Edit",
+            #     "emoji": true
+            #   },
+            #   "value": "edit"
+            # }
           ]
         }
       }
