@@ -1,16 +1,17 @@
 module Slack
   class RefreshHome
     def initialize(customer_id:, caller_id:)
-      @customer = Records::Customer.includes(external_accounts: { channel_configs: [:subscribers] }).find(customer_id)
-      @client = Slack::Web::Client.new(token: @customer.slack_access_token)
+      @customer_id = customer_id
       @caller_id = caller_id
       @show_channel_cfg_presenter_clz = Presenters::Slack::ShowChannelConfig.new
     end
 
 
     def execute
-      external_accounts = @customer.external_accounts
+      @customer = Records::Customer.includes(external_accounts: { channel_configs: [:subscribers] }).find(@customer_id)
+      @client = Slack::Web::Client.new(token: @customer.slack_access_token)
 
+      external_accounts = @customer.external_accounts
       blocks = display_integrations(external_accounts)
 
       if external_accounts.any?
