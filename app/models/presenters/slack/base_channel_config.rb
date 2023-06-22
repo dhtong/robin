@@ -48,18 +48,18 @@ module Presenters::Slack
 
     SUBSCRIBER_BLOCK = {
       "block_id": SUBSCRIBER_BLOCK_ID,
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "[optional] Subscribers to always get a private ping"
-      },
-      "accessory": {
+      "type": "input",
+      "element": {
         "type": "multi_users_select",
         "placeholder": {
           "type": "plain_text",
           "text": "Select",
         },
         "action_id": SUBSCRIBER_ACTION_ID
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "[optional] Subscribers to always get a private ping"
       }
     }
 
