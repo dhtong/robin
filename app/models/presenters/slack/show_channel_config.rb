@@ -2,7 +2,7 @@ module Presenters::Slack
   class ShowChannelConfig
     def present(channel_config)
       @channel_config = channel_config
-      [slack_channel_id, connection_info, subscribers].join("\n")
+      [slack_channel_id, connection_info, subscribers].compact.join("\n")
     end
 
     private
@@ -17,7 +17,8 @@ module Presenters::Slack
 
     def subscribers
       users = @channel_config.subscribers.map{|u| "<@#{u.slack_user_id}>"}
-      "subscribers: #{users.join(',')}"
+      return "subscribers: #{users.join(',')}" if users.any?
+      return
     end
   end
 end
