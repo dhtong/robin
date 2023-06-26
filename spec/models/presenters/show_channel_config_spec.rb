@@ -17,20 +17,15 @@ RSpec.describe Presenters::Slack::ShowChannelConfig do
   
   it 'display' do
     j = described_class.new.present(channel_config)
-    expect(j).to eq "<##{slack_channel_id}>"
-  end
-
-  it 'display context' do
-    j = described_class.new.present_context(channel_config)
-    expect(j).to eq "platform: Zenduty, policy id: #{escalation_policy_id}\nsubscribers: <@123>"
+    expect(j).to eq "<##{slack_channel_id}>\nplatform: Zenduty, policy id: #{escalation_policy_id}\nsubscribers: <@123>"
   end
 
   context "no subscribers" do
     let(:subscribers) { [] }
 
     it 'display without subscribers' do
-      j = described_class.new.present_context(channel_config)
-      expect(j).to eq "platform: Zenduty, policy id: #{escalation_policy_id}"
+      j = described_class.new.present(channel_config)
+      expect(j).to eq "<##{slack_channel_id}>\nplatform: Zenduty, policy id: #{escalation_policy_id}"
     end
   end
 end

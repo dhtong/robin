@@ -83,54 +83,43 @@ module Slack
       ]
       external_accounts.each do |account|
         account.channel_configs.each do |channel_config|
-          blocks.concat(view_channel(channel_config))
+          blocks << view_channel(channel_config)
         end
       end
       blocks
     end
 
     def view_channel(channel_config)
-      [
-        {
-          "type": "section",
-          "block_id": channel_config.id.to_s + "_edit_channel_config-block",
-          "text": {
-            "type": "mrkdwn",
-            "text": @show_channel_cfg_presenter_clz.present(channel_config)
-          },
-          "accessory": {
-            "type": "overflow",
-            "action_id": "edit_channel_config-action",
-            "options": [
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Delete",
-                  "emoji": true
-                },
-                "value": "delete"
-              }#,
-              # {
-              #   "text": {
-              #     "type": "plain_text",
-              #     "text": "Edit",
-              #     "emoji": true
-              #   },
-              #   "value": "edit"
-              # }
-            ]
-          }
+      {
+        "type": "section",
+        "block_id": channel_config.id.to_s + "_edit_channel_config-block",
+        "text": {
+          "type": "mrkdwn",
+          "text": @show_channel_cfg_presenter_clz.present(channel_config) # "<##{channel_config.channel_id}>"
         },
-        {
-          "type": "context",
-          "elements": [
+        "accessory": {
+          "type": "overflow",
+          "action_id": "edit_channel_config-action",
+          "options": [
             {
-              "type": "plain_text",
-              "text": @show_channel_cfg_presenter_clz.present_context(channel_config)
-            }
+              "text": {
+                "type": "plain_text",
+                "text": "Delete",
+                "emoji": true
+              },
+              "value": "delete"
+            }#,
+            # {
+            #   "text": {
+            #     "type": "plain_text",
+            #     "text": "Edit",
+            #     "emoji": true
+            #   },
+            #   "value": "edit"
+            # }
           ]
         }
-      ]
+      }
     end
 
 

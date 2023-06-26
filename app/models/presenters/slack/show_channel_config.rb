@@ -2,12 +2,7 @@ module Presenters::Slack
   class ShowChannelConfig
     def present(channel_config)
       @channel_config = channel_config
-      slack_channel_id
-    end
-
-    def present_context(channel_config)
-      @channel_config = channel_config
-      [connection_info, subscribers].compact.join("\n")
+      [slack_channel_id, connection_info, subscribers].compact.join("\n")
     end
 
     private
