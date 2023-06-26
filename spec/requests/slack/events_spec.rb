@@ -45,7 +45,7 @@ RSpec.describe "Event", type: :request do
       end
     end
 
-    it "create job " do
+    it "create ping job " do
       stub_slack
       expect {
         post "/slack/events", params: payload
@@ -55,6 +55,13 @@ RSpec.describe "Event", type: :request do
       expect {
         post "/slack/events", params: payload
       }.not_to have_enqueued_job(Slack::PingOncall)
+    end
+
+    it "create support job " do
+      stub_slack
+      expect {
+        post "/slack/events", params: payload
+      }.to have_enqueued_job(Slack::CreateSupportCase)
     end
   end
 
