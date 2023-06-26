@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_08_224817) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_26_181510) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -78,9 +78,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_08_224817) do
     t.datetime "updated_at", null: false
     t.jsonb "event_payload", default: {}
     t.string "external_id"
+    t.string "slack_ts"
     t.index ["channel_id"], name: "index_messages_on_channel_id"
     t.index ["customer_id"], name: "index_messages_on_customer_id"
     t.index ["external_id"], name: "index_messages_on_external_id"
+  end
+
+  create_table "support_cases", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.string "channel_id"
+    t.string "slack_ts"
+    t.string "instigator_message_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_support_cases_on_channel_id"
+    t.index ["created_at"], name: "index_support_cases_on_created_at"
+    t.index ["customer_id"], name: "index_support_cases_on_customer_id"
+    t.index ["slack_ts"], name: "index_support_cases_on_slack_ts"
   end
 
   create_table "user_contact_associations", force: :cascade do |t|
@@ -105,6 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_08_224817) do
   add_foreign_key "customer_users", "customers"
   add_foreign_key "external_accounts", "customers"
   add_foreign_key "messages", "customers"
+  add_foreign_key "support_cases", "customers"
   add_foreign_key "user_contact_associations", "customer_users"
   add_foreign_key "user_contact_associations", "user_contacts"
 end
