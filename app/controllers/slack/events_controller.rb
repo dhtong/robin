@@ -26,7 +26,7 @@ class Slack::EventsController < ApplicationController
     existing_message = Records::Message.find_by(external_id: external_message_id) if external_message_id.present?
     return nil if existing_message.present?
 
-    cu = Commands::FindOrCreateUser.new.execute(slack_user_id: params[:event][:user], slack_team_id: params[:event][:team], referer_customer_id: customer.id)
+    cu = Commands::FindOrCreateUser.new.execute(slack_user_id: params[:event][:user], slack_team_id: params[:event][:user_team] || params[:event][:team], referer_customer_id: customer.id)
     Records::Message.create(
       content: params[:event][:text],
       customer: customer,
