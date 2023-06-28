@@ -4,6 +4,7 @@ FactoryBot.define do
     # after(:build) do |cu|
     #   cu.user_contacts << FactoryBot.build(:user_contact)
     # end
+    slack_user_id { Faker::Code.npi }
 
     transient do
       user_contacts { [] }

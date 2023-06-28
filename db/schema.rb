@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_26_181510) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_26_210916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_181510) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_customer_users_on_customer_id"
+    t.index ["slack_user_id"], name: "index_customer_users_on_slack_user_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -79,21 +80,36 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_181510) do
     t.jsonb "event_payload", default: {}
     t.string "external_id"
     t.string "slack_ts"
+    t.bigint "customer_user_id"
     t.index ["channel_id"], name: "index_messages_on_channel_id"
     t.index ["customer_id"], name: "index_messages_on_customer_id"
+    t.index ["customer_user_id"], name: "index_messages_on_customer_user_id"
     t.index ["external_id"], name: "index_messages_on_external_id"
+  end
+
+  create_table "support_case_reviews", force: :cascade do |t|
+    t.bigint "support_case_id", null: false
+    t.bigint "reviewer_id", null: false
+    t.string "status"
+    t.boolean "resolved"
+    t.integer "satisfication"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reviewer_id"], name: "index_support_case_reviews_on_reviewer_id"
+    t.index ["support_case_id"], name: "index_support_case_reviews_on_support_case_id"
   end
 
   create_table "support_cases", force: :cascade do |t|
     t.bigint "customer_id", null: false
     t.string "channel_id"
     t.string "slack_ts"
-    t.string "instigator_message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "instigator_message_id"
     t.index ["channel_id"], name: "index_support_cases_on_channel_id"
     t.index ["created_at"], name: "index_support_cases_on_created_at"
     t.index ["customer_id"], name: "index_support_cases_on_customer_id"
+    t.index ["instigator_message_id"], name: "index_support_cases_on_instigator_message_id"
     t.index ["slack_ts"], name: "index_support_cases_on_slack_ts"
   end
 
@@ -119,7 +135,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_181510) do
   add_foreign_key "customer_users", "customers"
   add_foreign_key "external_accounts", "customers"
   add_foreign_key "messages", "customers"
+  add_foreign_key "support_case_reviews", "customer_users", column: "reviewer_id"
+  add_foreign_key "support_case_reviews", "support_cases"
   add_foreign_key "support_cases", "customers"
+  add_foreign_key "support_cases", "messages", column: "instigator_message_id"
   add_foreign_key "user_contact_associations", "customer_users"
   add_foreign_key "user_contact_associations", "user_contacts"
 end

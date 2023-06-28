@@ -31,6 +31,11 @@ RSpec.describe "Event", type: :request do
       }.not_to change { Records::Message.count }
     end
 
+    it 'message has customer user' do
+      post "/slack/events", params: payload
+      expect(Records::Message.last.customer_user_id).to be_present
+    end
+
     context 'no message id' do
       let!(:exisiting_message) { create(:message, external_id: nil) }
       before do
