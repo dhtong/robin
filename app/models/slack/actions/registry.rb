@@ -15,6 +15,8 @@ module Slack::Actions
     register "escalation_policy_source_selection", -> { SelectEscalationPolicySource.new }
     register "escalation_policy_source_selection_team", -> { SelectEscalationPolicyTeam.new }
 
+    register "submit_review", -> { SubmitReview.new }
+
     # slack button only comes with section block, which always disaptch_action, even though we might not need it.
     register "noop", -> { Noop.new }
   end
