@@ -7,8 +7,8 @@ module Slack::Actions
     def execute(customer, interaction, payload)
       review_id = interaction.actions[0].block_id.partition("-submit_review-block")[0]
 
-      resolved = interaction.view.state.dig("values", "#{review_id}-resolution_review-block", "submit_review-action", "value") == "true"
-      satisfication = interaction.view.state.dig("values", "#{review_id}-satisfication_review-block", "submit_review-action", "value")
+      resolved = payload.dig("state", "values", "#{review_id}-resolution_review-block", "submit_review-action", "value") == "true"
+      satisfication = payload.dig("state", "values", "#{review_id}-satisfication_review-block", "submit_review-action", "value")
 
       Records::SupportCaseReview.upadte(review_id, resolved: resolved, satisfication: satisfication, status: :submitted)
 
