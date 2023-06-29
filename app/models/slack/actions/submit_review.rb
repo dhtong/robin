@@ -10,7 +10,7 @@ module Slack::Actions
       resolved = payload.dig("state", "values", "#{review_id}-resolution_review-block", "submit_review-action", "value") == "true"
       satisfication = payload.dig("state", "values", "#{review_id}-satisfication_review-block", "submit_review-action", "value")
 
-      Records::SupportCaseReview.upadte(review_id, resolved: resolved, satisfication: satisfication, status: :submitted)
+      Records::SupportCaseReview.update(review_id, resolved: resolved, satisfication: satisfication, status: :submitted)
 
       submitted_blocks = payload["message"]["blocks"]
       submitted_blocks[-1] = Presenters::Slack::SupportCaseReview.new.present_submitted
