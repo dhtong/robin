@@ -9,7 +9,7 @@ module Domain
       transform_keys(&:to_sym)
 
       attribute :trigger_id?, Types::String
-      attribute :view, View
+      attribute :view?, View
       attribute :actions?, Types.Array(Action)
       attribute :user?, User
     end
