@@ -4,7 +4,15 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.4"
+# gem "rails", "~> 7.0.4"
+gem "activerecord", "~> 7.0"
+gem "activemodel", "~> 7.0"
+gem "activejob", "~> 7.0"
+gem "activestorage", "~> 7.0"
+gem "activesupport", "~> 7.0"
+gem "actionview", "~> 7.0"
+gem "actioncable", "~> 7.0"
+gem "actiontext", "~> 7.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
@@ -46,6 +54,7 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem "dockerfile-rails", ">= 1.5"
 end
 
 group :test do
@@ -78,3 +87,5 @@ gem "dry-monads", "~> 1.6"
 gem "dry-container", "~> 0.11.0"
 
 gem "dry-auto_inject", "~> 1.0"
+
+gem "redis", "~> 5.0"
