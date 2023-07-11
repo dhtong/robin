@@ -66,7 +66,7 @@ module Slack
           "type": "button",
           "text": {
             "type": "plain_text",
-            "text": "Go",
+            "text": "Go"
           },
           "url": sc.instigator_message.external_url,
           "action_id": "noop-action"
