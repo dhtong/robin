@@ -48,7 +48,7 @@ module Slack
         {"type": "divider"}
       ]
       cases.each do |sc|
-        blocks << display_case(sc)
+        blocks = blocks + display_case(sc)
       end
 
       blocks << EMPTY_SPACE
@@ -56,22 +56,24 @@ module Slack
     end
 
     def display_case(sc)
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": "*<##{sc.channel_id}>*\n#{sc.instigator_message.event_payload["text"]}"
-        },
-        "accessory": {
-          "type": "button",
+      [
+        {
+          "type": "section",
           "text": {
-            "type": "plain_text",
-            "text": "Go"
-          },
-          # "url": sc.instigator_message.external_url,
-          "action_id": "noop-action"
+            "type": "mrkdwn",
+            "text": "*<##{sc.channel_id}>*"
+          }
+        },
+        {
+          "type": "context",
+          "elements": [
+            {
+              "type": "mrkdwn",
+              "text": sc.instigator_message.event_payload["text"]
+            }
+          ]
         }
-      }
+      ]
     end
 
     def display_integrations(external_accounts)
