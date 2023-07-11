@@ -38,7 +38,7 @@ module Slack
     }
 
     def display_recent_cases
-      cases = Records::SupportCase.where(customer: @customer).order(created_at: :desc).limit(5)
+      cases = Records::SupportCase.where(customer: @customer).includes(:instigator_message).order(created_at: :desc).limit(5)
       blocks = [
         {
           "type": "section",
@@ -47,29 +47,29 @@ module Slack
         }, 
         {"type": "divider"}
       ]
-      external_accounts.each do |account|
-        blocks << view_integration(account.platform)
+      cases.each do |sc|
+        blocks << display_case(sc)
       end
 
       blocks << EMPTY_SPACE
       blocks
     end
 
-    def display_case
+    def display_case(sc)
       {
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "*#public-relations*\n<fakelink.toUrl.com|PR Strategy 2019> posts new tasks, comments, and project updates to <fakelink.toChannel.com|#public-relations>"
+          "text": "*<##{sc.channel_id}>*\n#{sc.instigator_message.event_payload["text"]}"
         },
         "accessory": {
           "type": "button",
           "text": {
             "type": "plain_text",
-            "text": "Edit",
-            "emoji": true
+            "text": "Go",
           },
-          "value": "public-relations"
+          "url": sc.instigator_message.external_url,
+          "action_id": "noop-action"
         }
       }
     end
