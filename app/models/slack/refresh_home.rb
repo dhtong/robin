@@ -44,8 +44,7 @@ module Slack
           "type": "section",
           "text": {"type": "mrkdwn", "text": "*Recent cases*"},
           
-        }, 
-        {"type": "divider"}
+        }
       ]
       cases.each do |sc|
         blocks = blocks + display_case(sc)
@@ -60,6 +59,7 @@ module Slack
       # header = "*<#{sc.instigator_message.external_url}|##{sc.channel_id}>*" if sc.instigator_message.external_url.present?
 
       [
+        {"type": "divider"},
         {
           "type": "section",
           "text": {
@@ -71,7 +71,7 @@ module Slack
           "type": "context",
           "elements": [
             {
-              "type": "plain_text",
+              "type": "mrkdwn",
               "text": sc.instigator_message.event_payload["text"]
             }
           ]
