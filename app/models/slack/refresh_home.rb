@@ -60,7 +60,7 @@ module Slack
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "*<##{sc.channel_id}>*\n"
+          "text": "*<##{sc.channel_id}>*\n#{sc.instigator_message.event_payload["text"]}"
         },
         "accessory": {
           "type": "button",
