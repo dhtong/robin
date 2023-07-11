@@ -56,12 +56,15 @@ module Slack
     end
 
     def display_case(sc)
+      header = "*<##{sc.channel_id}>*"
+      header = "*<#{sc.instigator_message.external_url}|##{sc.channel_id}>*" if sc.instigator_message.external_url.present?
+
       [
         {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "*<##{sc.channel_id}>*"
+            "text": header
           }
         },
         {
