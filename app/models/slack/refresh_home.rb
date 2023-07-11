@@ -57,7 +57,7 @@ module Slack
 
     def display_case(sc)
       header = "*<##{sc.channel_id}>*"
-      header = "*<#{sc.instigator_message.external_url}|##{sc.channel_id}>*" if sc.instigator_message.external_url.present?
+      # header = "*<#{sc.instigator_message.external_url}|##{sc.channel_id}>*" if sc.instigator_message.external_url.present?
 
       [
         {
@@ -71,7 +71,7 @@ module Slack
           "type": "context",
           "elements": [
             {
-              "type": "mrkdwn",
+              "type": "plain_text",
               "text": sc.instigator_message.event_payload["text"]
             }
           ]
