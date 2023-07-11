@@ -37,6 +37,43 @@ module Slack
       ]
     }
 
+    def display_recent_cases
+      cases = Records::SupportCase.where(customer: @customer).order(created_at: :desc).limit(5)
+      blocks = [
+        {
+          "type": "section",
+          "text": {"type": "mrkdwn", "text": "*Recent cases*"},
+          
+        }, 
+        {"type": "divider"}
+      ]
+      external_accounts.each do |account|
+        blocks << view_integration(account.platform)
+      end
+
+      blocks << EMPTY_SPACE
+      blocks
+    end
+
+    def display_case
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*#public-relations*\n<fakelink.toUrl.com|PR Strategy 2019> posts new tasks, comments, and project updates to <fakelink.toChannel.com|#public-relations>"
+        },
+        "accessory": {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Edit",
+            "emoji": true
+          },
+          "value": "public-relations"
+        }
+      }
+    end
+
     def display_integrations(external_accounts)
       blocks = [
         {

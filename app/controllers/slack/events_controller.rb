@@ -27,6 +27,7 @@ class Slack::EventsController < ApplicationController
     return nil if existing_message.present?
 
     cu = Commands::FindOrCreateUser.new.execute(slack_user_id: params[:event][:user], slack_team_id: params[:event][:user_team] || params[:event][:team], referer_customer_id: customer.id)
+    url = @slack_client.chat_getPermalink(channel: channel, message_ts: params[:event][:ts])[:permalink]
     Records::Message.create(
       content: params[:event][:text],
       customer: customer,
@@ -34,7 +35,8 @@ class Slack::EventsController < ApplicationController
       event_payload: params[:event],
       external_id: external_message_id,
       slack_ts: params[:event][:thread_ts] || params[:event][:ts],
-      customer_user: cu
+      customer_user: cu,
+      external_url: url
     )
   end
 
