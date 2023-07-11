@@ -60,7 +60,7 @@ module Slack
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "*<##{sc.channel_id}>*\n#{sc.instigator_message.event_payload["text"]}"
+          "text": "*<##{sc.channel_id}>*\n"
         },
         "accessory": {
           "type": "button",
@@ -68,7 +68,7 @@ module Slack
             "type": "plain_text",
             "text": "Go"
           },
-          "url": sc.instigator_message.external_url,
+          # "url": sc.instigator_message.external_url,
           "action_id": "noop-action"
         }
       }
