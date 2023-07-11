@@ -12,7 +12,7 @@ module Slack
       @client = Slack::Web::Client.new(token: @customer.slack_access_token)
 
       external_accounts = @customer.external_accounts
-      blocks = display_integrations(external_accounts)
+      blocks = display_recent_cases + display_integrations(external_accounts)
 
       if external_accounts.any?
         blocks.push(*display_channel_configs(external_accounts))
