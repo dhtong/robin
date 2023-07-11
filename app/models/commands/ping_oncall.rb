@@ -40,10 +40,8 @@ module Commands
     end
 
     def ping_subscribers
-      support_message_link = @chat_client.chat_getPermalink(channel: @message.channel_id, message_ts: @message.event_payload["ts"])['permalink']
-
       @channel_config.subscribers.each do |customer_user|
-        @chat_client.chat_postMessage(channel: customer_user.slack_user_id, text: support_message_link, as_user: true)
+        @chat_client.chat_postMessage(channel: customer_user.slack_user_id, text: @message.external_url, as_user: true)
       end
     end
   end
