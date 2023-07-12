@@ -1,5 +1,7 @@
 module Slack
   class RefreshHome
+    include ActionView::Helpers::DateHelper
+
     def initialize(customer_id:, caller_id:)
       @customer_id = customer_id
       @caller_id = caller_id
@@ -55,7 +57,7 @@ module Slack
     end
 
     def display_case(sc)
-      header = "*<##{sc.channel_id}>*"
+      header = "#{time_ago_in_words(sc.created_at)} ago in *<##{sc.channel_id}>*"
       # header = "*<#{sc.instigator_message.external_url}|##{sc.channel_id}>*" if sc.instigator_message.external_url.present?
 
       [
