@@ -1,5 +1,7 @@
 module Slack
   class RefreshHome
+    include ActionView::Helpers::DateHelper
+
     def initialize(customer_id:, caller_id:)
       @customer_id = customer_id
       @caller_id = caller_id
@@ -44,11 +46,10 @@ module Slack
           "type": "section",
           "text": {"type": "mrkdwn", "text": "*Recent cases*"},
           
-        }, 
-        {"type": "divider"}
+        }
       ]
       cases.each do |sc|
-        blocks << display_case(sc)
+        blocks = blocks + display_case(sc)
       end
 
       blocks << EMPTY_SPACE
@@ -56,22 +57,28 @@ module Slack
     end
 
     def display_case(sc)
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": "*<##{sc.channel_id}>*\n#{sc.instigator_message.event_payload["text"]}"
-        },
-        "accessory": {
-          "type": "button",
+      header = "#{time_ago_in_words(sc.created_at)} ago in *<##{sc.channel_id}>*"
+      # header = "*<#{sc.instigator_message.external_url}|##{sc.channel_id}>*" if sc.instigator_message.external_url.present?
+
+      [
+        {"type": "divider"},
+        {
+          "type": "section",
           "text": {
-            "type": "plain_text",
-            "text": "Go"
-          },
-          # "url": sc.instigator_message.external_url,
-          "action_id": "noop-action"
+            "type": "mrkdwn",
+            "text": header
+          }
+        },
+        {
+          "type": "context",
+          "elements": [
+            {
+              "type": "mrkdwn",
+              "text": sc.instigator_message.event_payload["text"]
+            }
+          ]
         }
-      }
+      ]
     end
 
     def display_integrations(external_accounts)
