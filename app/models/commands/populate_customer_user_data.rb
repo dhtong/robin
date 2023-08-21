@@ -1,6 +1,8 @@
 module Commands
   class PopulateCustomerUserData
 
+    # set referer_customer_id when we don't have a direct relationship with customer_user_id
+    # this happens in shared channels
     def execute(customer_user_id:, referer_customer_id: nil)
       customer_user = Records::CustomerUser.find(customer_user_id)
 
