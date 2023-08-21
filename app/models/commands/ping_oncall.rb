@@ -14,7 +14,6 @@ module Commands
 
       slack_users = oncall_users.map do |user|
         begin
-          # todo add user repository and check with db first. if not found, check chat_client
           @user_repo.slack_id_by_email(email: user["email"], customer: @customer)
         rescue Slack::Web::Api::Errors::UsersNotFound
           post_message("Slack user not found for #{user["email"]}")
