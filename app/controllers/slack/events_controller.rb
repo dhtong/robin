@@ -9,10 +9,10 @@ class Slack::EventsController < ApplicationController
     case params[:event][:type]
     when 'app_home_opened'
       Slack::RefreshHome.new(customer_id: customer.id, caller_id: params[:event][:user]).execute
-    when 'app_mention'
+    when 'app_mention', 'message'
       msg = record_message
       return head :ok if msg.nil?
-      Slack::PingOncall.perform_later(msg.id)
+      Slack::PingOncall.perform_later(msg.id) if params[:event][:type] == 'app_mention'
       Slack::CreateSupportCase.perform_later(msg.id)
     end
     
