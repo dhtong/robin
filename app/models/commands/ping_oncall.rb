@@ -5,6 +5,7 @@ module Commands
       @customer = Records::Customer.find(@message.customer_id)
       @channel_config = Records::ChannelConfig.find_by(channel_id: @message.channel_id)
       @chat_client = Slack::Web::Client.new(token: @customer.slack_access_token)
+      @user_repo = Repositories::Users.create
     end
 
     def execute
@@ -14,8 +15,7 @@ module Commands
       slack_users = oncall_users.map do |user|
         begin
           # todo add user repository and check with db first. if not found, check chat_client
-          resp = @chat_client.users_lookupByEmail(email: user["email"])
-          resp["user"]["id"]
+          @user_repo.slack_id_by_email(email: user["email"], customer: @customer)
         rescue Slack::Web::Api::Errors::UsersNotFound
           post_message("Slack user not found for #{user["email"]}")
           nil
@@ -28,9 +28,8 @@ module Commands
       rescue Slack::Web::Api::Errors::AlreadyInChannel, Slack::Web::Api::Errors::MissingScope
       end
 
-      mentions = slack_users.map{|u| "<@#{u}>"}
-      post_message("Hey someone needs you! #{mentions.join(', ')}")
-      ping_subscribers
+      ping_oncall(slack_users)
+      ping_slack_users(@channel_config.subscribers)
     end
 
     private
@@ -39,8 +38,17 @@ module Commands
       @chat_client.chat_postMessage(channel: @message.channel_id, thread_ts: @message.event_payload["thread_ts"], text: msg, as_user: true)
     end
 
-    def ping_subscribers
-      @channel_config.subscribers.each do |customer_user|
+    def ping_oncall(oncall_users)
+      if @message.event_payload["type"] == 'message'
+        ping_slack_users(oncall_users)
+        return
+      end
+      mentions = oncall_users.map{|u| "<@#{u}>"}
+      post_message("Hey someone needs you! #{mentions.join(', ')}")
+    end
+
+    def ping_slack_users(users)
+      users.each do |customer_user|
         @chat_client.chat_postMessage(channel: customer_user.slack_user_id, text: @message.external_url, as_user: true)
       end
     end
