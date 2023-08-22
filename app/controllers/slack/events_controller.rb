@@ -12,7 +12,7 @@ class Slack::EventsController < ApplicationController
     when 'app_mention', 'message'
       event = record_event
       return head :ok if event.nil?
-      Slack::PingOncall.perform_later(event.id)
+      Slack::PingOncall.perform_later(event.id, 'public') if params[:event][:type] == 'app_mention'
       Slack::CreateSupportCase.perform_later(event.id)
     end
     

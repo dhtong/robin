@@ -1,12 +1,13 @@
 module Commands
   class PingOncall
-    def initialize(event_id)
+    def initialize(event_id, ping_type)
       @event = Records::Event.includes(:message).find(event_id)
       @message = @event.message
       @customer = Records::Customer.find(@message.customer_id)
       @channel_config = Records::ChannelConfig.find_by(channel_id: @message.channel_id)
       @chat_client = Slack::Web::Client.new(token: @customer.slack_access_token)
       @user_repo = Repositories::Users.create
+      @ping_type = ping_type
     end
 
     def execute
@@ -28,8 +29,6 @@ module Commands
       end
 
       ping_oncall(slack_users)
-      # ping subscribers for app mention
-      ping_slack_users(@channel_config.subscribers.map(&:slack_user_id)) if @event.event["type"] == 'app_mention'
     end
 
     private
@@ -39,13 +38,14 @@ module Commands
     end
 
     def ping_oncall(slack_user_ids)
-      case @event.event["type"]
-      when 'message'
+      case @ping_type
+      when 'private'
         # ping oncall uses privately if it's not app mention and not in a thread.
-        ping_slack_users(slack_user_ids, "created a support case for #{@message.external_url}") unless @event.event.key?("thread_ts")
-      when 'app_mention'
+        ping_slack_users(slack_user_ids, "A support case is auto created for #{@message.external_url}")
+      when 'public'
         mentions = slack_user_ids.map{|u| "<@#{u}>"}
         post_message("Hey someone needs you! #{mentions.join(', ')}")
+        ping_slack_users(@channel_config.subscribers.map(&:slack_user_id))
       end
     end
 

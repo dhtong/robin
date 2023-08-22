@@ -8,7 +8,7 @@ RSpec.describe Slack::PingOncall, type: :job do
     let(:external_account) { create(:external_account, platform: :zenduty, customer: customer) }
     let!(:channel_config) { create(:channel_config, external_account: external_account, team_id: "team", escalation_policy_id: escalation_policy_id) }
     let!(:message) { create(:message, channel_id: channel_config.channel_id, customer: customer) }
-    let(:event) { create(:event, message: message, event: {"type"=>"message"}) }
+    let(:event) { create(:event, message: message, event: {"type"=>"app_mention"}) }
     let(:oncall_email) { "maryjane@sharklasers.com" }
     let(:escalation_policy_id) { "ddd" }
     let(:contact) { create(:user_contact, method: :email, number: email) }
@@ -44,7 +44,7 @@ RSpec.describe Slack::PingOncall, type: :job do
          to_return(status: 200, body: "", headers: {})
     end
 
-    subject { described_class.perform_later(event.id) }
+    subject { described_class.perform_later(event.id, 'public') }
 
     it "uploads a backup" do
       perform_enqueued_jobs { subject }
