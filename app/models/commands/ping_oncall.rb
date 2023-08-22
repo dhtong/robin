@@ -39,11 +39,14 @@ module Commands
     end
 
     def ping_oncall(slack_user_ids)
+      puts "====   event type is #{@event["type"]}"
       case @event["type"]
       when 'message'
         # ping oncall uses privately if it's not app mention and not in a thread.
+        puts "about to message"
         ping_slack_users(slack_user_ids, "created a support case for " + @message.external_url) if @event.key?("thread_ts")
       when 'app_mention'
+        puts "about to app mention"
         mentions = slack_user_ids.map{|u| "<@#{u}>"}
         post_message("Hey someone needs you! #{mentions.join(', ')}")
       end
