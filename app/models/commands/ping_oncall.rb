@@ -37,7 +37,6 @@ module Commands
     end
 
     def ping_oncall(slack_user_ids)
-      puts "========= #{@message.event_payload["type"]}"
       case @message.event_payload["type"]
       when 'message'
         # ping oncall uses privately if it's not app mention and not in a thread.
