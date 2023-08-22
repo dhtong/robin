@@ -22,8 +22,8 @@ class Slack::EventsController < ApplicationController
   private
 
   def record_event
-    # skip bot message events
-    return if params[:event].key?(:bot_id)
+    # skip bot message events and subtypes like delete and join
+    return if params[:event].key?(:bot_id) || params[:event].key?(:subtype)
     external_event_id = params[:event_id]
     external_event = Records::Event.find_by(external_id: external_event_id) if external_event_id.present?
     return if external_event.present?

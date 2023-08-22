@@ -40,7 +40,6 @@ module Commands
     def ping_oncall(slack_user_ids)
       case @ping_type
       when 'private'
-        # ping oncall uses privately if it's not app mention and not in a thread.
         ping_slack_users(slack_user_ids, "A support case is auto created for #{@message.external_url}")
       when 'public'
         mentions = slack_user_ids.map{|u| "<@#{u}>"}
