@@ -29,24 +29,21 @@ module Commands
 
       ping_oncall(slack_users)
       # ping subscribers for app mention
-      ping_slack_users(@channel_config.subscribers.map(&:slack_user_id)) if @event["type"] == 'app_mention'
+      ping_slack_users(@channel_config.subscribers.map(&:slack_user_id)) if @event.event["type"] == 'app_mention'
     end
 
     private
 
     def post_message(msg)
-      @chat_client.chat_postMessage(channel: @message.channel_id, thread_ts: @event["thread_ts"], text: msg, as_user: true)
+      @chat_client.chat_postMessage(channel: @message.channel_id, thread_ts: @event.event["thread_ts"], text: msg, as_user: true)
     end
 
     def ping_oncall(slack_user_ids)
-      puts "====   event type is #{@event["type"]}"
-      case @event["type"]
+      case @event.event["type"]
       when 'message'
         # ping oncall uses privately if it's not app mention and not in a thread.
-        puts "about to message"
-        ping_slack_users(slack_user_ids, "created a support case for " + @message.external_url) if @event.key?("thread_ts")
+        ping_slack_users(slack_user_ids, "created a support case for #{@message.external_url}") unless @event.event.key?("thread_ts")
       when 'app_mention'
-        puts "about to app mention"
         mentions = slack_user_ids.map{|u| "<@#{u}>"}
         post_message("Hey someone needs you! #{mentions.join(', ')}")
       end
