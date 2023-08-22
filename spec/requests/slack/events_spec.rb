@@ -36,19 +36,6 @@ RSpec.describe "Event", type: :request do
       expect(Records::Message.last.customer_user_id).to be_present
     end
 
-    context 'no message id' do
-      let!(:exisiting_message) { create(:message, external_id: nil) }
-      before do
-        payload["event"]["client_msg_id"] = nil
-      end
-
-      it 'create a new message' do
-        expect {
-          post "/slack/events", params: payload
-        }.to change { Records::Message.count }
-      end
-    end
-
     it "create ping job " do
       expect {
         post "/slack/events", params: payload
@@ -84,6 +71,35 @@ RSpec.describe "Event", type: :request do
       expect {
         post "/slack/events", params: payload
       }.not_to change { Records::Message.count }
+    end
+
+    context 'multi event for a single message' do
+      let(:mention_payload) { JSON.parse(file_fixture("app_mention.json").read) }
+      before do
+        mention_payload["event"]["client_msg_id"] = payload["event"]["client_msg_id"]
+      end
+
+      it 'stores both events' do
+        expect {
+          post "/slack/events", params: payload
+        }.to change { Records::Event.count }.by 1
+  
+        # call again should not create another message
+        expect {
+          post "/slack/events", params: mention_payload
+        }.to change { Records::Event.count }.by 1
+      end
+
+      it 'only store one message' do
+        expect {
+          post "/slack/events", params: payload
+        }.to change { Records::Message.count }.by 1
+  
+        # call again should not create another message
+        expect {
+          post "/slack/events", params: mention_payload
+        }.not_to change { Records::Message.count }
+      end
     end
 
     context 'not store bot messages' do

@@ -10,10 +10,10 @@ class Slack::EventsController < ApplicationController
     when 'app_home_opened'
       Slack::RefreshHome.new(customer_id: customer.id, caller_id: params[:event][:user]).execute
     when 'app_mention', 'message'
-      msg = record_message
-      return head :ok if msg.nil?
-      Slack::PingOncall.perform_later(msg.id)
-      Slack::CreateSupportCase.perform_later(msg.id)
+      event = record_event
+      return head :ok if event.nil?
+      Slack::PingOncall.perform_later(event.id)
+      Slack::CreateSupportCase.perform_later(event.id)
     end
     
     head :ok
@@ -21,14 +21,31 @@ class Slack::EventsController < ApplicationController
 
   private
 
+  def record_event
+    # skip bot message events
+    return if params[:event].key?(:bot_id)
+    external_event_id = params[:event_id]
+    external_event = Records::Event.find_by(external_id: external_event_id) if external_event_id.present?
+    return if external_event.present?
+    ActiveRecord::Base.transaction do
+      event = Records::Event.create(
+        external_id: external_event_id,
+        event: params[:event],
+        platform: :slack
+      )
+      msg = record_message
+      event.update(message: msg)
+      event
+    end
+  end
+
   def record_message
     # skip duplicates and bot messages
     external_message_id = params[:event][:client_msg_id]
-    existing_message = Records::Message.find_by(external_id: external_message_id) if external_message_id.present?
+    existing_message = Records::Message.find_by(external_id: external_message_id)
     # always process app_mention for now, even though we might reprocess it.
     # for a same message, we could get two events 
-    return existing_message if params[:event][:type] == 'app_mention'
-    return nil if existing_message.present? || params[:event].key?(:bot_id)
+    return existing_message if existing_message.present?
 
     cu = Commands::FindOrCreateUser.new.execute(slack_user_id: params[:event][:user], slack_team_id: params[:event][:user_team] || params[:event][:team], referer_customer_id: customer.id)
     url = @slack_client.chat_getPermalink(channel: channel, message_ts: params[:event][:ts])[:permalink]

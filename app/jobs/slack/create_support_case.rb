@@ -1,7 +1,7 @@
 class Slack::CreateSupportCase < ApplicationJob
   queue_as :default
 
-  def perform(message_id)
-    Commands::CreateSupportCase.new.execute(message_id: message_id)
+  def perform(event_id)
+    Commands::CreateSupportCase.new.execute(event_id: event_id)
   end
 end

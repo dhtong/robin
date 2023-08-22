@@ -1,7 +1,8 @@
 module Commands
   class PingOncall
-    def initialize(message_id)
-      @message = Records::Message.find(message_id)
+    def initialize(event_id)
+      @event = Records::Event.includes(:message).find(event_id)
+      @message = @event.message
       @customer = Records::Customer.find(@message.customer_id)
       @channel_config = Records::ChannelConfig.find_by(channel_id: @message.channel_id)
       @chat_client = Slack::Web::Client.new(token: @customer.slack_access_token)
@@ -27,29 +28,31 @@ module Commands
       end
 
       ping_oncall(slack_users)
-      ping_slack_users(@channel_config.subscribers.map(&:slack_user_id))
+      # ping subscribers for app mention
+      ping_slack_users(@channel_config.subscribers.map(&:slack_user_id)) if @event["type"] == 'app_mention'
     end
 
     private
 
     def post_message(msg)
-      @chat_client.chat_postMessage(channel: @message.channel_id, thread_ts: @message.event_payload["thread_ts"], text: msg, as_user: true)
+      @chat_client.chat_postMessage(channel: @message.channel_id, thread_ts: @event["thread_ts"], text: msg, as_user: true)
     end
 
     def ping_oncall(slack_user_ids)
-      case @message.event_payload["type"]
+      case @event["type"]
       when 'message'
         # ping oncall uses privately if it's not app mention and not in a thread.
-        ping_slack_users(slack_user_ids) if @message.event_payload.key?("thread_ts")
+        ping_slack_users(slack_user_ids, "created a support case for " + @message.external_url) if @event.key?("thread_ts")
       when 'app_mention'
         mentions = slack_user_ids.map{|u| "<@#{u}>"}
         post_message("Hey someone needs you! #{mentions.join(', ')}")
       end
     end
 
-    def ping_slack_users(slack_user_ids)
+    def ping_slack_users(slack_user_ids, message=nil)
+      message ||= @message.external_url
       slack_user_ids.each do |slack_user_id|
-        @chat_client.chat_postMessage(channel: slack_user_id, text: @message.external_url, as_user: true)
+        @chat_client.chat_postMessage(channel: slack_user_id, text: message, as_user: true)
       end
     end
   end

@@ -1,8 +1,8 @@
 class Slack::PingOncall < ApplicationJob
   queue_as :default
 
-  def perform(message_id)
-    command = Commands::PingOncall.new(message_id)
+  def perform(event_id)
+    command = Commands::PingOncall.new(event_id)
     command.execute
   end
 end
