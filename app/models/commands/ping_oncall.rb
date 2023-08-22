@@ -28,7 +28,7 @@ module Commands
       end
 
       ping_oncall(slack_users)
-      ping_slack_users(@channel_config.subscribers)
+      ping_slack_users(@channel_config.subscribers.map(&:slack_user_id))
     end
 
     private
@@ -48,9 +48,9 @@ module Commands
       end
     end
 
-    def ping_slack_users(users)
-      users.each do |customer_user|
-        @chat_client.chat_postMessage(channel: customer_user.slack_user_id, text: @message.external_url, as_user: true)
+    def ping_slack_users(slack_user_ids)
+      slack_user_ids.each do |slack_user_id|
+        @chat_client.chat_postMessage(channel: slack_user_id, text: @message.external_url, as_user: true)
       end
     end
   end
