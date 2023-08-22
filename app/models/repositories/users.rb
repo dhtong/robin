@@ -11,8 +11,8 @@ module Repositories
     def slack_id_by_email(email:, customer:)
       cu = Records::CustomerUser.joins(:user_contacts).where(
         user_contacts: {number: email, method: :email},
-        customer_id: customer.id)
-      return cu.first.slack_user_id if cu.any?
+        customer_id: customer.id).limit(1)
+      return cu.slack_user_id if cu.present?
       @slack_client.new(token: customer.slack_access_token).users_lookupByEmail(email: email).dig("user", "id")
     end
   end
