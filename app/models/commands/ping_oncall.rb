@@ -11,7 +11,6 @@ module Commands
     def execute
       return post_message("there is no oncall schedule linked to this channel yet.") if @channel_config.blank?
       oncall_users = @channel_config.oncall_users
-
       slack_users = oncall_users.map do |user|
         begin
           @user_repo.slack_id_by_email(email: user["email"], customer: @customer)
@@ -37,13 +36,14 @@ module Commands
       @chat_client.chat_postMessage(channel: @message.channel_id, thread_ts: @message.event_payload["thread_ts"], text: msg, as_user: true)
     end
 
-    def ping_oncall(oncall_users)
+    def ping_oncall(slack_user_ids)
+      puts "========= #{@message.event_payload["type"]}"
       case @message.event_payload["type"]
       when 'message'
         # ping oncall uses privately if it's not app mention and not in a thread.
-        ping_slack_users(oncall_users) if @message.event_payload.key?("thread_ts")
+        ping_slack_users(slack_user_ids) if @message.event_payload.key?("thread_ts")
       when 'app_mention'
-        mentions = oncall_users.map{|u| "<@#{u}>"}
+        mentions = slack_user_ids.map{|u| "<@#{u}>"}
         post_message("Hey someone needs you! #{mentions.join(', ')}")
       end
     end
