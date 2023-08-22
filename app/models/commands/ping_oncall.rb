@@ -38,7 +38,8 @@ module Commands
     end
 
     def ping_oncall(oncall_users)
-      if @message.event_payload["type"] == 'message'
+      # ping oncall uses privately if it's not app mention and not in a thread.
+      if @message.event_payload["type"] == 'message' && @message.event_payload.key?("thread_ts")
         ping_slack_users(oncall_users)
         return
       end
