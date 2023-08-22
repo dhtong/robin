@@ -22,9 +22,10 @@ class Slack::EventsController < ApplicationController
   private
 
   def record_message
+    # skip duplicates and bot messages
     external_message_id = params[:event][:client_msg_id]
     existing_message = Records::Message.find_by(external_id: external_message_id) if external_message_id.present?
-    return nil if existing_message.present?
+    return nil if existing_message.present? || params[:event].key?(:bot_id)
 
     cu = Commands::FindOrCreateUser.new.execute(slack_user_id: params[:event][:user], slack_team_id: params[:event][:user_team] || params[:event][:team], referer_customer_id: customer.id)
     url = @slack_client.chat_getPermalink(channel: channel, message_ts: params[:event][:ts])[:permalink]
@@ -34,6 +35,7 @@ class Slack::EventsController < ApplicationController
       channel_id: channel,
       event_payload: params[:event],
       external_id: external_message_id,
+      # prefer parent thread
       slack_ts: params[:event][:thread_ts] || params[:event][:ts],
       customer_user: cu,
       external_url: url

@@ -38,13 +38,14 @@ module Commands
     end
 
     def ping_oncall(oncall_users)
-      # ping oncall uses privately if it's not app mention and not in a thread.
-      if @message.event_payload["type"] == 'message' && @message.event_payload.key?("thread_ts")
-        ping_slack_users(oncall_users)
-        return
+      case @message.event_payload["type"]
+      when 'message'
+        # ping oncall uses privately if it's not app mention and not in a thread.
+        ping_slack_users(oncall_users) if @message.event_payload.key?("thread_ts")
+      when 'app_mention'
+        mentions = oncall_users.map{|u| "<@#{u}>"}
+        post_message("Hey someone needs you! #{mentions.join(', ')}")
       end
-      mentions = oncall_users.map{|u| "<@#{u}>"}
-      post_message("Hey someone needs you! #{mentions.join(', ')}")
     end
 
     def ping_slack_users(users)

@@ -67,6 +67,43 @@ RSpec.describe "Event", type: :request do
     end
   end
 
+  context "message" do
+    let!(:stub_slack_permalink) do
+      stub_request(:post, "https://slack.com/api/chat.getPermalink").to_return(status: 200, body: {ok: true, permalink: "https://ss.com"}.to_json, headers: {})
+    end
+    let!(:customer) { create(:customer, slack_team_id: payload["team_id"]) }
+    let(:payload) { JSON.parse(file_fixture("message.json").read) }
+    let!(:channel_config) { create(:channel_config, channel_id: payload["event"]["channel"]) }
+
+    it "store message" do
+      expect {
+        post "/slack/events", params: payload
+      }.to change { Records::Message.count }.by 1
+
+      # call again should not create another message
+      expect {
+        post "/slack/events", params: payload
+      }.not_to change { Records::Message.count }
+    end
+
+    context 'not store bot messages' do
+      let(:payload) { JSON.parse(file_fixture("bot_message.json").read) }
+
+      it "store message" do
+        expect {
+          post "/slack/events", params: payload
+        }.not_to change { Records::Message.count }
+      end  
+
+      it "not create job " do
+        expect {
+          post "/slack/events", params: payload
+        }.to have_enqueued_job(Slack::PingOncall).exactly(0).times.
+        and have_enqueued_job(Slack::CreateSupportCase).exactly(0).times
+      end
+    end
+  end
+
   context "home" do
     let!(:customer) { create(:customer, slack_team_id: payload["team_id"]) }
     let(:payload) { JSON.parse(file_fixture("app_home_opened.json").read) }
