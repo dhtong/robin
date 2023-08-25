@@ -21,14 +21,9 @@ module Commands
     end
 
     def post_message(case_id, review_id)
-      external_url = @support_case.instigator_message.external_url || get_instigator_message_link
+      external_url = @support_case.instigator_message.external_url
       blocks = @presenter.present(review_id: review_id, slack_user_id: @reviewer.slack_user_id, message_link: external_url).to_json
       @support_case.customer.slack_client.chat_postMessage(channel: @reviewer.slack_user_id, blocks: blocks, as_user: true)
-    end
-
-    def get_instigator_message_link
-      msg = @support_case.instigator_message
-      @support_case.customer.slack_client.chat_getPermalink(channel: msg.channel_id, message_ts: msg.event_payload["ts"])['permalink']
     end
   end
 end
