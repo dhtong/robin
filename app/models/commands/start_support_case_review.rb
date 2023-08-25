@@ -8,8 +8,6 @@ module Commands
       return if Records::SupportCaseReview.find_by(support_case_id: case_id)
       @support_case = Records::SupportCase.includes({instigator_message: :customer_user} , :customer).find(case_id)
       @reviewer = @support_case.instigator_message.customer_user
-      # early return if it's an internal case
-      return if @reviewer.customer == @support_case.instigator_message.customer
       ActiveRecord::Base.transaction do
         r = create_review
         post_message(case_id, r.id)
