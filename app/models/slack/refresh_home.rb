@@ -60,6 +60,7 @@ module Slack
       header = "#{time_ago_in_words(sc.created_at)} ago in *<##{sc.channel_id}>*\n```#{sc.instigator_message.event_payload["text"]}```"
       # header = "*<#{sc.instigator_message.external_url}|##{sc.channel_id}>*" if sc.instigator_message.external_url.present?
       [
+        {"type": "divider"},
         {
           "type": "section",
           "text": {
