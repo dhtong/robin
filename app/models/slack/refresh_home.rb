@@ -66,9 +66,10 @@ module Slack
             "type": "mrkdwn",
             "text": header
           },
+          "block_id": sc.id.to_s + "_manage_support_case-block",
           "accessory": {
             "type": "overflow",
-            "action_id": "support_case-action",
+            "action_id": "manage_support_case-action",
             "options": [
               {
                 "text": {
